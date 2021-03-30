@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.54.0" />
+
+  <title>Hardening Linux-based IoT systems &middot; Djalal Harouni</title>
+
+    
+
+  
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css">
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-old-ie-min.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/grids-responsive-min.css">
+  <!--<![endif]-->
+
+  <!--[if lte IE 8]>
+  <link rel="stylesheet" href="https://djalal.opendz.org/css/side-menu-old-ie.css">
+  <![endif]-->
+  <!--[if gt IE 8]><!-->
+  <link rel="stylesheet" href="https://djalal.opendz.org/css/side-menu.css">
+  <!--<![endif]-->
+
+  <link rel="stylesheet" href="https://djalal.opendz.org/css/blackburn.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet" type="text/css">
+
+  
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+ 
+  
+
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/styles/androidstudio.min.css">
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/highlight.min.js"></script>
+  
+  <script async src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.6.0/languages/yaml.min.js"></script>
+  
+  <script>hljs.initHighlightingOnLoad();</script>
+  
+
+  <link rel="shortcut icon" href="https://djalal.opendz.org/favicon.ico" type="image/x-icon" />
+
+
+  
+    
+        <link rel="stylesheet" href="https://djalal.opendz.org/css/my.css">
+    
+  
+  
+    
+        <script src="https://djalal.opendz.org/js/my.js"></script>
+    
+  
+
+</head>
+
+
+<body>
+<div id="layout">
+
+  
+<a href="#menu" id="menuLink" class="menu-link">
+  
+  <span></span>
+</a>
+<div id="menu">
+
+  
+  <a class="pure-menu-heading brand" href="https://djalal.opendz.org/">Djalal (tixxdz)</a>
+
+
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://djalal.opendz.org/"><i class='fa fa-home fa-fw'></i>Home</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://djalal.opendz.org/post/"><i class='fa fa-list fa-fw'></i>Posts</a>
+      
+        </li>
+      
+      
+        <li class="pure-menu-item">
+          <a class="pure-menu-link" href="https://djalal.opendz.org/about/"><i class='fa fa-user fa-fw'></i>About</a>
+      
+        </li>
+      
+    </ul>
+  </div>
+
+  <div class="pure-menu social">
+  <ul class="pure-menu-list">
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://twitter.com/tixxdz" rel="me" target="_blank"><i class="fab fa-twitter-square fa-fw"></i>Twitter</a>
+    </li>
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://medium.com/@tixxdz" rel="me" target="_blank"><i class="fab fa-medium-m fa-fw"></i>Medium</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://linkedin.com/in/djalal-harouni" rel="me" target="_blank"><i class="fab fa-linkedin fa-fw"></i>LinkedIn</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://github.com/tixxdz" rel="me" target="_blank"><i class="fab fa-github-square fa-fw"></i>GitHub</a>
+    </li>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <li class="pure-menu-item">
+      <a class="pure-menu-link" href="https://keybase.io/tixxdz" rel="me" target="_blank"><i class="fas fa-key fa-fw"></i>Keybase</a>
+    </li>
+    
+
+    
+
+  </ul>
+</div>
+
+
+  <div>
+  <div class="small-print">
+    <small>&copy; 2021. All rights reserved.</small>
+  </div>
+  <div class="small-print">
+    <small>Built with&nbsp;<a href="https://gohugo.io/" target="_blank">Hugo</a></small>
+    <small>Theme&nbsp;<a href="https://github.com/yoshiharuyamashita/blackburn" target="_blank">Blackburn</a></small>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="main">
+
+
+<div class="header">
+  <h1>Hardening Linux-based IoT systems</h1>
+  <h2></h2>
+</div>
+<div class="content">
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>16 Oct 2017, 00:00</time>
+  </div>
+
+  
+
+  
+
+  
+
+</div>
+
+  
+
+<p>TL;DR: In Linux kernel and as part of the Kernel Self Protection Project we are pushing for new lightweight security mechanisms. On top of that, in systemd we are implementing new lightweight container mechanisms that target Embedded Linux and IoT. Our goal is to make it easy to deploy Secure Embedded Linux and IoT systems.</p>
+
+<p><img src="./img/tux-hardened.png" alt="Linux kernel self protection project" title="Linux Kernel Self Protection" /></p>
+
+<p>Working with Embedded Linux systems, device drivers, system and kernel security, allows me to inspect what will be deployed in production. I noticed a common pattern for some devices, either they contain simple kernel vulnerabilities within third party drivers, or deployed applications run with higher privileges, they lack common sandbox and security features. In this blog post, I will present a brief introduction on some mechanisms that allow you to improve your Linux-based IoT security, before discussing new plans that are in development from systemd to Linux kernel hardening.</p>
+
+<h2 id="linux-kernel-hardening-and-security">Linux Kernel Hardening and security</h2>
+
+<p>Linux is one of the most popular operating systems for Embedded and IoT systems. Linux is a beast, it solves most embedded world use cases, however, supporting lot of technologies has its own code complexity cost. Security hardening measures allow to hide this complexity, to reduce the attack surface, to contain apps, and to defeat some kernel or user space exploitation techniques. The <a href="https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project">Linux kernel Self Protection project</a> [1] tries to take this further by offering Kernel Self Protection features, the aim to protect against known and unknown Linux kernel bugs and vulnerabilities.</p>
+
+<p>Some Embedded Kernel Hardening features:</p>
+
+<p><strong>CONFIG_DEFAULT_MMAP_MIN_ADDR=32768</strong></p>
+
+<pre><code>Disallow allocating the first 32k of memory 
+to protect against kernel null pointer
+dereference and related exploits.
+</code></pre>
+
+<p><strong>CONFIG_STRICT_KERNEL_RWX=y</strong></p>
+
+<pre><code>Make kernel text and rodata read-only.
+Kernel version of W^X.
+</code></pre>
+
+<p><strong>CONFIG_STRICT_DEVMEM=y and CONFIG_IO_STRICT_DEVMEM=y</strong></p>
+
+<pre><code>Restrict physical memory access.
+</code></pre>
+
+<p><strong>CONFIG_SECCOMP=y and CONFIG_SECCOMP_FILTER=y</strong></p>
+
+<pre><code>Allows userspace to reduce the attack surface.
+</code></pre>
+
+<p><strong>STATIC_USERMODEHELPER=y</strong></p>
+
+<pre><code>Force all usermode helper calls through
+a single binary
+</code></pre>
+
+<p><strong>CONFIG_HARDENED_USERCOPY=y</strong></p>
+
+<pre><code>performs extra usercopy checks.
+</code></pre>
+
+<p>For more security features, please check the following <a href="https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings">Kernel Self Protection Project guide</a> [2]. There are lot of features that needs to be disabled on production systems. You should also consider trusted boot and TPM support from the beginning, they are not perfect but it is an extra layer to measure the boot process and allow TPM to act on that.</p>
+
+<h2 id="current-future-plans">Current/Future plans:</h2>
+
+<h3 id="modernization-of-proc-file-system">Modernization of proc file system</h3>
+
+<p>I have been working on modernizing <a href="https://lkml.org/lkml/2017/4/25/282">Linux proc API</a> [3]. The procfs file system is an old virtual file system that exposes lot of kernel information, some of these files can be used as a source for information leaks to get kernel addresses and construct complex attacks. We have came to the conclusion that procfs needs to be updated and it is blocking lot of other Linux features. Together with Alexey Gladkov and based on Andy Lutomirski feedback, we have a branch here: <a href="https://github.com/legionus/linux/commits/pidfs-v4">https://github.com/legionus/linux/commits/pidfs-v4</a> [4] that allows to improve Linux procfs and protect exposed kernel files, only /proc/<pids>/ files will be available.</p>
+
+<p>It also allows to have separate procfs instances per App, this means you are not forced anymore to use PID namespaces to hide some processes, simply mounting a new separate procfs instance with “hidepid=” will allow to hide at some degree other processes that belong to other users, and without using PID namespaces. This is useful for Linux-based IoT, as we may not need to have multiple PID namespace managers. Another introduction RFC is planed soon to try to make the transition as smooth as possible.</p>
+
+<h3 id="automatic-module-loading-protection">Automatic module loading protection</h3>
+
+<p>historically, Linux was always able to transparently load kernel modules to satisfy user functionality when needed, this is a crucial point for a better user experience. However, this feature can be abused to load vulnerable modules and exploit some kernel bugs. Several examples come to mind:</p>
+
+<p>The 11 year old <a href="http://seclists.org/oss-sec/2017/q1/471">DCCP double free vulnerability CVE-2017–6074</a> [5]</p>
+
+<p>CVE-2017–2636: exploit the <a href="https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html">race condition in the n_hdlc Linux kernel driver bypassing SMEP</a> [6]</p>
+
+<p>kernel: <a href="http://www.openwall.com/lists/oss-security/2017/03/29/2">Local privilege escalation in XFRM framework CVE-2017–7184</a> [7] it was advertised that maybe this vulnerability was used to break Ubuntu systems on security contests.</p>
+
+<p>Most Embedded Linux systems should not allow module loading at all, or only a subset of signed modules, however there are products that need unrestricted module support. Inspired by <a href="https://grsecurity.net/">Grsecurity MODHARDEN</a> [8] feature, we have tried to implement a new generic module autoloading restriction that can be used by sandbox tools. The result is here: <a href="https://lkml.org/lkml/2017/5/22/312">https://lkml.org/lkml/2017/5/22/312</a> [9]. Thanks to Kees Cook, Solar Designer and Andy Lutomirski for the feedback, I am planning v5.</p>
+
+<h3 id="generalizing-yama-lsm">Generalizing YAMA LSM</h3>
+
+<p><a href="https://www.kernel.org/doc/Documentation/security/Yama.txt">Yama LSM</a> [10] is a Linux security module with a clear purpose of protecting processes from being controlled by other processes using ptrace functionality. Recently, I have been experimenting on how to generalize this behaviour to other kernel interfaces and system calls. The aim is to have a simple interface to restrict some operations from operating on arbitrary processes, or processes that run under a different User ID. This should be a default kernel hardening measure on Embedded Linux.</p>
+
+<h2 id="references">References:</h2>
+
+<p>[1] <a href="https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project">https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project</a></p>
+
+<p>[2] <a href="https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings">https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings</a></p>
+
+<p>[3] <a href="https://lkml.org/lkml/2017/4/25/282">https://lkml.org/lkml/2017/4/25/282</a></p>
+
+<p>[4] <a href="https://github.com/legionus/linux/commits/pidfs-v4">https://github.com/legionus/linux/commits/pidfs-v4</a></p>
+
+<p>[5] <a href="http://seclists.org/oss-sec/2017/q1/471">http://seclists.org/oss-sec/2017/q1/471</a></p>
+
+<p>[6] <a href="https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html">https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html</a></p>
+
+<p>[7] <a href="http://www.openwall.com/lists/oss-security/2017/03/29/2">http://www.openwall.com/lists/oss-security/2017/03/29/2</a></p>
+
+<p>[8] https//:grsecurity.net/</p>
+
+<p>[9] <a href="https://lkml.org/lkml/2017/5/22/312">https://lkml.org/lkml/2017/5/22/312</a></p>
+
+<p>[10] <a href="https://www.kernel.org/doc/Documentation/security/Yama.txt">https://www.kernel.org/doc/Documentation/security/Yama.txt</a></p>
+
+  
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdjalal.opendz.org%2fpost%2fhardening-linux-based-iot-systems%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fdjalal.opendz.org%2fpost%2fhardening-linux-based-iot-systems%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fdjalal.opendz.org%2fpost%2fhardening-linux-based-iot-systems%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fdjalal.opendz.org%2fpost%2fhardening-linux-based-iot-systems%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fdjalal.opendz.org%2fpost%2fhardening-linux-based-iot-systems%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fdjalal.opendz.org%2fpost%2fhardening-linux-based-iot-systems%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
+  
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+
+  
+
+</div>
+
+</div>
+</div>
+<script src="https://djalal.opendz.org/js/ui.js"></script>
+<script src="https://djalal.opendz.org/js/menus.js"></script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="\/\/analytics.example.com\/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId',  2 ]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//analytics.example.com/piwik.php?idsite=2" style="border:0;" alt="" /></p></noscript>
+
+
+
+
+
+</body>
+</html>
+

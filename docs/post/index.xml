@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Djalal Harouni</title>
+    <link>https://djalal.opendz.org/post/</link>
+    <description>Recent content in Posts on Djalal Harouni</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2021. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 16 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://djalal.opendz.org/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hardening Linux-based IoT systems</title>
+      <link>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</link>
+      <pubDate>Mon, 16 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</guid>
+      <description>TL;DR: In Linux kernel and as part of the Kernel Self Protection Project we are pushing for new lightweight security mechanisms. On top of that, in systemd we are implementing new lightweight container mechanisms that target Embedded Linux and IoT. Our goal is to make it easy to deploy Secure Embedded Linux and IoT systems.
+Working with Embedded Linux systems, device drivers, system and kernel security, allows me to inspect what will be deployed in production.</description>
+    </item>
+    
+  </channel>
+</rss>
