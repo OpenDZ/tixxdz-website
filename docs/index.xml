@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Djalal Harouni</title>
+    <link>https://djalal.opendz.org/</link>
+    <description>Recent content on Djalal Harouni</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2021. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 16 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://djalal.opendz.org/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hardening Linux-based IoT systems</title>
+      <link>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</link>
+      <pubDate>Mon, 16 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</guid>
+      <description>TL;DR: In Linux kernel and as part of the Kernel Self Protection Project we are pushing for new lightweight security mechanisms. On top of that, in systemd we are implementing new lightweight container mechanisms that target Embedded Linux and IoT. Our goal is to make it easy to deploy Secure Embedded Linux and IoT systems.
+Working with Embedded Linux systems, device drivers, system and kernel security, allows me to inspect what will be deployed in production.</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://djalal.opendz.org/about/</link>
+      <pubDate>Sun, 10 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/about/</guid>
+      <description>This is a small bio (not a résumé) that is needed for the business side of things and clients&amp;rsquo; requests.
+Djalal Harouni (tixxdz) has been involved with computers since 1996, and has been professionally developing software since 2002. Djalal is an Open Source Software (OSS) developer and maintainer, with a focus on improving Linux security in general.
+Djalal worked with several US and German companies around OSS and Linux ecosystems. He has contributed and helped to maintain popular OSS projects from systemd where he worked on the sandboxing environment and kernel interfaces, Linux kernel security, filesystems, container interfaces, Linux containers tools to kernel drivers and Linux embedded systems.</description>
+    </item>
+    
+  </channel>
+</rss>
