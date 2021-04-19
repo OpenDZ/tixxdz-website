@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2021. All rights reserved.</copyright>
-    <lastBuildDate>Mon, 16 Oct 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Apr 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://djalal.opendz.org/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>DZ Open Source contributions into space Mars 2020 Helicopter, Ingenuity</title>
+      <link>https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/</link>
+      <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/</guid>
+      <description>Some friends pinged me about a GitHub post that lists Open Source projects used into space, more precisely within the Mars ingenuity mission. The Github post is here: Open source goes to Mars
+Today GitHub started to provide a badge for &amp;ldquo;almost 12,000&amp;rdquo; developers who have contributed to Open Source projects used in the mission.
+Being from Algeria, I know how hard it is to contribute and work on big Open Source projects.</description>
+    </item>
     
     <item>
       <title>Hardening Linux-based IoT systems</title>
@@ -20,6 +31,28 @@
       <guid>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</guid>
       <description>TL;DR: In Linux kernel and as part of the Kernel Self Protection Project we are pushing for new lightweight security mechanisms. On top of that, in systemd we are implementing new lightweight container mechanisms that target Embedded Linux and IoT. Our goal is to make it easy to deploy Secure Embedded Linux and IoT systems.
 Working with Embedded Linux systems, device drivers, system and kernel security, allows me to inspect what will be deployed in production.</description>
+    </item>
+    
+    <item>
+      <title>systemd Sandbox or systemd Lightweight Containers</title>
+      <link>https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/</link>
+      <pubDate>Sun, 15 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/</guid>
+      <description>Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.
+As a simple example the BrickerBot and similar worms did not use complex 0day exploits. They used simple attack vectors like unprotected remote shells accounts and according to internet resources, lot of IoT devices were affected. The straightforward solution in this case should be a firewall solution plus a powerful sandbox mechanism for apps.</description>
+    </item>
+    
+    <item>
+      <title>Linux kernel – /proc/pid/environ fixes</title>
+      <link>https://djalal.opendz.org/post/linux-kernel-proc-pid-envrion-fixes/</link>
+      <pubDate>Fri, 17 Aug 2012 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/linux-kernel-proc-pid-envrion-fixes/</guid>
+      <description>Just to share that Linux /proc/pid/environ suffers from bugs referenced and fixed here: proc: /proc//environ offset fixes that can be considered vulnerabilities.
+The fixes are in the mainline now. The PoC to dump exec area can found here: http://lkml.org/lkml/2012/7/22/163
+Linux Procfs suffers from other vulnerabilities, like the:
+ -&amp;gt;open() + -&amp;gt;dup(stdin,stdout…) + execve(suid_program)…  These were discussed several times on lkml. If you want a quick nice fix, that only compares u64bit values, check the recent Grsecurity patches.</description>
     </item>
     
   </channel>

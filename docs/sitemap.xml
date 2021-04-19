@@ -3,8 +3,23 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/</loc>
+    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</loc>
     <lastmod>2017-10-16T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/</loc>
+    <lastmod>2017-10-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://djalal.opendz.org/post/linux-kernel-proc-pid-envrion-fixes/</loc>
+    <lastmod>2012-08-17T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -14,13 +29,13 @@
   
   <url>
     <loc>https://djalal.opendz.org/</loc>
-    <lastmod>2017-10-16T00:00:00+00:00</lastmod>
+    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://djalal.opendz.org/post/</loc>
-    <lastmod>2017-10-16T00:00:00+00:00</lastmod>
+    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

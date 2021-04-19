@@ -7,7 +7,7 @@
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.54.0" />
 
-  <title>Posts &middot; Djalal Harouni</title>
+  <title>Linux kernel – /proc/pid/environ fixes &middot; Djalal Harouni</title>
 
     
 
@@ -42,9 +42,6 @@
   <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
  
-  
-  <link rel="alternate" type="application/rss+xml" title="Djalal Harouni"
-    href='https://djalal.opendz.org/post/index.xml' />
   
 
   
@@ -114,11 +111,6 @@
   <div class="pure-menu social">
   <ul class="pure-menu-list">
 
-    
-    <li class="pure-menu-item">
-      <a class="pure-menu-link" href='https://djalal.opendz.org/post/index.xml'><i
-          class="fas fa-rss fa-fw"></i>RSS</a>
-    </li>
     
 
     
@@ -236,37 +228,111 @@
 
 
 <div class="header">
-  <h1>Posts</h1>
+  <h1>Linux kernel – /proc/pid/environ fixes</h1>
+  <h2></h2>
 </div>
 <div class="content">
-  
-  <h2>2021</h2>
-  <ul>
-  
-    <li><time>19 Apr 2021, 00:00</time> - <a href="https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/">DZ Open Source contributions into space Mars 2020 Helicopter, Ingenuity</a></li>
+
+  <div class="post-meta">
+
+  <div>
+    <i class="fa fa-calendar fa-fw"></i>
+    <time>17 Aug 2012, 00:00</time>
+  </div>
 
   
-  </ul>
-  
-  <h2>2017</h2>
-  <ul>
-  
-    <li><time>16 Oct 2017, 00:00</time> - <a href="https://djalal.opendz.org/post/hardening-linux-based-iot-systems/">Hardening Linux-based IoT systems</a></li>
 
   
-    <li><time>15 Oct 2017, 00:00</time> - <a href="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/">systemd Sandbox or systemd Lightweight Containers</a></li>
 
   
-  </ul>
-  
-  <h2>2012</h2>
-  <ul>
-  
-    <li><time>17 Aug 2012, 00:00</time> - <a href="https://djalal.opendz.org/post/linux-kernel-proc-pid-envrion-fixes/">Linux kernel – /proc/pid/environ fixes</a></li>
+
+</div>
+
+  <p>Just to share that Linux <a href="https://www.kernel.org/doc/html/latest/filesystems/proc.html">/proc/pid/environ</a>  suffers from bugs referenced and fixed here: <a href="https://lkml.org/lkml/2012/7/24/245">proc: /proc/<pid>/environ offset fixes</a>  that can be considered vulnerabilities.</p>
+
+<p>The fixes are in the mainline now. The PoC to dump exec area can found here: <a href="http://lkml.org/lkml/2012/7/22/163">http://lkml.org/lkml/2012/7/22/163</a></p>
+
+<p>Linux Procfs suffers from other vulnerabilities, like the:</p>
+
+<pre><code>    -&gt;open() + -&gt;dup(stdin,stdout…) + execve(suid_program)…
+</code></pre>
+
+<p>These were discussed several times on lkml. If you want a quick nice fix, that only compares u64bit values, check the recent Grsecurity patches. The <a href="https://www.openwall.com/Owl/">Openwall</a> kernel patches includes the same first protection. The <a href="https://grsecurity.net/">Grsecurity</a> protection was updated to take advantage of per-cpu counters.</p>
 
   
-  </ul>
+  <h4><i class="fas fa-share-alt" aria-hidden="true"></i>&nbsp;Share!</h4>
+<ul class="share-buttons">
+	<li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fdjalal.opendz.org%2fpost%2flinux-kernel-proc-pid-envrion-fixes%2f" target="_blank" title="Share on Facebook"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Share on Facebook</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://twitter.com/intent/tweet?source=https%3a%2f%2fdjalal.opendz.org%2fpost%2flinux-kernel-proc-pid-envrion-fixes%2f" target="_blank" title="Tweet"><i class="fab fa-twitter" aria-hidden="true"></i><span class="sr-only">Tweet</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="https://plus.google.com/share?url=https%3a%2f%2fdjalal.opendz.org%2fpost%2flinux-kernel-proc-pid-envrion-fixes%2f" target="_blank" title="Share on Google+"><i class="fab fa-google-plus" aria-hidden="true"></i><span class="sr-only">Share on Google+</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.tumblr.com/share?v=3&u=https%3a%2f%2fdjalal.opendz.org%2fpost%2flinux-kernel-proc-pid-envrion-fixes%2f" target="_blank" title="Post to Tumblr"><i class="fab fa-tumblr" aria-hidden="true"></i><span class="sr-only">Post to Tumblr</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://pinterest.com/pin/create/button/?url=https%3a%2f%2fdjalal.opendz.org%2fpost%2flinux-kernel-proc-pid-envrion-fixes%2f" target="_blank" title="Pin it"><i class="fab fa-pinterest-p" aria-hidden="true"></i><span class="sr-only">Pin it</span></a>
+	</li>&nbsp;&nbsp;&nbsp;
+	<li><a href="http://www.reddit.com/submit?url=https%3a%2f%2fdjalal.opendz.org%2fpost%2flinux-kernel-proc-pid-envrion-fixes%2f" target="_blank" title="Submit to Reddit"><i class="fab fa-reddit-alien" aria-hidden="true"></i><span class="sr-only">Submit to Reddit</span></a>
+	</li>
+</ul>
+
+
+<style>
+	ul.share-buttons{
+	  list-style: none;
+	  padding: 0;
+	}
+
+	ul.share-buttons li{
+	  display: inline;
+	}
+
+	ul.share-buttons .sr-only{
+	  position: absolute;
+	  clip: rect(1px 1px 1px 1px);
+	  clip: rect(1px, 1px, 1px, 1px);
+	  padding: 0;
+	  border: 0;
+	  height: 1px;
+	  width: 1px;
+	  overflow: hidden;
+	}
+</style>
+
+
   
+<div class="prev-next-post pure-g">
+  <div class="pure-u-1-24" style="text-align: left;">
+    
+  </div>
+  <div class="pure-u-10-24">
+    
+  </div>
+  <div class="pure-u-2-24">
+    &nbsp;
+  </div>
+  <div class="pure-u-10-24">
+    
+    <nav class="next">
+      <a href="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/">systemd Sandbox or systemd Lightweight Containers</a>
+    </nav>
+    
+  </div>
+  <div class="pure-u-1-24" style="text-align: right;">
+    
+    <a href="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/"><i class="fa fa-chevron-right"></i></a>
+    
+  </div>
+</div>
+
+
+  
+  
+  
+  
+
+  
+
 </div>
 
 </div>
