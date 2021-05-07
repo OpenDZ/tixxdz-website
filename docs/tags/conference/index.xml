@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>conference on Djalal Harouni</title>
+    <link>https://djalal.opendz.org/tags/conference/</link>
+    <description>Recent content in conference on Djalal Harouni</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021, Djalal Harouni; all rights reserved.</copyright>
+    <lastBuildDate>Sat, 02 Dec 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/tags/conference/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>All systems go Conference - Modern deployment for Embedded Linux and IoT Talk</title>
+      <link>https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/</link>
+      <pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/</guid>
+      <description>
+        
+          &lt;p&gt;The Userspace Linux Conference &lt;a href=&#34;https://all-systems-go.io/&#34;&gt;All Systems Go&lt;/a&gt;! 2017 videos and talks are now available online.&lt;/p&gt;
+&lt;p&gt;My talk &amp;quot;Modern Deployment for Embedded Linux and IoT&amp;quot; is available here:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=ZokgqpbQVlE&#34;&gt;Video&lt;/a&gt; - &lt;a href=&#34;https://github.com/tixxdz/conferences/blob/master/Modern_Deployment_for_Embedded_Linux_and_IoT_October_2017.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All video talks are &lt;a href=&#34;https://media.ccc.de/b/conferences/all_systems_go/2017&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

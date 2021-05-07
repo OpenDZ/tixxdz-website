@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IoT on Djalal Harouni</title>
+    <link>https://djalal.opendz.org/tags/iot/</link>
+    <description>Recent content in IoT on Djalal Harouni</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021, Djalal Harouni; all rights reserved.</copyright>
+    <lastBuildDate>Sat, 02 Dec 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/tags/iot/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>All systems go Conference - Modern deployment for Embedded Linux and IoT Talk</title>
+      <link>https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/</link>
+      <pubDate>Sat, 02 Dec 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/</guid>
+      <description>
+        
+          &lt;p&gt;The Userspace Linux Conference &lt;a href=&#34;https://all-systems-go.io/&#34;&gt;All Systems Go&lt;/a&gt;! 2017 videos and talks are now available online.&lt;/p&gt;
+&lt;p&gt;My talk &amp;quot;Modern Deployment for Embedded Linux and IoT&amp;quot; is available here:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=ZokgqpbQVlE&#34;&gt;Video&lt;/a&gt; - &lt;a href=&#34;https://github.com/tixxdz/conferences/blob/master/Modern_Deployment_for_Embedded_Linux_and_IoT_October_2017.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All video talks are &lt;a href=&#34;https://media.ccc.de/b/conferences/all_systems_go/2017&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+    <item>
+      <title>Hardening Linux-based IoT systems</title>
+      <link>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</link>
+      <pubDate>Mon, 16 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</guid>
+      <description>
+        
+          &lt;p&gt;TL;DR: In Linux kernel and as part of the Kernel Self Protection Project we are pushing for new lightweight security mechanisms. On top of that, in systemd we are implementing new lightweight container mechanisms that target Embedded Linux and IoT. Our goal is to make it easy to deploy Secure Embedded Linux and IoT systems.&lt;/p&gt;
+&lt;p align=&#34;center&#34;&gt;
+&lt;img src=&#34;https://djalal.opendz.org/img/tux-hardened.png&#34;&gt;
+&lt;/p&gt;
+&lt;p&gt;Working with Embedded Linux systems, device drivers, system and kernel security, allows me to inspect what will be deployed in production. I noticed a common pattern for some devices, either they contain simple kernel vulnerabilities within third party drivers, or deployed applications run with higher privileges, they lack common sandbox and security features. In this blog post, I will present a brief introduction on some mechanisms that allow you to improve your Linux-based IoT security, before discussing new plans that are in development from systemd to Linux kernel hardening.&lt;/p&gt;
+&lt;h2&gt;Linux Kernel Hardening and security&lt;/h2&gt;
+&lt;p&gt;Linux is one of the most popular operating systems for Embedded and IoT systems. Linux is a beast, it solves most embedded world use cases, however, supporting lot of technologies has its own code complexity cost. Security hardening measures allow to hide this complexity, to reduce the attack surface, to contain apps, and to defeat some kernel or user space exploitation techniques. The &lt;a href=&#34;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project&#34;&gt;Linux kernel Self Protection project&lt;/a&gt; [1] tries to take this further by offering Kernel Self Protection features, the aim to protect against known and unknown Linux kernel bugs and vulnerabilities.&lt;/p&gt;
+&lt;p&gt;Some Embedded Kernel Hardening features:&lt;/p&gt;
+&lt;code&gt;
+    CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
+&lt;/code&gt;
+Disallow allocating the first 32k of memory 
+to protect against kernel null pointer
+dereference and related exploits.
+&lt;br&gt;
+&lt;br&gt;
+&lt;code&gt;
+    CONFIG_STRICT_KERNEL_RWX=y
+&lt;/code&gt;
+Make kernel text and rodata read-only.
+Kernel version of W^X.
+&lt;br&gt;
+&lt;br&gt;
+&lt;code&gt;
+    CONFIG_STRICT_DEVMEM=y and CONFIG_IO_STRICT_DEVMEM=y
+&lt;/code&gt;
+Restrict physical memory access.
+&lt;br&gt;
+&lt;br&gt;
+&lt;code&gt;
+    CONFIG_SECCOMP=y and CONFIG_SECCOMP_FILTER=y
+&lt;/code&gt;
+Allows userspace to reduce the attack surface.
+&lt;br&gt;
+&lt;br&gt;
+&lt;code&gt;
+    STATIC_USERMODEHELPER=y
+&lt;/code&gt;
+Force all usermode helper calls through
+a single binary
+&lt;br&gt;
+&lt;br&gt;
+&lt;code&gt;
+    CONFIG_HARDENED_USERCOPY=y
+&lt;/code&gt;
+performs extra usercopy checks.
+&lt;p&gt;For more security features, please check the following &lt;a href=&#34;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings&#34;&gt;Kernel Self Protection Project guide&lt;/a&gt; [2]. There are lot of features that needs to be disabled on production systems. You should also consider trusted boot and TPM support from the beginning, they are not perfect but it is an extra layer to measure the boot process and allow TPM to act on that.&lt;/p&gt;
+&lt;h2&gt;Current/Future plans:&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;Modernization of proc file system&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I have been working on modernizing &lt;a href=&#34;https://lkml.org/lkml/2017/4/25/282&#34;&gt;Linux proc API&lt;/a&gt; [3]. The procfs file system is an old virtual file system that exposes lot of kernel information, some of these files can be used as a source for information leaks to get kernel addresses and construct complex attacks. We have came to the conclusion that procfs needs to be updated and it is blocking lot of other Linux features. Together with Alexey Gladkov and based on Andy Lutomirski feedback, we have a branch here: &lt;a href=&#34;https://github.com/legionus/linux/commits/pidfs-v4&#34;&gt;https://github.com/legionus/linux/commits/pidfs-v4&lt;/a&gt; [4] that allows to improve Linux procfs and protect exposed kernel files, only /proc/&lt;pids&gt;/ files will be available.&lt;/p&gt;
+&lt;p&gt;It also allows to have separate procfs instances per App, this means you are not forced anymore to use PID namespaces to hide some processes, simply mounting a new separate procfs instance with “hidepid=” will allow to hide at some degree other processes that belong to other users, and without using PID namespaces. This is useful for Linux-based IoT, as we may not need to have multiple PID namespace managers. Another introduction RFC is planed soon to try to make the transition as smooth as possible.&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Automatic module loading protection&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;historically, Linux was always able to transparently load kernel modules to satisfy user functionality when needed, this is a crucial point for a better user experience. However, this feature can be abused to load vulnerable modules and exploit some kernel bugs. Several examples come to mind:&lt;/p&gt;
+&lt;p&gt;The 11 year old &lt;a href=&#34;http://seclists.org/oss-sec/2017/q1/471&#34;&gt;DCCP double free vulnerability CVE-2017–6074&lt;/a&gt; [5]&lt;/p&gt;
+&lt;p&gt;CVE-2017–2636: exploit the &lt;a href=&#34;https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html&#34;&gt;race condition in the n_hdlc Linux kernel driver bypassing SMEP&lt;/a&gt; [6]&lt;/p&gt;
+&lt;p&gt;kernel: &lt;a href=&#34;http://www.openwall.com/lists/oss-security/2017/03/29/2&#34;&gt;Local privilege escalation in XFRM framework CVE-2017–7184&lt;/a&gt; [7] it was advertised that maybe this vulnerability was used to break Ubuntu systems on security contests.&lt;/p&gt;
+&lt;p&gt;Most Embedded Linux systems should not allow module loading at all, or only a subset of signed modules, however there are products that need unrestricted module support. Inspired by &lt;a href=&#34;https://grsecurity.net/&#34;&gt;Grsecurity MODHARDEN&lt;/a&gt; [8] feature, we have tried to implement a new generic module autoloading restriction that can be used by sandbox tools. The result is here: &lt;a href=&#34;https://lkml.org/lkml/2017/5/22/312&#34;&gt;https://lkml.org/lkml/2017/5/22/312&lt;/a&gt; [9]. Thanks to Kees Cook, Solar Designer and Andy Lutomirski for the feedback, I am planning v5.&lt;/p&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;Generalizing YAMA LSM&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.kernel.org/doc/Documentation/security/Yama.txt&#34;&gt;Yama LSM&lt;/a&gt; [10] is a Linux security module with a clear purpose of protecting processes from being controlled by other processes using ptrace functionality. Recently, I have been experimenting on how to generalize this behaviour to other kernel interfaces and system calls. The aim is to have a simple interface to restrict some operations from operating on arbitrary processes, or processes that run under a different User ID. This should be a default kernel hardening measure on Embedded Linux.&lt;/p&gt;
+&lt;h2&gt;References:&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project&#34;&gt;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings&#34;&gt;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://lkml.org/lkml/2017/4/25/282&#34;&gt;https://lkml.org/lkml/2017/4/25/282&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/legionus/linux/commits/pidfs-v4&#34;&gt;https://github.com/legionus/linux/commits/pidfs-v4&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://seclists.org/oss-sec/2017/q1/471&#34;&gt;http://seclists.org/oss-sec/2017/q1/471&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html&#34;&gt;https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.openwall.com/lists/oss-security/2017/03/29/2&#34;&gt;http://www.openwall.com/lists/oss-security/2017/03/29/2&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://grsecurity.net/&#34;&gt;https://grsecurity.net/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://lkml.org/lkml/2017/5/22/312&#34;&gt;https://lkml.org/lkml/2017/5/22/312&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.kernel.org/doc/Documentation/security/Yama.txt&#34;&gt;https://www.kernel.org/doc/Documentation/security/Yama.txt&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

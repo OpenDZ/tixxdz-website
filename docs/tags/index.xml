@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Djalal Harouni</title>
@@ -6,10 +6,7 @@
     <description>Recent content in Tags on Djalal Harouni</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; 2021. All rights reserved.</copyright>
-    
-	<atom:link href="https://djalal.opendz.org/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <copyright>Copyright © 2021, Djalal Harouni; all rights reserved.</copyright>
+    <lastBuildDate>Mon, 19 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
