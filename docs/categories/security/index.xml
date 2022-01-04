@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>security on Djalal Harouni</title>
+    <link>https://djalal.opendz.org/categories/security/</link>
+    <description>Recent content in security on Djalal Harouni</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Copyright © 2021, Djalal Harouni; all rights reserved.</copyright>
+    <lastBuildDate>Tue, 04 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/categories/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security</title>
+      <link>https://djalal.opendz.org/post/ebpf-summit-2021-talk/</link>
+      <pubDate>Tue, 04 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/ebpf-summit-2021-talk/</guid>
+      <description>
+        
+          &lt;p&gt;At the &lt;a href=&#34;https://ebpf.io/summit-2021/&#34;&gt;eBPF Summit 2021&lt;/a&gt;, I gave a talk about how to take advantage of eBPF to try to
+bridge some cloud and IoT security features.&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;
+&lt;img src=&#34;https://djalal.opendz.org/img/ebpf-logo.png&#34;&gt;
+&lt;/div&gt;
+&lt;p&gt;My Talk can be found here: &lt;a href=&#34;https://www.youtube.com/watch?v=ab8gqVqw_sM&amp;amp;ab_channel=eBPF%26CiliumCommunity&#34;&gt;BPF to bridge Cloud and IoT Linux Security on youtube&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;All eBPF Summit 2021 here: &lt;a href=&#34;https://www.youtube.com/watch?v=5XdV4PYNcro&amp;amp;list=PLDg_GiBbAx-laA5GG_WnbojJ44AV2uvZn&amp;amp;ab_channel=eBPF%26CiliumCommunity&#34;&gt;eBPF Summit 2021 Youtube Channel&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
+  </channel>
+</rss>

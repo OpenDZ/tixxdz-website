@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://djalal.opendz.org/post/ebpf-summit-2021-talk/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/</loc>
     <lastmod>2021-04-19T00:00:00+00:00</lastmod>
   </url><url>
@@ -24,54 +27,63 @@
     <lastmod>2012-08-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://djalal.opendz.org/tags/algeria/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
+    <loc>https://djalal.opendz.org/tags/bpf/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/categories/bpf/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/categories/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/tags/iot/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/kernel/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/linux/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/categories/linux/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/tags/opensource/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/categories/opensource/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/post/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/tags/security/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/categories/security/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/tags/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/categories/technology/</loc>
+    <lastmod>2022-01-04T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/tags/algeria/</loc>
     <lastmod>2021-04-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/mars/</loc>
     <lastmod>2021-04-19T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://djalal.opendz.org/tags/opensource/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://djalal.opendz.org/categories/opensource/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://djalal.opendz.org/post/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://djalal.opendz.org/tags/space/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://djalal.opendz.org/tags/</loc>
-    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://djalal.opendz.org/categories/technology/</loc>
     <lastmod>2021-04-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/about/</loc>
     <lastmod>2021-01-10T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/conference/</loc>
-    <lastmod>2017-12-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://djalal.opendz.org/tags/iot/</loc>
-    <lastmod>2017-12-02T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://djalal.opendz.org/tags/security/</loc>
     <lastmod>2017-12-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/systemd/</loc>
