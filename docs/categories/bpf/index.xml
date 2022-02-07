@@ -16,7 +16,7 @@
       <guid>https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/</guid>
       <description>
         
-          &lt;p&gt;Due to the security features that Linux offers, booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, some attacks have been using what is knows as &amp;quot;fileless binary execution&amp;quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.&lt;/p&gt;
+          &lt;p&gt;Due to the security features that Linux offers like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, some attacks have been using what is knows as &amp;quot;fileless binary execution&amp;quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.&lt;/p&gt;
 &lt;div style=&#34;text-align:center&#34;&gt;
 &lt;img src=&#34;https://djalal.opendz.org/img/filelessmalware.jpg&#34;&gt;
 &lt;/div&gt;
@@ -51,37 +51,53 @@ a standard feature of Linux with the &lt;a href=&#34;https://man7.org/linux/man-
 &lt;p&gt;Other tools like &lt;a href=&#34;https://github.com/Sysinternals/SysmonForLinux&#34;&gt;SysmonForLinux&lt;/a&gt;, &lt;a href=&#34;https://github.com/aquasecurity/tracee&#34;&gt;Tracee&lt;/a&gt;, &lt;a href=&#34;https://github.com/falcosecurity/falco&#34;&gt;Falco&lt;/a&gt; are capable to detect if the file being executed is prefixed with &amp;quot;memfd:&amp;quot; which indicates a memfd file execution.&lt;/p&gt;
 &lt;h2&gt;Blocking Fileless Binary Execution&lt;/h2&gt;
 &lt;p&gt;Now lets take it further, use &lt;a href=&#34;https://github.com/linux-lock/bpflock&#34;&gt;bpflock&lt;/a&gt; to block executing into memfd files in their basic form.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;docker run --name bpflock -it --rm --cgroupns=host \
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;    --pid=host --privileged \
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;    -e &amp;#34;BPFLOCK_EXEC_SNOOP=all&amp;#34; \
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;    -e &amp;#34;BPFLOCK_FILELESSLOCK_PROFILE=restricted&amp;#34; \
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;    -v /sys/kernel/:/sys/kernel/ \
-&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;    -v /sys/fs/bpf:/sys/fs/bpf linuxlock/bpflock
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Test &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking#loader&#34;&gt;loader&lt;/a&gt;:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ ./loader /bin/sleep 10
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;Failed to execute: operation not permitted
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Logs from bpflock:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;time=&amp;#34;2022-02-07T06:19:43Z&amp;#34; level=info msg=&amp;#34;event=syscall_execve tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=./loader retval=0&amp;#34; bpfprog=execsnoop subsys=bpf
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;time=&amp;#34;2022-02-07T06:19:43Z&amp;#34; level=info msg=&amp;#34;event=lsm_bprm_creds_from_file tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=memfd:memfd-test retval=-1 reason=denied (restricted)&amp;#34; bpfprog=filelesslock subsys=bpf
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;time=&amp;#34;2022-02-07T06:19:43Z&amp;#34; level=info msg=&amp;#34;event=syscall_execve tgid=52906 pid=52906 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&amp;#34; bpfprog=execsnoop subsys=bpf
-&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Reading the second line:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&amp;#34;tgid=52906 pid=52906 ppid=6594 uid=1000 \
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt; cgroupid=7014 comm=loader pcomm=bash \
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt; filename=memfd:memfd-test retval=-1 \
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt; reason=denied (restricted)&amp;#34;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Lets try now to block &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking/tree/main/injector&#34;&gt;injector&lt;/a&gt; that uses a technique published back in 1998 by &lt;a href=&#34;https://twitter.com/silviocesare&#34;&gt;Silvio Cesare&lt;/a&gt; in a paper &amp;quot;Unix ELF parasites and viruses&amp;quot; about patching ELF binaries to inject code at the program’s entrypoint.&lt;/p&gt;
-&lt;p&gt;Test injector:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;./injector ./shellcode.bin /bin/echo aaaa
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Logs from bpflock:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;time=&amp;#34;2022-02-07T06:34:50Z&amp;#34; level=info msg=&amp;#34;event=syscall_execve tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=./injector retval=0&amp;#34; bpfprog=execsnoop subsys=bpf
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;time=&amp;#34;2022-02-07T06:34:50Z&amp;#34; level=info msg=&amp;#34;event=lsm_bprm_creds_from_file tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=memfd: retval=-1 reason=denied (restricted)&amp;#34; bpfprog=filelesslock subsys=bpf
-&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
-&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;time=&amp;#34;2022-02-07T06:34:50Z&amp;#34; level=info msg=&amp;#34;event=syscall_execve tgid=53151 pid=53151 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&amp;#34; bpfprog=execsnoop subsys=bpf
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Again second line detects it and block it.&lt;/p&gt;
+&lt;code&gt;
+docker run --name bpflock -it --rm --cgroupns=host --pid=host --privileged -e &#34;BPFLOCK_EXEC_SNOOP=all&#34; \
+&lt;br&gt;
+    -e &#34;BPFLOCK_FILELESSLOCK_PROFILE=restricted&#34; -v /sys/kernel/:/sys/kernel/ \
+&lt;br&gt;
+    -v /sys/fs/bpf:/sys/fs/bpf linuxlock/bpflock
+&lt;/code&gt;
+&lt;br&gt;
+&lt;p&gt;Then test &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking#loader&#34;&gt;loader&lt;/a&gt;:
+&lt;br&gt;
+$ ./loader /bin/sleep 10
+&lt;br&gt;
+&lt;b&gt;Failed to execute: operation not permitted&lt;/b&gt;&lt;/p&gt;
+&lt;p&gt;Logs from bpflock:
+&lt;br&gt;
+&lt;code&gt;
+time=&amp;quot;2022-02-07T06:19:43Z&amp;quot; level=info msg=&amp;quot;event=syscall_execve tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=./loader retval=0&amp;quot; bpfprog=execsnoop subsys=bpf
+&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;
+time=&amp;quot;2022-02-07T06:19:43Z&amp;quot; level=info msg=&amp;quot;event=lsm_bprm_creds_from_file tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=memfd:memfd-test retval=-1 reason=denied (restricted)&amp;quot; bpfprog=filelesslock subsys=bpf
+&lt;/b&gt;
+&lt;br&gt;
+&lt;br&gt;
+time=&amp;quot;2022-02-07T06:19:43Z&amp;quot; level=info msg=&amp;quot;event=syscall_execve tgid=52906 pid=52906 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&amp;quot; bpfprog=execsnoop subsys=bpf
+&lt;/code&gt;
+&lt;br&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Lets try now to block &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking/tree/main/injector&#34;&gt;injector&lt;/a&gt; that uses a technique published back in 1998 by &lt;a href=&#34;https://twitter.com/silviocesare&#34;&gt;Silvio Cesare&lt;/a&gt; in a paper &amp;quot;Unix ELF parasites and viruses&amp;quot; about patching ELF binaries to inject code at the program’s entrypoint.&lt;/p&gt;
+&lt;p&gt;Test injector:
+&lt;br&gt;
+./injector ./shellcode.bin /bin/echo aaaa&lt;/p&gt;
+&lt;p&gt;Logs from bpflock:
+&lt;br&gt;
+&lt;code&gt;
+time=&amp;quot;2022-02-07T06:34:50Z&amp;quot; level=info msg=&amp;quot;event=syscall_execve tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=./injector retval=0&amp;quot; bpfprog=execsnoop subsys=bpf
+&lt;br&gt;
+&lt;br&gt;
+&lt;b&gt;
+time=&amp;quot;2022-02-07T06:34:50Z&amp;quot; level=info msg=&amp;quot;event=lsm_bprm_creds_from_file tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=memfd: retval=-1 reason=denied (restricted)&amp;quot; bpfprog=filelesslock subsys=bpf
+&lt;/b&gt;
+&lt;br&gt;
+&lt;br&gt;
+time=&amp;quot;2022-02-07T06:34:50Z&amp;quot; level=info msg=&amp;quot;event=syscall_execve tgid=53151 pid=53151 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&amp;quot; bpfprog=execsnoop subsys=bpf
+&lt;/code&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Again second line detects it and block it.&lt;/p&gt;
 &lt;h2&gt;Conclusion&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&#34;https://github.com/linux-lock/bpflock&#34;&gt;Bpflock&lt;/a&gt; which is experimental allows to detect and block memfd backed files execution, it takes advantage of &lt;a href=&#34;https://docs.kernel.org/bpf/prog_lsm.html&#34;&gt;BPF LSM&lt;/a&gt;. &lt;a href=&#34;https://ebpf.io/&#34;&gt;eBPF&lt;/a&gt; is great technology and the kernel maintainers are doing an amazing work by listening and incorporating developers resquests.&lt;/p&gt;
 &lt;p&gt;There are other more complex modules in bpflock, like:&lt;/p&gt;
