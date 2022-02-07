@@ -36,7 +36,7 @@ USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 &lt;/code&gt;
 &lt;br&gt;
 &lt;code&gt;
-path       17436  0.0  0.0 703064  2872 pts/0    Sl+  15:13   0:00 from_loader AAAA
+tixxdz     53324  1.0  0.0  17000   944 pts/2    S+   08:42   0:00 from_loader AAAA
 &lt;/code&gt;
 &lt;br&gt;&lt;/p&gt;
 &lt;p&gt;Where &lt;code&gt;from_loader&lt;/code&gt; is the name or comm of the program after it was modified, and there is no indication if this is from an anonymous file.&lt;/p&gt;
