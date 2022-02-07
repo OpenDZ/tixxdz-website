@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" data-figures="" class="page">
   <head>
-<title>Linux kernel improve Module autoloading infrastructure | Djalal Harouni</title>
+<title>eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM | Djalal Harouni</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -20,21 +20,21 @@
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="TL;DR: Currently, an explicit call to load or unload kernel modules require CAP_SYS_MODULE capability. However unprivileged users have always been able to load …">
+<meta name="description" content="Due to the security features that Linux offers, booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@tixxdz">
-<meta name="twitter:title" content="Linux kernel improve Module autoloading infrastructure" />
-<meta property="og:url" content="https://djalal.opendz.org/post/linux-kernel-improve-module-autoloading-infrastructure/" />
-<meta property="og:title" content="Linux kernel improve Module autoloading infrastructure" />
-<meta property="og:description" content="TL;DR: Currently, an explicit call to load or unload kernel modules require CAP_SYS_MODULE capability. However unprivileged users have always been able to load …" />
-<meta property="og:image" content="https://djalal.opendz.org/images/kernel1.png" />
+<meta name="twitter:title" content="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM" />
+<meta property="og:url" content="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" />
+<meta property="og:title" content="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM" />
+<meta property="og:description" content="Due to the security features that Linux offers, booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, …" />
+<meta property="og:image" content="https://djalal.opendz.org/images/filelessmalware.jpg" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://djalal.opendz.org/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://djalal.opendz.org/images/favicon-32x32.png">
 <link rel="shortcut icon" type="image/png" href="images/favicon.png">
 <link rel="manifest" href="https://djalal.opendz.org/images/site.webmanifest">
 
-<link rel="canonical" href="https://djalal.opendz.org/post/linux-kernel-improve-module-autoloading-infrastructure/">
+<link rel="canonical" href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/">
 
     
 
@@ -128,28 +128,30 @@
   
 <div class="grid-inverse wrap content">
   <article class="post_content">
-    <h1 class="post_title">Linux kernel improve Module autoloading infrastructure</h1>
+    <h1 class="post_title">eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</h1>
   <div class="post_meta">
     <span><svg class="icon">
   <use xlink:href="#calendar"></use>
 </svg></span>
     <span class="post_date">
-      28 Nov 2017, 00:00</span>
-    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://djalal.opendz.org/tags/opensource' title="opensource" class="post_tag button button_translucent">opensource
+      06 Feb 2022, 00:00</span>
+    <span class="post_time"> · 5 min read</span><span>&nbsp;· <a href='https://djalal.opendz.org/tags/opensource' title="opensource" class="post_tag button button_translucent">opensource
         </a><a href='https://djalal.opendz.org/tags/linux' title="linux" class="post_tag button button_translucent">linux
         </a><a href='https://djalal.opendz.org/tags/kernel' title="kernel" class="post_tag button button_translucent">kernel
+        </a><a href='https://djalal.opendz.org/tags/bpf' title="bpf" class="post_tag button button_translucent">bpf
         </a><a href='https://djalal.opendz.org/tags/security' title="security" class="post_tag button button_translucent">security
+        </a><a href='https://djalal.opendz.org/tags/iot' title="IoT" class="post_tag button button_translucent">IoT
         </a>
     </span>
     <span class="page_only">&nbsp;·
   <div class="post_share">
     Share on:
-    <a href="https://twitter.com/intent/tweet?text=Linux%20kernel%20improve%20Module%20autoloading%20infrastructure&url=https%3a%2f%2fdjalal.opendz.org%2fpost%2flinux-kernel-improve-module-autoloading-infrastructure%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
+    <a href="https://twitter.com/intent/tweet?text=eBPF%3a%20Block%20Linux%20Fileless%20Payload%20%22Malware%22%20Execution%20with%20BPF%20LSM&url=https%3a%2f%2fdjalal.opendz.org%2fpost%2febpf-block-linux-fileless-payload-execution-with-bpf-lsm%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
       <svg class="icon">
   <use xlink:href="#twitter"></use>
 </svg>
     </a>
-    <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fdjalal.opendz.org%2fpost%2flinux-kernel-improve-module-autoloading-infrastructure%2f&t=Linux%20kernel%20improve%20Module%20autoloading%20infrastructure" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
+    <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fdjalal.opendz.org%2fpost%2febpf-block-linux-fileless-payload-execution-with-bpf-lsm%2f&t=eBPF%3a%20Block%20Linux%20Fileless%20Payload%20%22Malware%22%20Execution%20with%20BPF%20LSM" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
       <svg class="icon">
   <use xlink:href="#facebook"></use>
 </svg>
@@ -159,7 +161,7 @@
   <use xlink:href="#linkedin"></use>
 </svg>
     </a>
-    <a href="https://djalal.opendz.org/post/linux-kernel-improve-module-autoloading-infrastructure/" title="Copy Link" class="link link_yank">
+    <a href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" title="Copy Link" class="link link_yank">
       <svg class="icon">
   <use xlink:href="#copy"></use>
 </svg>
@@ -169,12 +171,84 @@
   </div>
 
     
-    <p>TL;DR: Currently, an explicit call to load or unload kernel modules require CAP_SYS_MODULE capability. However unprivileged users have always been able to load some modules using the implicit auto-load operation. An automatic module loading happens when programs request a kernel feature from a module that is not loaded. In order to satisfy userspace, the kernel then automatically load all these required modules, however attackers have been abusing this functionality to load vulnerable modules.</p>
-<p>Patch solution: <a href="https://lkml.org/lkml/2017/11/27/754">PATCH v5 Improve Module autoloading infrastructure</a></p>
-<h2>Solution</h2>
-<p>I have been working on a solution that I am not sure if it will be merged or not. The idea was inspired from grsecurity 'GRKERNSEC_MODHARDEN' config option.
-The upstream Linux implementation is more focused on the run-time behavior with a three mode switch, plus upstream version solves Linux usecases with a per process tree flag that can be used in containers, sandboxes, etc to block direct implicit auto-load operations. This implementation does not share anything with grsecurity.</p>
-<p>The proposed solution is here: <a href="https://lkml.org/lkml/2017/11/27/754">PATCH v5 Improve Module autoloading infrastructure</a></p>
+    <p>Due to the security features that Linux offers, booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, some attacks have been using what is knows as &quot;fileless binary execution&quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.</p>
+<div style="text-align:center">
+<img src="https://djalal.opendz.org/img/filelessmalware.jpg">
+</div>
+<p>From Wikipedia &quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.e. in RAM.&quot;</p>
+<p>In this post we focus on <a href="https://man7.org/linux/man-pages/man2/memfd_create.2.html">memfd_create()</a> and <a href="https://man7.org/linux/man-pages/man7/shm_overview.7.html">shared memory</a> anonymous files.</p>
+<h2>memfd_create()</h2>
+<p><code>memfd_create()</code> was developed when we were hacking on the defunct <a href="https://github.com/gregkh/kdbus">kdbus IPC</a>, you can read more in the original post <a href="https://dvdhrm.wordpress.com/2014/06/10/memfd_create2/">memfd_create() by David Herrmann</a>.</p>
+<p><code>memfd_create()</code> creates an anonymous file and returns a file descriptor that refers to it.  The file behaves like a regular file, and so can be modified, truncated, memory-mapped, and so on.  However, unlike a regular file, it lives in RAM and has a volatile backing storage.  Once all references to the file are dropped, it is automatically released.  Anonymous memory is used for all backing pages of the file.  Therefore, files created by memfd_create() have the same semantics as other anonymous memory allocations such as those allocated using mmap(2) with the MAP_ANONYMOUS flag.</p>
+<p>This feature is being abused by attackers and malware to write binary payload to that memory-resident file and then execute into it, like with any other binary file located on the filesystem.</p>
+<p>As an example lets take a look at the memory loader sample that uses <code>memfd_create()</code> published in the <a href="https://blog.tofile.dev/2022/01/04/sysmonlinux.html">Sysmon for
+Linux</a> post by Pat H, Loader code is <a href="https://github.com/pathtofile/commandline_cloaking/blob/main/loader/go/loader.go">here github repo</a>.</p>
+<p>The loader will create an anoymous file, copy the binary ./bin/basic or any other passed binary into it, then execute the referenced file. This is usually same technique used by malware to perform fileless binary execution.</p>
+<p>We all use <code>ps</code> to see what processes are running, and if you do then it will return:
+<br>
+<code>
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+</code>
+<br>
+<code>
+path       17436  0.0  0.0 703064  2872 pts/0    Sl+  15:13   0:00 from_loader AAAA
+</code>
+<br></p>
+<p>Where <code>from_loader</code> is the name or comm of the program after it was modified, and there is no indication if this is from an anonymous file.</p>
+<h2>Detection of Fileless Binary Execution</h2>
+<p>Classic tools like <code>ps</code> that read <code>/proc/$pid/comm</code> are restricted and can be easily tricked, as changing the process name to arbitrary values is
+a standard feature of Linux with the <a href="https://man7.org/linux/man-pages/man2/prctl.2.html"><code>prctl()</code></a>.</p>
+<p>Some detection solutions go even further: read the <code>/proc</code> filesystem and get the binary that is pointed by <code>/proc/$pid/exe</code>. However, this detection can also be bypassed by calling <code>prctl()</code> with <a href="https://man7.org/linux/man-pages/man2/prctl.2.html"><code>PR_SET_MM_EXE_FILE</code></a> in order to link to another binary on the filesystem.</p>
+<p>Actually, a lot of process properties including kernel memory maps can be changed by calling <code>prctl(PR_SET_MM,...)</code> in a restrictive way of course.</p>
+<p>We may also read <code>/proc/$pid/maps</code> to show mapped memory, but as usual it is racy: the process may just <code>execv()</code> into another one, and at the time of reading, maps will show some other data, too late :warning:</p>
+<p>The most robust way is to use Linux Security Modules, tracing or <a href="https://ebpf.io/">eBPF</a> to trace the execution. A good candidate is when the corresponding <a href="https://elixir.free-electrons.com/linux/v5.17-rc2/source/include/linux/binfmts.h#L96">binfmt</a> loader matches and the process execution hits the point of no return. At this time, we have gathered enough information, we can access the <code>elf</code> header, and we are sure that such information can't be forged, since handing execution to the corresponding process still did not happen. The <a href="https://elixir.bootlin.com/linux/latest/C/ident/mm_struct">mm_struct</a> is still attached to the <a href="https://elixir.bootlin.com/linux/latest/C/ident/linux_binprm">Linux_binprm struct</a>, and the current task still has a copy of the parent's <code>mm_struct</code>. This allows to query the appropriate information, log, or even take actions before bad things happen.</p>
+<p>For further reference, please see <a href="https://github.com/linux-lock/bpflock/blob/main/bpf/filelesslock.bpf.c">filelesslock.bpf.c</a> program from the <a href="https://github.com/linux-lock/bpflock/blob/main/bpf/filelesslock.bpf.c">bpflock</a> project, where it checks if the executed file is linked or not on the filesystem, if not then it logs and blocks the execution.</p>
+<p>Other tools like <a href="https://github.com/Sysinternals/SysmonForLinux">SysmonForLinux</a>, <a href="https://github.com/aquasecurity/tracee">Tracee</a>, <a href="https://github.com/falcosecurity/falco">Falco</a> are capable to detect if the file being executed is prefixed with &quot;memfd:&quot; which indicates a memfd file execution.</p>
+<h2>Blocking Fileless Binary Execution</h2>
+<p>Now lets take it further, use <a href="https://github.com/linux-lock/bpflock">bpflock</a> to block executing into memfd files in their basic form.</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>docker run --name bpflock -it --rm --cgroupns=host \
+<span class="ln">2</span>    --pid=host --privileged \
+<span class="ln">3</span>    -e &#34;BPFLOCK_EXEC_SNOOP=all&#34; \
+<span class="ln">4</span>    -e &#34;BPFLOCK_FILELESSLOCK_PROFILE=restricted&#34; \
+<span class="ln">5</span>    -v /sys/kernel/:/sys/kernel/ \
+<span class="ln">6</span>    -v /sys/fs/bpf:/sys/fs/bpf linuxlock/bpflock
+</code></pre></div><p>Test <a href="https://github.com/pathtofile/commandline_cloaking#loader">loader</a>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>$ ./loader /bin/sleep 10
+<span class="ln">2</span>Failed to execute: operation not permitted
+</code></pre></div><p>Logs from bpflock:</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>time=&#34;2022-02-07T06:19:43Z&#34; level=info msg=&#34;event=syscall_execve tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=./loader retval=0&#34; bpfprog=execsnoop subsys=bpf
+<span class="ln">2</span>
+<span class="ln">3</span>time=&#34;2022-02-07T06:19:43Z&#34; level=info msg=&#34;event=lsm_bprm_creds_from_file tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=memfd:memfd-test retval=-1 reason=denied (restricted)&#34; bpfprog=filelesslock subsys=bpf
+<span class="ln">4</span>
+<span class="ln">5</span>time=&#34;2022-02-07T06:19:43Z&#34; level=info msg=&#34;event=syscall_execve tgid=52906 pid=52906 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&#34; bpfprog=execsnoop subsys=bpf
+<span class="ln">6</span>
+</code></pre></div><p>Reading the second line:</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>&#34;tgid=52906 pid=52906 ppid=6594 uid=1000 \
+<span class="ln">2</span> cgroupid=7014 comm=loader pcomm=bash \
+<span class="ln">3</span> filename=memfd:memfd-test retval=-1 \
+<span class="ln">4</span> reason=denied (restricted)&#34;
+</code></pre></div><p>Lets try now to block <a href="https://github.com/pathtofile/commandline_cloaking/tree/main/injector">injector</a> that uses a technique published back in 1998 by <a href="https://twitter.com/silviocesare">Silvio Cesare</a> in a paper &quot;Unix ELF parasites and viruses&quot; about patching ELF binaries to inject code at the program’s entrypoint.</p>
+<p>Test injector:</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>./injector ./shellcode.bin /bin/echo aaaa
+</code></pre></div><p>Logs from bpflock:</p>
+<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>time=&#34;2022-02-07T06:34:50Z&#34; level=info msg=&#34;event=syscall_execve tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=./injector retval=0&#34; bpfprog=execsnoop subsys=bpf
+<span class="ln">2</span>
+<span class="ln">3</span>time=&#34;2022-02-07T06:34:50Z&#34; level=info msg=&#34;event=lsm_bprm_creds_from_file tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=memfd: retval=-1 reason=denied (restricted)&#34; bpfprog=filelesslock subsys=bpf
+<span class="ln">4</span>
+<span class="ln">5</span>time=&#34;2022-02-07T06:34:50Z&#34; level=info msg=&#34;event=syscall_execve tgid=53151 pid=53151 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&#34; bpfprog=execsnoop subsys=bpf
+</code></pre></div><p>Again second line detects it and block it.</p>
+<h2>Conclusion</h2>
+<p><a href="https://github.com/linux-lock/bpflock">Bpflock</a> which is experimental allows to detect and block memfd backed files execution, it takes advantage of <a href="https://docs.kernel.org/bpf/prog_lsm.html">BPF LSM</a>. <a href="https://ebpf.io/">eBPF</a> is great technology and the kernel maintainers are doing an amazing work by listening and incorporating developers resquests.</p>
+<p>There are other more complex modules in bpflock, like:</p>
+<ul>
+<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#1-kernel-image-lock-down">kernel image lockedown</a></li>
+<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#3-bpf-protection">Bpf usage restriction</a></li>
+<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#2-kernel-modules-protection">Kernel module loading restriction</a></li>
+</ul>
+<p>We will see these in next posts.</p>
+<h2>Reference:</h2>
+<p><a href="https://blog.tofile.dev/2022/01/04/sysmonlinux.html">Commandline Cloaking and Sysmon for Linux</a></p>
+<p>FilelessMalware picture from: <a href="https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/">https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/</a></p>
 
 
   </article>
@@ -188,13 +262,13 @@ The upstream Linux implementation is more focused on the run-time behavior with 
     <h2 class="mt-4">Featured Posts</h2>
     <ul>
       <li>
-        <a href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" class="nav-link" title="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM">eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</a>
-      </li>
-      <li>
         <a href="https://djalal.opendz.org/post/ebpf-summit-2021-talk/" class="nav-link" title="eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security">eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security</a>
       </li>
       <li>
         <a href="https://djalal.opendz.org/post/linux-kernel-private-proc-instances-per-pidns/" class="nav-link" title="Modernization of Linux proc filesystem and containers security">Modernization of Linux proc filesystem and containers security</a>
+      </li>
+      <li>
+        <a href="https://djalal.opendz.org/post/linux-kernel-improve-module-autoloading-infrastructure/" class="nav-link" title="Linux kernel improve Module autoloading infrastructure">Linux kernel improve Module autoloading infrastructure</a>
       </li>
       <li>
         <a href="https://djalal.opendz.org/post/hardening-linux-based-iot-systems/" class="nav-link" title="Hardening Linux-based IoT systems">Hardening Linux-based IoT systems</a>
@@ -206,9 +280,6 @@ The upstream Linux implementation is more focused on the run-time behavior with 
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
-        <a href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" class="nav-link" title="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM">eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</a>
-      </li>
-      <li>
         <a href="https://djalal.opendz.org/post/ebpf-summit-2021-talk/" class="nav-link" title="eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security">eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security</a>
       </li>
       <li>
@@ -219,6 +290,9 @@ The upstream Linux implementation is more focused on the run-time behavior with 
       </li>
       <li>
         <a href="https://djalal.opendz.org/post/linux-kernel-private-proc-instances-per-pidns/" class="nav-link" title="Modernization of Linux proc filesystem and containers security">Modernization of Linux proc filesystem and containers security</a>
+      </li>
+      <li>
+        <a href="https://djalal.opendz.org/post/linux-kernel-improve-module-autoloading-infrastructure/" class="nav-link" title="Linux kernel improve Module autoloading infrastructure">Linux kernel improve Module autoloading infrastructure</a>
       </li>
       <li>
         <a href="https://djalal.opendz.org/post/hardening-linux-based-iot-systems/" class="nav-link" title="Hardening Linux-based IoT systems">Hardening Linux-based IoT systems</a>

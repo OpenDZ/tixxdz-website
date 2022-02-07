@@ -7,7 +7,98 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2021, Djalal Harouni; all rights reserved.</copyright>
-    <lastBuildDate>Tue, 04 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/categories/bpf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 06 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/categories/bpf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</title>
+      <link>https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/</link>
+      <pubDate>Sun, 06 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/</guid>
+      <description>
+        
+          &lt;p&gt;Due to the security features that Linux offers, booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, some attacks have been using what is knows as &amp;quot;fileless binary execution&amp;quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.&lt;/p&gt;
+&lt;div style=&#34;text-align:center&#34;&gt;
+&lt;img src=&#34;https://djalal.opendz.org/img/filelessmalware.jpg&#34;&gt;
+&lt;/div&gt;
+&lt;p&gt;From Wikipedia &amp;quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.e. in RAM.&amp;quot;&lt;/p&gt;
+&lt;p&gt;In this post we focus on &lt;a href=&#34;https://man7.org/linux/man-pages/man2/memfd_create.2.html&#34;&gt;memfd_create()&lt;/a&gt; and &lt;a href=&#34;https://man7.org/linux/man-pages/man7/shm_overview.7.html&#34;&gt;shared memory&lt;/a&gt; anonymous files.&lt;/p&gt;
+&lt;h2&gt;memfd_create()&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;memfd_create()&lt;/code&gt; was developed when we were hacking on the defunct &lt;a href=&#34;https://github.com/gregkh/kdbus&#34;&gt;kdbus IPC&lt;/a&gt;, you can read more in the original post &lt;a href=&#34;https://dvdhrm.wordpress.com/2014/06/10/memfd_create2/&#34;&gt;memfd_create() by David Herrmann&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;memfd_create()&lt;/code&gt; creates an anonymous file and returns a file descriptor that refers to it.  The file behaves like a regular file, and so can be modified, truncated, memory-mapped, and so on.  However, unlike a regular file, it lives in RAM and has a volatile backing storage.  Once all references to the file are dropped, it is automatically released.  Anonymous memory is used for all backing pages of the file.  Therefore, files created by memfd_create() have the same semantics as other anonymous memory allocations such as those allocated using mmap(2) with the MAP_ANONYMOUS flag.&lt;/p&gt;
+&lt;p&gt;This feature is being abused by attackers and malware to write binary payload to that memory-resident file and then execute into it, like with any other binary file located on the filesystem.&lt;/p&gt;
+&lt;p&gt;As an example lets take a look at the memory loader sample that uses &lt;code&gt;memfd_create()&lt;/code&gt; published in the &lt;a href=&#34;https://blog.tofile.dev/2022/01/04/sysmonlinux.html&#34;&gt;Sysmon for
+Linux&lt;/a&gt; post by Pat H, Loader code is &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking/blob/main/loader/go/loader.go&#34;&gt;here github repo&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The loader will create an anoymous file, copy the binary ./bin/basic or any other passed binary into it, then execute the referenced file. This is usually same technique used by malware to perform fileless binary execution.&lt;/p&gt;
+&lt;p&gt;We all use &lt;code&gt;ps&lt;/code&gt; to see what processes are running, and if you do then it will return:
+&lt;br&gt;
+&lt;code&gt;
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+&lt;/code&gt;
+&lt;br&gt;
+&lt;code&gt;
+path       17436  0.0  0.0 703064  2872 pts/0    Sl+  15:13   0:00 from_loader AAAA
+&lt;/code&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;Where &lt;code&gt;from_loader&lt;/code&gt; is the name or comm of the program after it was modified, and there is no indication if this is from an anonymous file.&lt;/p&gt;
+&lt;h2&gt;Detection of Fileless Binary Execution&lt;/h2&gt;
+&lt;p&gt;Classic tools like &lt;code&gt;ps&lt;/code&gt; that read &lt;code&gt;/proc/$pid/comm&lt;/code&gt; are restricted and can be easily tricked, as changing the process name to arbitrary values is
+a standard feature of Linux with the &lt;a href=&#34;https://man7.org/linux/man-pages/man2/prctl.2.html&#34;&gt;&lt;code&gt;prctl()&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Some detection solutions go even further: read the &lt;code&gt;/proc&lt;/code&gt; filesystem and get the binary that is pointed by &lt;code&gt;/proc/$pid/exe&lt;/code&gt;. However, this detection can also be bypassed by calling &lt;code&gt;prctl()&lt;/code&gt; with &lt;a href=&#34;https://man7.org/linux/man-pages/man2/prctl.2.html&#34;&gt;&lt;code&gt;PR_SET_MM_EXE_FILE&lt;/code&gt;&lt;/a&gt; in order to link to another binary on the filesystem.&lt;/p&gt;
+&lt;p&gt;Actually, a lot of process properties including kernel memory maps can be changed by calling &lt;code&gt;prctl(PR_SET_MM,...)&lt;/code&gt; in a restrictive way of course.&lt;/p&gt;
+&lt;p&gt;We may also read &lt;code&gt;/proc/$pid/maps&lt;/code&gt; to show mapped memory, but as usual it is racy: the process may just &lt;code&gt;execv()&lt;/code&gt; into another one, and at the time of reading, maps will show some other data, too late :warning:&lt;/p&gt;
+&lt;p&gt;The most robust way is to use Linux Security Modules, tracing or &lt;a href=&#34;https://ebpf.io/&#34;&gt;eBPF&lt;/a&gt; to trace the execution. A good candidate is when the corresponding &lt;a href=&#34;https://elixir.free-electrons.com/linux/v5.17-rc2/source/include/linux/binfmts.h#L96&#34;&gt;binfmt&lt;/a&gt; loader matches and the process execution hits the point of no return. At this time, we have gathered enough information, we can access the &lt;code&gt;elf&lt;/code&gt; header, and we are sure that such information can&#39;t be forged, since handing execution to the corresponding process still did not happen. The &lt;a href=&#34;https://elixir.bootlin.com/linux/latest/C/ident/mm_struct&#34;&gt;mm_struct&lt;/a&gt; is still attached to the &lt;a href=&#34;https://elixir.bootlin.com/linux/latest/C/ident/linux_binprm&#34;&gt;Linux_binprm struct&lt;/a&gt;, and the current task still has a copy of the parent&#39;s &lt;code&gt;mm_struct&lt;/code&gt;. This allows to query the appropriate information, log, or even take actions before bad things happen.&lt;/p&gt;
+&lt;p&gt;For further reference, please see &lt;a href=&#34;https://github.com/linux-lock/bpflock/blob/main/bpf/filelesslock.bpf.c&#34;&gt;filelesslock.bpf.c&lt;/a&gt; program from the &lt;a href=&#34;https://github.com/linux-lock/bpflock/blob/main/bpf/filelesslock.bpf.c&#34;&gt;bpflock&lt;/a&gt; project, where it checks if the executed file is linked or not on the filesystem, if not then it logs and blocks the execution.&lt;/p&gt;
+&lt;p&gt;Other tools like &lt;a href=&#34;https://github.com/Sysinternals/SysmonForLinux&#34;&gt;SysmonForLinux&lt;/a&gt;, &lt;a href=&#34;https://github.com/aquasecurity/tracee&#34;&gt;Tracee&lt;/a&gt;, &lt;a href=&#34;https://github.com/falcosecurity/falco&#34;&gt;Falco&lt;/a&gt; are capable to detect if the file being executed is prefixed with &amp;quot;memfd:&amp;quot; which indicates a memfd file execution.&lt;/p&gt;
+&lt;h2&gt;Blocking Fileless Binary Execution&lt;/h2&gt;
+&lt;p&gt;Now lets take it further, use &lt;a href=&#34;https://github.com/linux-lock/bpflock&#34;&gt;bpflock&lt;/a&gt; to block executing into memfd files in their basic form.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;docker run --name bpflock -it --rm --cgroupns=host \
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;    --pid=host --privileged \
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;    -e &amp;#34;BPFLOCK_EXEC_SNOOP=all&amp;#34; \
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;    -e &amp;#34;BPFLOCK_FILELESSLOCK_PROFILE=restricted&amp;#34; \
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;    -v /sys/kernel/:/sys/kernel/ \
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;    -v /sys/fs/bpf:/sys/fs/bpf linuxlock/bpflock
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Test &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking#loader&#34;&gt;loader&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;$ ./loader /bin/sleep 10
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;Failed to execute: operation not permitted
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Logs from bpflock:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;time=&amp;#34;2022-02-07T06:19:43Z&amp;#34; level=info msg=&amp;#34;event=syscall_execve tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=./loader retval=0&amp;#34; bpfprog=execsnoop subsys=bpf
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;time=&amp;#34;2022-02-07T06:19:43Z&amp;#34; level=info msg=&amp;#34;event=lsm_bprm_creds_from_file tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=memfd:memfd-test retval=-1 reason=denied (restricted)&amp;#34; bpfprog=filelesslock subsys=bpf
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;time=&amp;#34;2022-02-07T06:19:43Z&amp;#34; level=info msg=&amp;#34;event=syscall_execve tgid=52906 pid=52906 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&amp;#34; bpfprog=execsnoop subsys=bpf
+&lt;span class=&#34;ln&#34;&gt;6&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Reading the second line:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;&amp;#34;tgid=52906 pid=52906 ppid=6594 uid=1000 \
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt; cgroupid=7014 comm=loader pcomm=bash \
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt; filename=memfd:memfd-test retval=-1 \
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt; reason=denied (restricted)&amp;#34;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Lets try now to block &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking/tree/main/injector&#34;&gt;injector&lt;/a&gt; that uses a technique published back in 1998 by &lt;a href=&#34;https://twitter.com/silviocesare&#34;&gt;Silvio Cesare&lt;/a&gt; in a paper &amp;quot;Unix ELF parasites and viruses&amp;quot; about patching ELF binaries to inject code at the program’s entrypoint.&lt;/p&gt;
+&lt;p&gt;Test injector:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;./injector ./shellcode.bin /bin/echo aaaa
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Logs from bpflock:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;time=&amp;#34;2022-02-07T06:34:50Z&amp;#34; level=info msg=&amp;#34;event=syscall_execve tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=./injector retval=0&amp;#34; bpfprog=execsnoop subsys=bpf
+&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;3&lt;/span&gt;time=&amp;#34;2022-02-07T06:34:50Z&amp;#34; level=info msg=&amp;#34;event=lsm_bprm_creds_from_file tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=memfd: retval=-1 reason=denied (restricted)&amp;#34; bpfprog=filelesslock subsys=bpf
+&lt;span class=&#34;ln&#34;&gt;4&lt;/span&gt;
+&lt;span class=&#34;ln&#34;&gt;5&lt;/span&gt;time=&amp;#34;2022-02-07T06:34:50Z&amp;#34; level=info msg=&amp;#34;event=syscall_execve tgid=53151 pid=53151 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&amp;#34; bpfprog=execsnoop subsys=bpf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Again second line detects it and block it.&lt;/p&gt;
+&lt;h2&gt;Conclusion&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/linux-lock/bpflock&#34;&gt;Bpflock&lt;/a&gt; which is experimental allows to detect and block memfd backed files execution, it takes advantage of &lt;a href=&#34;https://docs.kernel.org/bpf/prog_lsm.html&#34;&gt;BPF LSM&lt;/a&gt;. &lt;a href=&#34;https://ebpf.io/&#34;&gt;eBPF&lt;/a&gt; is great technology and the kernel maintainers are doing an amazing work by listening and incorporating developers resquests.&lt;/p&gt;
+&lt;p&gt;There are other more complex modules in bpflock, like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#1-kernel-image-lock-down&#34;&gt;kernel image lockedown&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#3-bpf-protection&#34;&gt;Bpf usage restriction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#2-kernel-modules-protection&#34;&gt;Kernel module loading restriction&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We will see these in next posts.&lt;/p&gt;
+&lt;h2&gt;Reference:&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://blog.tofile.dev/2022/01/04/sysmonlinux.html&#34;&gt;Commandline Cloaking and Sysmon for Linux&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;FilelessMalware picture from: &lt;a href=&#34;https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/&#34;&gt;https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/&lt;/a&gt;&lt;/p&gt;
+
+        
+      </description>
+    </item>
+    
     <item>
       <title>eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security</title>
       <link>https://djalal.opendz.org/post/ebpf-summit-2021-talk/</link>
