@@ -20,13 +20,13 @@
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="Due to the security features that Linux offers like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, …">
+<meta name="description" content="Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and …">
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@tixxdz">
 <meta name="twitter:title" content="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM" />
 <meta property="og:url" content="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" />
 <meta property="og:title" content="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM" />
-<meta property="og:description" content="Due to the security features that Linux offers like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, …" />
+<meta property="og:description" content="Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and …" />
 <meta property="og:image" content="https://djalal.opendz.org/images/filelessmalware.jpg" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://djalal.opendz.org/images/apple-touch-icon.png">
@@ -135,7 +135,7 @@
 </svg></span>
     <span class="post_date">
       06 Feb 2022, 00:00</span>
-    <span class="post_time"> · 5 min read</span><span>&nbsp;· <a href='https://djalal.opendz.org/tags/opensource' title="opensource" class="post_tag button button_translucent">opensource
+    <span class="post_time"> · 6 min read</span><span>&nbsp;· <a href='https://djalal.opendz.org/tags/opensource' title="opensource" class="post_tag button button_translucent">opensource
         </a><a href='https://djalal.opendz.org/tags/linux' title="linux" class="post_tag button button_translucent">linux
         </a><a href='https://djalal.opendz.org/tags/kernel' title="kernel" class="post_tag button button_translucent">kernel
         </a><a href='https://djalal.opendz.org/tags/bpf' title="bpf" class="post_tag button button_translucent">bpf
@@ -171,7 +171,8 @@
   </div>
 
     
-    <p>Due to the security features that Linux offers like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, some attacks have been using what is knows as &quot;fileless binary execution&quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.</p>
+    <p>Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems
+readonly at runtime for apps and containers, some attacks have been using what is known as &quot;fileless binary execution&quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.</p>
 <div style="text-align:center">
 <img src="https://djalal.opendz.org/img/filelessmalware.jpg">
 </div>
@@ -181,9 +182,10 @@
 <p><code>memfd_create()</code> was developed when we were hacking on the defunct <a href="https://github.com/gregkh/kdbus">kdbus IPC</a>, you can read more in the original post <a href="https://dvdhrm.wordpress.com/2014/06/10/memfd_create2/">memfd_create() by David Herrmann</a>.</p>
 <p><code>memfd_create()</code> creates an anonymous file and returns a file descriptor that refers to it.  The file behaves like a regular file, and so can be modified, truncated, memory-mapped, and so on.  However, unlike a regular file, it lives in RAM and has a volatile backing storage.  Once all references to the file are dropped, it is automatically released.  Anonymous memory is used for all backing pages of the file.  Therefore, files created by memfd_create() have the same semantics as other anonymous memory allocations such as those allocated using mmap(2) with the MAP_ANONYMOUS flag.</p>
 <p>This feature is being abused by attackers and malware to write binary payload to that memory-resident file and then execute into it, like with any other binary file located on the filesystem.</p>
-<p>As an example lets take a look at the memory loader sample that uses <code>memfd_create()</code> published in the <a href="https://blog.tofile.dev/2022/01/04/sysmonlinux.html">Sysmon for
-Linux</a> post by Pat H, Loader code is <a href="https://github.com/pathtofile/commandline_cloaking/blob/main/loader/go/loader.go">here github repo</a>.</p>
-<p>The loader will create an anoymous file, copy the binary ./bin/basic or any other passed binary into it, then execute the referenced file. This is usually same technique used by malware to perform fileless binary execution.</p>
+<p>As an example, let's take a look at the memory loader sample that uses <code>memfd_create()</code> published in the <a href="https://blog.tofile.dev/2022/01/04/sysmonlinux.html">Sysmon for
+Linux</a> post by Pat H. loader code is <a href="https://github.com/pathtofile/commandline_cloaking/blob/main/loader/go/loader.go">here github repo</a>.</p>
+<p>The loader will create an anonymous file, copy the binary ./bin/basic or any other passed binary into it, and then
+execute the referenced file. This is usually the same technique used by malware to perform fileless binary execution.</p>
 <p>We all use <code>ps</code> to see what processes are running, and if you do then it will return:
 <br>
 <code>
@@ -194,7 +196,8 @@ USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 tixxdz     53324  1.0  0.0  17000   944 pts/2    S+   08:42   0:00 from_loader AAAA
 </code>
 <br></p>
-<p>Where <code>from_loader</code> is the name or comm of the program after it was modified, and there is no indication if this is from an anonymous file.</p>
+<p>Where <code>from_loader</code> is the name or comm of the program after it was modified, and there is no indication if this is from
+an anonymous file or not.</p>
 <h2>Detection of Fileless Binary Execution</h2>
 <p>Classic tools like <code>ps</code> that read <code>/proc/$pid/comm</code> are restricted and can be easily tricked, as changing the process name to arbitrary values is
 a standard feature of Linux with the <a href="https://man7.org/linux/man-pages/man2/prctl.2.html"><code>prctl()</code></a>.</p>
@@ -205,7 +208,7 @@ a standard feature of Linux with the <a href="https://man7.org/linux/man-pages/m
 <p>For further reference, please see <a href="https://github.com/linux-lock/bpflock/blob/main/bpf/filelesslock.bpf.c">filelesslock.bpf.c</a> program from the <a href="https://github.com/linux-lock/bpflock/blob/main/bpf/filelesslock.bpf.c">bpflock</a> project, where it checks if the executed file is linked or not on the filesystem, if not then it logs and blocks the execution.</p>
 <p>Other tools like <a href="https://github.com/Sysinternals/SysmonForLinux">SysmonForLinux</a>, <a href="https://github.com/aquasecurity/tracee">Tracee</a>, <a href="https://github.com/falcosecurity/falco">Falco</a> are capable to detect if the file being executed is prefixed with &quot;memfd:&quot; which indicates a memfd file execution.</p>
 <h2>Blocking Fileless Binary Execution</h2>
-<p>Now lets take it further, use <a href="https://github.com/linux-lock/bpflock">bpflock</a> to block executing into memfd files in their basic form.</p>
+<p>Now let's how to use <a href="https://github.com/linux-lock/bpflock">bpflock</a> to block executing into memfd files in their basic form.</p>
 <code>
 docker run --name bpflock -it --rm --cgroupns=host --pid=host --privileged -e "BPFLOCK_EXEC_SNOOP=all" \
 <br>
@@ -214,12 +217,13 @@ docker run --name bpflock -it --rm --cgroupns=host --pid=host --privileged -e "B
     -v /sys/fs/bpf:/sys/fs/bpf linuxlock/bpflock
 </code>
 <br>
-<p>Then test <a href="https://github.com/pathtofile/commandline_cloaking#loader">loader</a>:
+<p>Then run the <a href="https://github.com/pathtofile/commandline_cloaking#loader">loader</a> program that loads payload into a memfd
+file:
 <br>
 $ ./loader /bin/sleep 10
 <br>
 <b>Failed to execute: operation not permitted</b></p>
-<p>Logs from bpflock:
+<p>If we check the logs of the bpflock container, we see:
 <br>
 <code>
 time=&quot;2022-02-07T06:19:43Z&quot; level=info msg=&quot;event=syscall_execve tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=./loader retval=0&quot; bpfprog=execsnoop subsys=bpf
@@ -232,13 +236,17 @@ time=&quot;2022-02-07T06:19:43Z&quot; level=info msg=&quot;event=lsm_bprm_creds_
 <br>
 time=&quot;2022-02-07T06:19:43Z&quot; level=info msg=&quot;event=syscall_execve tgid=52906 pid=52906 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&quot; bpfprog=execsnoop subsys=bpf
 </code>
-<br>
 <br></p>
-<p>Lets try now to block <a href="https://github.com/pathtofile/commandline_cloaking/tree/main/injector">injector</a> that uses a technique published back in 1998 by <a href="https://twitter.com/silviocesare">Silvio Cesare</a> in a paper &quot;Unix ELF parasites and viruses&quot; about patching ELF binaries to inject code at the program’s entrypoint.</p>
-<p>Test injector:
+<p>The execution failed at log entry 2, the event is an LSM hook
+<a href="https://elixir.bootlin.com/linux/latest/source/include/linux/lsm_hook_defs.h#L53">bprm_creds_from_file</a>, the filename points to a <code>memfd:</code>
+backed file, the return value is <code>-1</code> which is <code>-EPERM</code> and the reason is <code>denied (restricted)</code> due to the profile
+<code>restricted</code> that is being used when starting bpflock.</p>
+<p>A note here: the exec() arguments and the interpreter are not currently handled by bpflock.</p>
+<p>Now, let's try to block <a href="https://github.com/pathtofile/commandline_cloaking/tree/main/injector">injector</a>, a program that uses a technique published back in 1998 by <a href="https://twitter.com/silviocesare">Silvio Cesare</a> in a paper &quot;Unix ELF parasites and viruses&quot; about patching ELF binaries to inject code at the program’s entrypoint.</p>
+<p>We run the injector:
 <br>
 ./injector ./shellcode.bin /bin/echo aaaa</p>
-<p>Logs from bpflock:
+<p>The logs of bpflock produce:
 <br>
 <code>
 time=&quot;2022-02-07T06:34:50Z&quot; level=info msg=&quot;event=syscall_execve tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=./injector retval=0&quot; bpfprog=execsnoop subsys=bpf
@@ -252,16 +260,22 @@ time=&quot;2022-02-07T06:34:50Z&quot; level=info msg=&quot;event=lsm_bprm_creds_
 time=&quot;2022-02-07T06:34:50Z&quot; level=info msg=&quot;event=syscall_execve tgid=53151 pid=53151 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&quot; bpfprog=execsnoop subsys=bpf
 </code>
 <br></p>
-<p>Again second line detects it and block it.</p>
+<p>We see in the second line that again, bpflock detected and blocked it.</p>
 <h2>Conclusion</h2>
-<p><a href="https://github.com/linux-lock/bpflock">Bpflock</a> which is experimental allows to detect and block memfd backed files execution, it takes advantage of <a href="https://docs.kernel.org/bpf/prog_lsm.html">BPF LSM</a>. <a href="https://ebpf.io/">eBPF</a> is great technology and the kernel maintainers are doing an amazing work by listening and incorporating developers resquests.</p>
+<p>As demonstrated <a href="https://github.com/linux-lock/bpflock">bpflock</a> tool which is still experimental allows to detect and
+block memfd backed files execution, this is achieved by taking advantage of <a href="https://docs.kernel.org/bpf/prog_lsm.html">BPF LSM</a> programs.</p>
+<p>Thanks to <a href="https://ebpf.io/">eBPF</a> which is a great technology, we are able to develop new network and security usecases.
+Also thanks to the ebpf kernel maintainers that are doing an amazing work by listening and incorporating developers resquests.</p>
 <p>There are other more complex modules in bpflock, like:</p>
 <ul>
-<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#1-kernel-image-lock-down">kernel image lockedown</a></li>
-<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#3-bpf-protection">Bpf usage restriction</a></li>
-<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#2-kernel-modules-protection">Kernel module loading restriction</a></li>
+<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#1-kernel-image-lock-down">kimglock</a> to
+protect kernel image direct and indirect modifications.</li>
+<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#3-bpf-protection">bpfrestrict</a>
+to restrict access to the bpf() system call.</li>
+<li><a href="https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#2-kernel-modules-protection">kmodlock</a> to
+restrict loading kernel modules.</li>
 </ul>
-<p>We will see these in next posts.</p>
+<p>We will give further details in the next posts.</p>
 <h2>Reference:</h2>
 <p><a href="https://blog.tofile.dev/2022/01/04/sysmonlinux.html">Commandline Cloaking and Sysmon for Linux</a></p>
 <p>FilelessMalware picture from: <a href="https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/">https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/</a></p>
