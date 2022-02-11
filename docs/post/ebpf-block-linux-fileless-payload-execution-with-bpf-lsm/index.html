@@ -6,13 +6,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WCJ5CW58PD"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-WCJ5CW58PD');
 </script>
 
@@ -27,11 +25,10 @@
 <meta property="og:url" content="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" />
 <meta property="og:title" content="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM" />
 <meta property="og:description" content="Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and …" />
-<meta property="og:image" content="https://djalal.opendz.org/images/filelessmalware.jpg" />
+<meta property="og:image" content="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/images/filelessmalware.jpg" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://djalal.opendz.org/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://djalal.opendz.org/images/favicon-32x32.png">
-<link rel="shortcut icon" type="image/png" href="images/favicon.png">
 <link rel="manifest" href="https://djalal.opendz.org/images/site.webmanifest">
 
 <link rel="canonical" href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/">
@@ -40,23 +37,24 @@
 
     
     
-    <link rel="preload" href="https://djalal.opendz.org/css/styles.274a369440b58cbf9ec6ad6d75b8038f9ea6e7265fd3c290e19762c4f7c7a10a19d56f9493d1600db774907640645ea275edd03465f0e1fd740710bbeb6adc95.css" integrity = "sha512-J0o2lEC1jL&#43;exq1tdbgDj56m5yZf08KQ4ZdixPfHoQoZ1W&#43;Uk9FgDbd0kHZAZF6ide3QNGXw4f10BxC762rclQ==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://djalal.opendz.org/js/bundle.min.9ce7fc3788febe86476e100c964306a676cf8fa5c76bfc6977ce61763c9a61abfccbc875a0001e1e6d167b246ed949768c5eee5a32b44da86b7b7d9fc9d6a594.js" as="script" integrity=
-    "sha512-nOf8N4j&#43;voZHbhAMlkMGpnbPj6XHa/xpd85hdjyaYav8y8h1oAAeHm0WeyRu2Ul2jF7uWjK0Tahre32fydallA==" crossorigin="anonymous">
+    <link rel="preload" href="https://djalal.opendz.org/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://djalal.opendz.org/js/bundle.min.3a637d20f405b0e949682a15fee9fc28da47f1dd495a48e9a9d651e575491162328cbde60680a3c2868b3c98a27bd7c8473bc87938b069d782751e6bf4d101eb.js" as="script" integrity=
+    "sha512-OmN9IPQFsOlJaCoV/un8KNpH8d1JWkjpqdZR5XVJEWIyjL3mBoCjwoaLPJiie9fIRzvIeTiwadeCdR5r9NEB6w==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://djalal.opendz.org/css/styles.274a369440b58cbf9ec6ad6d75b8038f9ea6e7265fd3c290e19762c4f7c7a10a19d56f9493d1600db774907640645ea275edd03465f0e1fd740710bbeb6adc95.css" integrity="sha512-J0o2lEC1jL&#43;exq1tdbgDj56m5yZf08KQ4ZdixPfHoQoZ1W&#43;Uk9FgDbd0kHZAZF6ide3QNGXw4f10BxC762rclQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://djalal.opendz.org/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
   
+  
     
   
-  <body data-code="7" data-lines="false" id="documentTop">
+  <body data-code="50" data-lines="true" id="documentTop">
 
 <header class="nav_header" >
   <nav class="nav"><a href='https://djalal.opendz.org/' class="nav_brand nav_item" title="Djalal Harouni">
-  <img src="https://djalal.opendz.org/logos/logo.ico" class="logo" alt="Djalal Harouni">
+  <img src="https://djalal.opendz.org/logos/luffy.png" class="logo" alt="Djalal Harouni">
   <div class="nav_close">
     <div><svg class="icon">
   <use xlink:href="#open-menu"></use>
@@ -74,13 +72,6 @@
 
   <div class="nav_parent">
     <a href="https://djalal.opendz.org/" class="nav_item" title="Home">Home </a>
-  </div>
-  <div class="nav_parent">
-    <a href="https://djalal.opendz.org/" class="nav_item" title="Links">Links <img src='https://djalal.opendz.org/icons/caret-icon.svg' alt="icon" class="nav_icon"></a>
-    <div class="nav_sub">
-      <span class="nav_child"></span>
-        <a href="https://www.medium.com/@tixxdz" class="nav_child nav_item" title="Medium blog: @tixxdz">Medium blog: @tixxdz</a>
-    </div>
   </div>
   <div class="nav_parent">
     <a href="https://djalal.opendz.org/about/" class="nav_item" title="About">About </a>
@@ -170,8 +161,11 @@
   </span>
   </div>
 
+
+
+
     
-    <p>Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems
+    <div class="post_body"><p>Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems
 readonly at runtime for apps and containers, some attacks have been using what is known as &quot;fileless binary execution&quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.</p>
 <div style="text-align:center">
 <img src="https://djalal.opendz.org/img/filelessmalware.jpg">
@@ -184,19 +178,35 @@ readonly at runtime for apps and containers, some attacks have been using what i
 <p>This feature is being abused by attackers and malware to write binary payload to that memory-resident file and then execute into it, like with any other binary file located on the filesystem.</p>
 <p>As an example, let's take a look at the memory loader sample that uses <code>memfd_create()</code> published in the <a href="https://blog.tofile.dev/2022/01/04/sysmonlinux.html">Sysmon for
 Linux</a> post by Pat H. loader code is <a href="https://github.com/pathtofile/commandline_cloaking/blob/main/loader/go/loader.go">here github repo</a>.</p>
-<p>The loader will create an anonymous file, copy the binary ./bin/basic or any other passed binary into it, and then
-execute the referenced file. This is usually the same technique used by malware to perform fileless binary execution.</p>
-<p>We all use <code>ps</code> to see what processes are running, and if you do then it will return:
-<br>
-<code>
-USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-</code>
-<br>
-<code>
-tixxdz     53324  1.0  0.0  17000   944 pts/2    S+   08:42   0:00 from_loader AAAA
-</code>
-<br></p>
-<p>Where <code>from_loader</code> is the name or comm of the program after it was modified, and there is no indication if this is from
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1"> 1</a></span><span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2"> 2</a></span>  <span class="c1">// Print PID of loader program
+</span><span class="ln" id="3"><a style="outline: none; text-decoration:none; color:inherit" href="#3"> 3</a></span><span class="c1"></span>  <span class="nx">fmt</span><span class="p">.</span><span class="nf">Printf</span><span class="p">(</span><span class="s">&#34;  Ldr PID %d\n&#34;</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Getpid</span><span class="p">())</span>
+<span class="ln" id="4"><a style="outline: none; text-decoration:none; color:inherit" href="#4"> 4</a></span>
+<span class="ln" id="5"><a style="outline: none; text-decoration:none; color:inherit" href="#5"> 5</a></span>  <span class="c1">// Use memfd to create in-memory file
+</span><span class="ln" id="6"><a style="outline: none; text-decoration:none; color:inherit" href="#6"> 6</a></span><span class="c1"></span>  <span class="nx">fd</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">unix</span><span class="p">.</span><span class="nf">MemfdCreate</span><span class="p">(</span><span class="s">&#34;&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="ln" id="7"><a style="outline: none; text-decoration:none; color:inherit" href="#7"> 7</a></span>
+<span class="ln" id="8"><a style="outline: none; text-decoration:none; color:inherit" href="#8"> 8</a></span>  <span class="c1">// open created in-memory file
+</span><span class="ln" id="9"><a style="outline: none; text-decoration:none; color:inherit" href="#9"> 9</a></span><span class="c1"></span>  <span class="nx">fp</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;/proc/self/fd/%d&#34;</span><span class="p">,</span> <span class="nx">fd</span><span class="p">)</span>
+<span class="ln" id="10"><a style="outline: none; text-decoration:none; color:inherit" href="#10">10</a></span>  <span class="nx">memfd_file</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">NewFile</span><span class="p">(</span><span class="nb">uintptr</span><span class="p">(</span><span class="nx">fd</span><span class="p">),</span> <span class="nx">fp</span><span class="p">)</span>
+<span class="ln" id="11"><a style="outline: none; text-decoration:none; color:inherit" href="#11">11</a></span>  <span class="k">defer</span> <span class="nx">memfd_file</span><span class="p">.</span><span class="nf">Close</span><span class="p">()</span>
+<span class="ln" id="12"><a style="outline: none; text-decoration:none; color:inherit" href="#12">12</a></span>
+<span class="ln" id="13"><a style="outline: none; text-decoration:none; color:inherit" href="#13">13</a></span>  <span class="c1">// Read ELF from disk and write into in-memory file
+</span><span class="ln" id="14"><a style="outline: none; text-decoration:none; color:inherit" href="#14">14</a></span><span class="c1"></span>  <span class="c1">// ELF could also be read from a C2 server, encrypted
+</span><span class="ln" id="15"><a style="outline: none; text-decoration:none; color:inherit" href="#15">15</a></span><span class="c1"></span>  <span class="c1">// on disk, hardcoded, piped in from stdin, etc.
+</span><span class="ln" id="16"><a style="outline: none; text-decoration:none; color:inherit" href="#16">16</a></span><span class="c1"></span>  <span class="nx">data</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">ioutil</span><span class="p">.</span><span class="nf">ReadFile</span><span class="p">(</span><span class="s">&#34;/path/to/basic&#34;</span><span class="p">)</span>
+<span class="ln" id="17"><a style="outline: none; text-decoration:none; color:inherit" href="#17">17</a></span>  <span class="nx">memfd_file</span><span class="p">.</span><span class="nf">Write</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span>
+<span class="ln" id="18"><a style="outline: none; text-decoration:none; color:inherit" href="#18">18</a></span>
+<span class="ln" id="19"><a style="outline: none; text-decoration:none; color:inherit" href="#19">19</a></span>  <span class="c1">// Execute in-memory binary, fake argv[0] filename
+</span><span class="ln" id="20"><a style="outline: none; text-decoration:none; color:inherit" href="#20">20</a></span><span class="c1"></span>  <span class="nx">argv</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">string</span><span class="p">{</span><span class="s">&#34;from_loader&#34;</span><span class="p">,</span> <span class="s">&#34;AAAA&#34;</span><span class="p">}</span>
+<span class="ln" id="21"><a style="outline: none; text-decoration:none; color:inherit" href="#21">21</a></span>  <span class="nx">unix</span><span class="p">.</span><span class="nf">Exec</span><span class="p">(</span><span class="nx">fp</span><span class="p">,</span> <span class="nx">argv</span><span class="p">,</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Environ</span><span class="p">())</span>
+<span class="ln" id="22"><a style="outline: none; text-decoration:none; color:inherit" href="#22">22</a></span><span class="p">}</span>
+</code></pre></div><p>The loader will create an anonymous file, copy the binary <code>basic</code> or any other passed binary into it, and then
+execute the referenced file. This is usually the same technique used by malware to perform fileless binary execution:
+get code execution, receive payload from internet and execute into it, all without touching the filesystem.</p>
+<p>We all use <code>ps</code> to see what processes are running, and if you do then it will return:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+<span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2">2</a></span>tixxdz     53324  1.0  0.0  17000   944 pts/2    S+   08:42   0:00 from_loader AAAA
+</code></pre></div><p>Where <code>from_loader</code> is the name or comm of the program after it was modified, and there is no indication if this is from
 an anonymous file or not.</p>
 <h2>Detection of Fileless Binary Execution</h2>
 <p>Classic tools like <code>ps</code> that read <code>/proc/$pid/comm</code> are restricted and can be easily tricked, as changing the process name to arbitrary values is
@@ -209,58 +219,34 @@ a standard feature of Linux with the <a href="https://man7.org/linux/man-pages/m
 <p>Other tools like <a href="https://github.com/Sysinternals/SysmonForLinux">SysmonForLinux</a>, <a href="https://github.com/aquasecurity/tracee">Tracee</a>, <a href="https://github.com/falcosecurity/falco">Falco</a> are capable to detect if the file being executed is prefixed with &quot;memfd:&quot; which indicates a memfd file execution.</p>
 <h2>Blocking Fileless Binary Execution</h2>
 <p>Now let's how to use <a href="https://github.com/linux-lock/bpflock">bpflock</a> to block executing into memfd files in their basic form.</p>
-<code>
-docker run --name bpflock -it --rm --cgroupns=host --pid=host --privileged -e "BPFLOCK_EXEC_SNOOP=all" \
-<br>
-    -e "BPFLOCK_FILELESSLOCK_PROFILE=restricted" -v /sys/kernel/:/sys/kernel/ \
-<br>
-    -v /sys/fs/bpf:/sys/fs/bpf linuxlock/bpflock
-</code>
-<br>
-<p>Then run the <a href="https://github.com/pathtofile/commandline_cloaking#loader">loader</a> program that loads payload into a memfd
-file:
-<br>
-$ ./loader /bin/sleep 10
-<br>
-<b>Failed to execute: operation not permitted</b></p>
-<p>If we check the logs of the bpflock container, we see:
-<br>
-<code>
-time=&quot;2022-02-07T06:19:43Z&quot; level=info msg=&quot;event=syscall_execve tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=./loader retval=0&quot; bpfprog=execsnoop subsys=bpf
-<br>
-<br>
-<b>
-time=&quot;2022-02-07T06:19:43Z&quot; level=info msg=&quot;event=lsm_bprm_creds_from_file tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=memfd:memfd-test retval=-1 reason=denied (restricted)&quot; bpfprog=filelesslock subsys=bpf
-</b>
-<br>
-<br>
-time=&quot;2022-02-07T06:19:43Z&quot; level=info msg=&quot;event=syscall_execve tgid=52906 pid=52906 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&quot; bpfprog=execsnoop subsys=bpf
-</code>
-<br></p>
-<p>The execution failed at log entry 2, the event is an LSM hook
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>docker run --name bpflock -it --rm --cgroupns<span class="o">=</span>host --pid<span class="o">=</span>host --privileged <span class="se">\
+</span><span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2">2</a></span><span class="se"></span>    -e <span class="s2">&#34;BPFLOCK_EXEC_SNOOP=all&#34;</span> -e <span class="s2">&#34;BPFLOCK_FILELESSLOCK_PROFILE=restricted&#34;</span> <span class="se">\
+</span><span class="ln" id="3"><a style="outline: none; text-decoration:none; color:inherit" href="#3">3</a></span><span class="se"></span>    -v /sys/kernel/:/sys/kernel/ -v /sys/fs/bpf:/sys/fs/bpf linuxlock/bpflock
+</code></pre></div><p>Then run the <a href="https://github.com/pathtofile/commandline_cloaking#loader">loader</a> program that loads payload into a memfd
+file:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>$ ./loader /bin/sleep <span class="m">10</span>
+<span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2">2</a></span>Failed to execute: operation not permitted
+</code></pre></div><p>If we check the logs of the bpflock container, we see:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>time=&#34;2022-02-07T06:19:43Z&#34; level=info msg=&#34;event=syscall_execve tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=./loader retval=0&#34; bpfprog=execsnoop subsys=bpf
+<span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2">2</a></span>
+<span class="ln" id="3"><a style="outline: none; text-decoration:none; color:inherit" href="#3">3</a></span>time=&#34;2022-02-07T06:19:43Z&#34; level=info msg=&#34;event=lsm_bprm_creds_from_file tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=memfd:memfd-test retval=-1 reason=denied (restricted)&#34; bpfprog=filelesslock subsys=bpf
+<span class="ln" id="4"><a style="outline: none; text-decoration:none; color:inherit" href="#4">4</a></span>
+<span class="ln" id="5"><a style="outline: none; text-decoration:none; color:inherit" href="#5">5</a></span>time=&#34;2022-02-07T06:19:43Z&#34; level=info msg=&#34;event=syscall_execve tgid=52906 pid=52906 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&#34; bpfprog=execsnoop subsys=bpf
+</code></pre></div><p>The execution failed at log entry 2, the event is an LSM hook
 <a href="https://elixir.bootlin.com/linux/latest/source/include/linux/lsm_hook_defs.h#L53">bprm_creds_from_file</a>, the filename points to a <code>memfd:</code>
 backed file, the return value is <code>-1</code> which is <code>-EPERM</code> and the reason is <code>denied (restricted)</code> due to the profile
 <code>restricted</code> that is being used when starting bpflock.</p>
 <p>A note here: the exec() arguments and the interpreter are not currently handled by bpflock.</p>
 <p>Now, let's try to block <a href="https://github.com/pathtofile/commandline_cloaking/tree/main/injector">injector</a>, a program that uses a technique published back in 1998 by <a href="https://twitter.com/silviocesare">Silvio Cesare</a> in a paper &quot;Unix ELF parasites and viruses&quot; about patching ELF binaries to inject code at the program’s entrypoint.</p>
-<p>We run the injector:
-<br>
-./injector ./shellcode.bin /bin/echo aaaa</p>
-<p>The logs of bpflock produce:
-<br>
-<code>
-time=&quot;2022-02-07T06:34:50Z&quot; level=info msg=&quot;event=syscall_execve tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=./injector retval=0&quot; bpfprog=execsnoop subsys=bpf
-<br>
-<br>
-<b>
-time=&quot;2022-02-07T06:34:50Z&quot; level=info msg=&quot;event=lsm_bprm_creds_from_file tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=memfd: retval=-1 reason=denied (restricted)&quot; bpfprog=filelesslock subsys=bpf
-</b>
-<br>
-<br>
-time=&quot;2022-02-07T06:34:50Z&quot; level=info msg=&quot;event=syscall_execve tgid=53151 pid=53151 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&quot; bpfprog=execsnoop subsys=bpf
-</code>
-<br></p>
-<p>We see in the second line that again, bpflock detected and blocked it.</p>
+<p>We run the injector:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>./injector ./shellcode.bin /bin/echo aaaa
+</code></pre></div><p>The logs of bpflock produce:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>time=&#34;2022-02-07T06:34:50Z&#34; level=info msg=&#34;event=syscall_execve tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=./injector retval=0&#34; bpfprog=execsnoop subsys=bpf
+<span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2">2</a></span>
+<span class="ln" id="3"><a style="outline: none; text-decoration:none; color:inherit" href="#3">3</a></span>time=&#34;2022-02-07T06:34:50Z&#34; level=info msg=&#34;event=lsm_bprm_creds_from_file tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=memfd: retval=-1 reason=denied (restricted)&#34; bpfprog=filelesslock subsys=bpf
+<span class="ln" id="4"><a style="outline: none; text-decoration:none; color:inherit" href="#4">4</a></span>
+<span class="ln" id="5"><a style="outline: none; text-decoration:none; color:inherit" href="#5">5</a></span>time=&#34;2022-02-07T06:34:50Z&#34; level=info msg=&#34;event=syscall_execve tgid=53151 pid=53151 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&#34; bpfprog=execsnoop subsys=bpf
+</code></pre></div><p>We see in the second line that again, bpflock detected and blocked it.</p>
 <h2>Conclusion</h2>
 <p>As demonstrated <a href="https://github.com/linux-lock/bpflock">bpflock</a> tool which is still experimental allows to detect and
 block memfd backed files execution, this is achieved by taking advantage of <a href="https://docs.kernel.org/bpf/prog_lsm.html">BPF LSM</a> programs.</p>
@@ -280,6 +266,14 @@ restrict loading kernel modules.</li>
 <p><a href="https://blog.tofile.dev/2022/01/04/sysmonlinux.html">Commandline Cloaking and Sysmon for Linux</a></p>
 <p>FilelessMalware picture from: <a href="https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/">https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/</a></p>
 
+    </div>
+<div class="post_comments">
+  
+  
+  
+</div>
+
+
 
   </article>
 <aside class="sidebar">
@@ -289,8 +283,12 @@ restrict loading kernel modules.</li>
         Open Source Software hacker / Cloud / Linux kernel / BPF / systemd from Constantine dz.
       </div>
       <a href='https://djalal.opendz.org/about/' class="button mt-1" role="button" title='Read More'>Read More</a>
+    
     <h2 class="mt-4">Featured Posts</h2>
     <ul>
+      <li>
+        <a href="https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/" class="nav-link" title="Kernel Image Lockdown and eBPF Flexibility!">Kernel Image Lockdown and eBPF Flexibility!</a>
+      </li>
       <li>
         <a href="https://djalal.opendz.org/post/ebpf-summit-2021-talk/" class="nav-link" title="eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security">eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security</a>
       </li>
@@ -309,6 +307,9 @@ restrict loading kernel modules.</li>
     </ul>
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/" class="nav-link" title="Kernel Image Lockdown and eBPF Flexibility!">Kernel Image Lockdown and eBPF Flexibility!</a>
+      </li>
       <li>
         <a href="https://djalal.opendz.org/post/ebpf-summit-2021-talk/" class="nav-link" title="eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security">eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security</a>
       </li>
@@ -330,21 +331,18 @@ restrict loading kernel modules.</li>
       <li>
         <a href="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/" class="nav-link" title="systemd Sandbox or systemd Lightweight Containers">systemd Sandbox or systemd Lightweight Containers</a>
       </li>
-      <li>
-        <a href="https://djalal.opendz.org/post/linux-kernel-proc-pid-envrion-fixes/" class="nav-link" title="Linux kernel - /proc/pid/environ fixes">Linux kernel - /proc/pid/environ fixes</a>
-      </li>
     </ul>
     <div>
       <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
       <nav class="tags_nav">
         <a href='https://djalal.opendz.org/categories/linux/' class="post_tag button button_translucent" title="linux">
           LINUX
-          <span class="button_tally">9</span>
+          <span class="button_tally">10</span>
         </a>
         
         <a href='https://djalal.opendz.org/categories/opensource/' class="post_tag button button_translucent" title="opensource">
           OPENSOURCE
-          <span class="button_tally">8</span>
+          <span class="button_tally">9</span>
         </a>
         
         <a href='https://djalal.opendz.org/categories/technology/' class="post_tag button button_translucent" title="technology">
@@ -354,12 +352,12 @@ restrict loading kernel modules.</li>
         
         <a href='https://djalal.opendz.org/categories/bpf/' class="post_tag button button_translucent" title="bpf">
           BPF
-          <span class="button_tally">2</span>
+          <span class="button_tally">3</span>
         </a>
         
         <a href='https://djalal.opendz.org/categories/security/' class="post_tag button button_translucent" title="security">
           SECURITY
-          <span class="button_tally">2</span>
+          <span class="button_tally">3</span>
         </a>
         
         
@@ -370,22 +368,22 @@ restrict loading kernel modules.</li>
       <nav class="tags_nav">
         <a href='https://djalal.opendz.org/tags/linux/' class="post_tag button button_translucent" title="linux">
           LINUX
-          <span class="button_tally">9</span>
+          <span class="button_tally">10</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/opensource/' class="post_tag button button_translucent" title="opensource">
           OPENSOURCE
-          <span class="button_tally">9</span>
+          <span class="button_tally">10</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/kernel/' class="post_tag button button_translucent" title="kernel">
           KERNEL
-          <span class="button_tally">8</span>
+          <span class="button_tally">9</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/security/' class="post_tag button button_translucent" title="security">
           SECURITY
-          <span class="button_tally">8</span>
+          <span class="button_tally">9</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/iot/' class="post_tag button button_translucent" title="iot">
@@ -395,7 +393,7 @@ restrict loading kernel modules.</li>
         
         <a href='https://djalal.opendz.org/tags/bpf/' class="post_tag button button_translucent" title="bpf">
           BPF
-          <span class="button_tally">2</span>
+          <span class="button_tally">3</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/containers/' class="post_tag button button_translucent" title="containers">
@@ -496,6 +494,9 @@ restrict loading kernel modules.</li>
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -511,7 +512,7 @@ restrict loading kernel modules.</li>
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://djalal.opendz.org/js/bundle.min.9ce7fc3788febe86476e100c964306a676cf8fa5c76bfc6977ce61763c9a61abfccbc875a0001e1e6d167b246ed949768c5eee5a32b44da86b7b7d9fc9d6a594.js" integrity="sha512-nOf8N4j&#43;voZHbhAMlkMGpnbPj6XHa/xpd85hdjyaYav8y8h1oAAeHm0WeyRu2Ul2jF7uWjK0Tahre32fydallA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://djalal.opendz.org/js/bundle.min.3a637d20f405b0e949682a15fee9fc28da47f1dd495a48e9a9d651e575491162328cbde60680a3c2868b3c98a27bd7c8473bc87938b069d782751e6bf4d101eb.js" integrity="sha512-OmN9IPQFsOlJaCoV/un8KNpH8d1JWkjpqdZR5XVJEWIyjL3mBoCjwoaLPJiie9fIRzvIeTiwadeCdR5r9NEB6w==" crossorigin="anonymous"></script>
     
   </body>
 </html>

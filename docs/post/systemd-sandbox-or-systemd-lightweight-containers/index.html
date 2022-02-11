@@ -6,13 +6,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-WCJ5CW58PD"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-WCJ5CW58PD');
 </script>
 
@@ -27,11 +25,10 @@
 <meta property="og:url" content="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/" />
 <meta property="og:title" content="systemd Sandbox or systemd Lightweight Containers" />
 <meta property="og:description" content="Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, …" />
-<meta property="og:image" content="https://djalal.opendz.org/images/Security-lock-life-of-pix-4291.jpg" />
+<meta property="og:image" content="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/images/Security-lock-life-of-pix-4291.jpg" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://djalal.opendz.org/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://djalal.opendz.org/images/favicon-32x32.png">
-<link rel="shortcut icon" type="image/png" href="images/favicon.png">
 <link rel="manifest" href="https://djalal.opendz.org/images/site.webmanifest">
 
 <link rel="canonical" href="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/">
@@ -40,23 +37,24 @@
 
     
     
-    <link rel="preload" href="https://djalal.opendz.org/css/styles.274a369440b58cbf9ec6ad6d75b8038f9ea6e7265fd3c290e19762c4f7c7a10a19d56f9493d1600db774907640645ea275edd03465f0e1fd740710bbeb6adc95.css" integrity = "sha512-J0o2lEC1jL&#43;exq1tdbgDj56m5yZf08KQ4ZdixPfHoQoZ1W&#43;Uk9FgDbd0kHZAZF6ide3QNGXw4f10BxC762rclQ==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://djalal.opendz.org/js/bundle.min.9ce7fc3788febe86476e100c964306a676cf8fa5c76bfc6977ce61763c9a61abfccbc875a0001e1e6d167b246ed949768c5eee5a32b44da86b7b7d9fc9d6a594.js" as="script" integrity=
-    "sha512-nOf8N4j&#43;voZHbhAMlkMGpnbPj6XHa/xpd85hdjyaYav8y8h1oAAeHm0WeyRu2Ul2jF7uWjK0Tahre32fydallA==" crossorigin="anonymous">
+    <link rel="preload" href="https://djalal.opendz.org/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
+    <link rel="preload" href="https://djalal.opendz.org/js/bundle.min.3a637d20f405b0e949682a15fee9fc28da47f1dd495a48e9a9d651e575491162328cbde60680a3c2868b3c98a27bd7c8473bc87938b069d782751e6bf4d101eb.js" as="script" integrity=
+    "sha512-OmN9IPQFsOlJaCoV/un8KNpH8d1JWkjpqdZR5XVJEWIyjL3mBoCjwoaLPJiie9fIRzvIeTiwadeCdR5r9NEB6w==" crossorigin="anonymous">
 
     
-    <link rel="stylesheet" type="text/css" href="https://djalal.opendz.org/css/styles.274a369440b58cbf9ec6ad6d75b8038f9ea6e7265fd3c290e19762c4f7c7a10a19d56f9493d1600db774907640645ea275edd03465f0e1fd740710bbeb6adc95.css" integrity="sha512-J0o2lEC1jL&#43;exq1tdbgDj56m5yZf08KQ4ZdixPfHoQoZ1W&#43;Uk9FgDbd0kHZAZF6ide3QNGXw4f10BxC762rclQ==" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://djalal.opendz.org/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
     
   </head>
   
   
+  
     
   
-  <body data-code="7" data-lines="false" id="documentTop">
+  <body data-code="50" data-lines="true" id="documentTop">
 
 <header class="nav_header" >
   <nav class="nav"><a href='https://djalal.opendz.org/' class="nav_brand nav_item" title="Djalal Harouni">
-  <img src="https://djalal.opendz.org/logos/logo.ico" class="logo" alt="Djalal Harouni">
+  <img src="https://djalal.opendz.org/logos/luffy.png" class="logo" alt="Djalal Harouni">
   <div class="nav_close">
     <div><svg class="icon">
   <use xlink:href="#open-menu"></use>
@@ -74,13 +72,6 @@
 
   <div class="nav_parent">
     <a href="https://djalal.opendz.org/" class="nav_item" title="Home">Home </a>
-  </div>
-  <div class="nav_parent">
-    <a href="https://djalal.opendz.org/" class="nav_item" title="Links">Links <img src='https://djalal.opendz.org/icons/caret-icon.svg' alt="icon" class="nav_icon"></a>
-    <div class="nav_sub">
-      <span class="nav_child"></span>
-        <a href="https://www.medium.com/@tixxdz" class="nav_child nav_item" title="Medium blog: @tixxdz">Medium blog: @tixxdz</a>
-    </div>
   </div>
   <div class="nav_parent">
     <a href="https://djalal.opendz.org/about/" class="nav_item" title="About">About </a>
@@ -169,8 +160,11 @@
   </span>
   </div>
 
+
+
+
     
-    <p>Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.</p>
+    <div class="post_body"><p>Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.</p>
 <div style="text-align:center">
 <img src="https://djalal.opendz.org/img/Security-lock-life-of-pix-4291.jpg">
 </div>
@@ -179,38 +173,38 @@
 <h2>systemd Security Sandbox features</h2>
 <p>The following lists some new systemd sandbox options:</p>
 <p><strong>1. New File system sandbox option:</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    RootImage=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    RootImage=
 </code></pre></div><p>Takes a path to a block device, loopback file, etc that can be mounted as the new root filesystem for your App.</p>
 <p><strong>2. Some User privileges sandbox options:</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    DynamicUser=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    DynamicUser=
 </code></pre></div><p>If set to yes, allows to run your App under different User (Unix UID/GID). The UID is allocated dynamically and released when the App stops, allowing IoT devices to follow Android model where each App is executed under a different user, separating Apps and their file access permissions.</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    NoNewPrivileges=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    NoNewPrivileges=
 </code></pre></div><p>If set, ensures that the App and all its children can never gain new privileges through execve().</p>
 <p><strong>3. Some Network sandbox options:</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    PrivateNetwork=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    PrivateNetwork=
 </code></pre></div><p>If set to yes, will set up a new private network namespace with only loopback interface inside, disconnecting internet access.</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    IPAddressDeny=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    IPAddressDeny=
 </code></pre></div><p>Takes an IP address prefix, all traffic from and to this address will be blocked for the App.</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    IPAddressAllow=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    IPAddressAllow=
 </code></pre></div><p>The whitelist or permitted IP address/network mask list.</p>
 <p>To block raw packets AF_PACKET you should also use:</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    RestrictAddressFamilies=~AF_PACKET (blacklisting mode).
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    RestrictAddressFamilies=~AF_PACKET (blacklisting mode).
 </code></pre></div><p>We are working to make this more user friendly, maybe in the near feature we will add: “ACCESS_INTERNET=yes|no” alias for those options to effectively block all inet or internet operations, including constructing raw packets and binding privileged ports.</p>
 <p><strong>4. Kernel attack surface reduction:</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    RestrictNamespaces=
-<span class="ln">2</span>    “RestrictNamespaces=yes” or “RestrictNamespaces=~user”
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    RestrictNamespaces=
+<span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2">2</a></span>    “RestrictNamespaces=yes” or “RestrictNamespaces=~user”
 </code></pre></div><p>Restrict Access to Linux namespaces. Most IoT devices should reduce access to Linux User Namespaces since some vulnerabilities and exploits are still targeting this feature.</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    ProtectKernelTunables=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    ProtectKernelTunables=
 </code></pre></div><p>Blocks tuning Kernel parameters by making /proc and related /sys files read-only.</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    ProtectKernelModules=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    ProtectKernelModules=
 </code></pre></div><p>If set, removes the CAP_SYS_MODULE capability and blocks your App from explicitly loading or unloading modules.</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    SystemCallFilter=
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    SystemCallFilter=
 </code></pre></div><p>Seccomp system call filtering feature. In systemd we have organized Linux system calls in groups inspired from Google Chromium browser. You can restrict your App by functionality by blacklisting the system calls using the <strong>“~”</strong> before each group. As an example:</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    “@reboot”
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    “@reboot”
 </code></pre></div><p>will block all related reboot system calls.</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    “@module”
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    “@module”
 </code></pre></div><p>will block all kernel module system calls.</p>
-<div class="highlight"><pre class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln">1</span>    “@mount”
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>    “@mount”
 </code></pre></div><p>will block all file system mount and umount system calls.</p>
 <p>For more system call filtering please refer to official systemd documentation <a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#SystemCallFilter=">systemd.exec</a> [1]. We have a pretty usable system call filtering feature, and we are actively working on improving it.</p>
 <h2>Conclusion</h2>
@@ -219,6 +213,14 @@
 <ol>
 <li><a href="https://www.freedesktop.org/software/systemd/man/systemd.exec.html#SystemCallFilter=">https://www.freedesktop.org/software/systemd/man/systemd.exec.html#SystemCallFilter=</a></li>
 </ol>
+
+    </div>
+<div class="post_comments">
+  
+  
+  
+</div>
+
 
 
   </article>
@@ -229,8 +231,12 @@
         Open Source Software hacker / Cloud / Linux kernel / BPF / systemd from Constantine dz.
       </div>
       <a href='https://djalal.opendz.org/about/' class="button mt-1" role="button" title='Read More'>Read More</a>
+    
     <h2 class="mt-4">Featured Posts</h2>
     <ul>
+      <li>
+        <a href="https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/" class="nav-link" title="Kernel Image Lockdown and eBPF Flexibility!">Kernel Image Lockdown and eBPF Flexibility!</a>
+      </li>
       <li>
         <a href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" class="nav-link" title="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM">eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</a>
       </li>
@@ -249,6 +255,9 @@
     </ul>
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
+      <li>
+        <a href="https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/" class="nav-link" title="Kernel Image Lockdown and eBPF Flexibility!">Kernel Image Lockdown and eBPF Flexibility!</a>
+      </li>
       <li>
         <a href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" class="nav-link" title="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM">eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</a>
       </li>
@@ -270,21 +279,18 @@
       <li>
         <a href="https://djalal.opendz.org/post/hardening-linux-based-iot-systems/" class="nav-link" title="Hardening Linux-based IoT systems">Hardening Linux-based IoT systems</a>
       </li>
-      <li>
-        <a href="https://djalal.opendz.org/post/linux-kernel-proc-pid-envrion-fixes/" class="nav-link" title="Linux kernel - /proc/pid/environ fixes">Linux kernel - /proc/pid/environ fixes</a>
-      </li>
     </ul>
     <div>
       <h2 class="mt-4 taxonomy" id="categories-section">Categories</h2>
       <nav class="tags_nav">
         <a href='https://djalal.opendz.org/categories/linux/' class="post_tag button button_translucent" title="linux">
           LINUX
-          <span class="button_tally">9</span>
+          <span class="button_tally">10</span>
         </a>
         
         <a href='https://djalal.opendz.org/categories/opensource/' class="post_tag button button_translucent" title="opensource">
           OPENSOURCE
-          <span class="button_tally">8</span>
+          <span class="button_tally">9</span>
         </a>
         
         <a href='https://djalal.opendz.org/categories/technology/' class="post_tag button button_translucent" title="technology">
@@ -294,12 +300,12 @@
         
         <a href='https://djalal.opendz.org/categories/bpf/' class="post_tag button button_translucent" title="bpf">
           BPF
-          <span class="button_tally">2</span>
+          <span class="button_tally">3</span>
         </a>
         
         <a href='https://djalal.opendz.org/categories/security/' class="post_tag button button_translucent" title="security">
           SECURITY
-          <span class="button_tally">2</span>
+          <span class="button_tally">3</span>
         </a>
         
         
@@ -310,22 +316,22 @@
       <nav class="tags_nav">
         <a href='https://djalal.opendz.org/tags/linux/' class="post_tag button button_translucent" title="linux">
           LINUX
-          <span class="button_tally">9</span>
+          <span class="button_tally">10</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/opensource/' class="post_tag button button_translucent" title="opensource">
           OPENSOURCE
-          <span class="button_tally">9</span>
+          <span class="button_tally">10</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/kernel/' class="post_tag button button_translucent" title="kernel">
           KERNEL
-          <span class="button_tally">8</span>
+          <span class="button_tally">9</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/security/' class="post_tag button button_translucent" title="security">
           SECURITY
-          <span class="button_tally">8</span>
+          <span class="button_tally">9</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/iot/' class="post_tag button button_translucent" title="iot">
@@ -335,7 +341,7 @@
         
         <a href='https://djalal.opendz.org/tags/bpf/' class="post_tag button button_translucent" title="bpf">
           BPF
-          <span class="button_tally">2</span>
+          <span class="button_tally">3</span>
         </a>
         
         <a href='https://djalal.opendz.org/tags/containers/' class="post_tag button button_translucent" title="containers">
@@ -436,6 +442,9 @@
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="stackoverflow">
     <path d="M21 27v-8h3v11H0V19h3v8h18z"></path><path d="M17.1.2L15 1.8l7.9 10.6 2.1-1.6L17.1.2zm3.7 14.7L10.6 6.4l1.7-2 10.2 8.5-1.7 2zM7.2 12.3l12 5.6 1.1-2.4-12-5.6-1.1 2.4zm-1.8 6.8l13.56 1.96.17-2.38-13.26-2.55-.47 2.97zM19 25H5v-3h14v3z"></path>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
+    <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
+  </symbol>
 </svg>
 
 
@@ -451,7 +460,7 @@
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://djalal.opendz.org/js/bundle.min.9ce7fc3788febe86476e100c964306a676cf8fa5c76bfc6977ce61763c9a61abfccbc875a0001e1e6d167b246ed949768c5eee5a32b44da86b7b7d9fc9d6a594.js" integrity="sha512-nOf8N4j&#43;voZHbhAMlkMGpnbPj6XHa/xpd85hdjyaYav8y8h1oAAeHm0WeyRu2Ul2jF7uWjK0Tahre32fydallA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://djalal.opendz.org/js/bundle.min.3a637d20f405b0e949682a15fee9fc28da47f1dd495a48e9a9d651e575491162328cbde60680a3c2868b3c98a27bd7c8473bc87938b069d782751e6bf4d101eb.js" integrity="sha512-OmN9IPQFsOlJaCoV/un8KNpH8d1JWkjpqdZR5XVJEWIyjL3mBoCjwoaLPJiie9fIRzvIeTiwadeCdR5r9NEB6w==" crossorigin="anonymous"></script>
     
   </body>
 </html>

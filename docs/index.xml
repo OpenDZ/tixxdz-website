@@ -7,7 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2021, Djalal Harouni; all rights reserved.</copyright>
-    <lastBuildDate>Sun, 06 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 11 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kernel Image Lockdown and eBPF Flexibility!</title>
+      <link>https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/</link>
+      <pubDate>Fri, 11 Feb 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/</guid>
+      <description>
+        
+          
+            The Kernel Lockdown feature that was merged in Linux 5.4 is designed to prevent both direct and indirect access to a running kernel image, attempting to protect against unauthorized modification of the kernel image and to prevent access to security and cryptographic data located in kernel memory, whilst still permitting driver modules to be loaded.
+  Introduction  In his post Linux kernel lockdown, integrity, and confidentiality Matthew Garrett first explains that it took around 7 years journey to get the lockdown patches merged!
+          
+          
+        
+      </description>
+    </item>
+    
     <item>
       <title>eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</title>
       <link>https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/</link>
@@ -16,115 +33,11 @@
       <guid>https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/</guid>
       <description>
         
-          &lt;p&gt;Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems
-readonly at runtime for apps and containers, some attacks have been using what is known as &amp;quot;fileless binary execution&amp;quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.&lt;/p&gt;
-&lt;div style=&#34;text-align:center&#34;&gt;
-&lt;img src=&#34;https://djalal.opendz.org/img/filelessmalware.jpg&#34;&gt;
-&lt;/div&gt;
-&lt;p&gt;From Wikipedia &amp;quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.e. in RAM.&amp;quot;&lt;/p&gt;
-&lt;p&gt;In this post we focus on &lt;a href=&#34;https://man7.org/linux/man-pages/man2/memfd_create.2.html&#34;&gt;memfd_create()&lt;/a&gt; and &lt;a href=&#34;https://man7.org/linux/man-pages/man7/shm_overview.7.html&#34;&gt;shared memory&lt;/a&gt; anonymous files.&lt;/p&gt;
-&lt;h2&gt;memfd_create()&lt;/h2&gt;
-&lt;p&gt;&lt;code&gt;memfd_create()&lt;/code&gt; was developed when we were hacking on the defunct &lt;a href=&#34;https://github.com/gregkh/kdbus&#34;&gt;kdbus IPC&lt;/a&gt;, you can read more in the original post &lt;a href=&#34;https://dvdhrm.wordpress.com/2014/06/10/memfd_create2/&#34;&gt;memfd_create() by David Herrmann&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;memfd_create()&lt;/code&gt; creates an anonymous file and returns a file descriptor that refers to it.  The file behaves like a regular file, and so can be modified, truncated, memory-mapped, and so on.  However, unlike a regular file, it lives in RAM and has a volatile backing storage.  Once all references to the file are dropped, it is automatically released.  Anonymous memory is used for all backing pages of the file.  Therefore, files created by memfd_create() have the same semantics as other anonymous memory allocations such as those allocated using mmap(2) with the MAP_ANONYMOUS flag.&lt;/p&gt;
-&lt;p&gt;This feature is being abused by attackers and malware to write binary payload to that memory-resident file and then execute into it, like with any other binary file located on the filesystem.&lt;/p&gt;
-&lt;p&gt;As an example, let&#39;s take a look at the memory loader sample that uses &lt;code&gt;memfd_create()&lt;/code&gt; published in the &lt;a href=&#34;https://blog.tofile.dev/2022/01/04/sysmonlinux.html&#34;&gt;Sysmon for
-Linux&lt;/a&gt; post by Pat H. loader code is &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking/blob/main/loader/go/loader.go&#34;&gt;here github repo&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The loader will create an anonymous file, copy the binary ./bin/basic or any other passed binary into it, and then
-execute the referenced file. This is usually the same technique used by malware to perform fileless binary execution.&lt;/p&gt;
-&lt;p&gt;We all use &lt;code&gt;ps&lt;/code&gt; to see what processes are running, and if you do then it will return:
-&lt;br&gt;
-&lt;code&gt;
-USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-&lt;/code&gt;
-&lt;br&gt;
-&lt;code&gt;
-tixxdz     53324  1.0  0.0  17000   944 pts/2    S+   08:42   0:00 from_loader AAAA
-&lt;/code&gt;
-&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;Where &lt;code&gt;from_loader&lt;/code&gt; is the name or comm of the program after it was modified, and there is no indication if this is from
-an anonymous file or not.&lt;/p&gt;
-&lt;h2&gt;Detection of Fileless Binary Execution&lt;/h2&gt;
-&lt;p&gt;Classic tools like &lt;code&gt;ps&lt;/code&gt; that read &lt;code&gt;/proc/$pid/comm&lt;/code&gt; are restricted and can be easily tricked, as changing the process name to arbitrary values is
-a standard feature of Linux with the &lt;a href=&#34;https://man7.org/linux/man-pages/man2/prctl.2.html&#34;&gt;&lt;code&gt;prctl()&lt;/code&gt;&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;Some detection solutions go even further: read the &lt;code&gt;/proc&lt;/code&gt; filesystem and get the binary that is pointed by &lt;code&gt;/proc/$pid/exe&lt;/code&gt;. However, this detection can also be bypassed by calling &lt;code&gt;prctl()&lt;/code&gt; with &lt;a href=&#34;https://man7.org/linux/man-pages/man2/prctl.2.html&#34;&gt;&lt;code&gt;PR_SET_MM_EXE_FILE&lt;/code&gt;&lt;/a&gt; in order to link to another binary on the filesystem.&lt;/p&gt;
-&lt;p&gt;Actually, a lot of process properties including kernel memory maps can be changed by calling &lt;code&gt;prctl(PR_SET_MM,...)&lt;/code&gt; in a restrictive way of course.&lt;/p&gt;
-&lt;p&gt;We may also read &lt;code&gt;/proc/$pid/maps&lt;/code&gt; to show mapped memory, but as usual it is racey: the process may just &lt;code&gt;execv()&lt;/code&gt; into another one, and at the time of reading, maps will show some other data, too late :warning:&lt;/p&gt;
-&lt;p&gt;The most robust way is to use Linux Security Modules, tracing or &lt;a href=&#34;https://ebpf.io/&#34;&gt;eBPF&lt;/a&gt; to trace the execution. A good candidate is when the corresponding &lt;a href=&#34;https://elixir.free-electrons.com/linux/v5.17-rc2/source/include/linux/binfmts.h#L96&#34;&gt;binfmt&lt;/a&gt; loader matches and the process execution hits the point of no return. At this time, we have gathered enough information, we can access the &lt;code&gt;elf&lt;/code&gt; header, and we are sure that such information can&#39;t be forged, since handing execution to the corresponding process still did not happen. The &lt;a href=&#34;https://elixir.bootlin.com/linux/latest/C/ident/mm_struct&#34;&gt;mm_struct&lt;/a&gt; is still attached to the &lt;a href=&#34;https://elixir.bootlin.com/linux/latest/C/ident/linux_binprm&#34;&gt;Linux_binprm struct&lt;/a&gt;, and the current task still has a copy of the parent&#39;s &lt;code&gt;mm_struct&lt;/code&gt;. This allows to query the appropriate information, log, or even take actions before bad things happen.&lt;/p&gt;
-&lt;p&gt;For further reference, please see &lt;a href=&#34;https://github.com/linux-lock/bpflock/blob/main/bpf/filelesslock.bpf.c&#34;&gt;filelesslock.bpf.c&lt;/a&gt; program from the &lt;a href=&#34;https://github.com/linux-lock/bpflock/blob/main/bpf/filelesslock.bpf.c&#34;&gt;bpflock&lt;/a&gt; project, where it checks if the executed file is linked or not on the filesystem, if not then it logs and blocks the execution.&lt;/p&gt;
-&lt;p&gt;Other tools like &lt;a href=&#34;https://github.com/Sysinternals/SysmonForLinux&#34;&gt;SysmonForLinux&lt;/a&gt;, &lt;a href=&#34;https://github.com/aquasecurity/tracee&#34;&gt;Tracee&lt;/a&gt;, &lt;a href=&#34;https://github.com/falcosecurity/falco&#34;&gt;Falco&lt;/a&gt; are capable to detect if the file being executed is prefixed with &amp;quot;memfd:&amp;quot; which indicates a memfd file execution.&lt;/p&gt;
-&lt;h2&gt;Blocking Fileless Binary Execution&lt;/h2&gt;
-&lt;p&gt;Now let&#39;s how to use &lt;a href=&#34;https://github.com/linux-lock/bpflock&#34;&gt;bpflock&lt;/a&gt; to block executing into memfd files in their basic form.&lt;/p&gt;
-&lt;code&gt;
-docker run --name bpflock -it --rm --cgroupns=host --pid=host --privileged -e &#34;BPFLOCK_EXEC_SNOOP=all&#34; \
-&lt;br&gt;
-    -e &#34;BPFLOCK_FILELESSLOCK_PROFILE=restricted&#34; -v /sys/kernel/:/sys/kernel/ \
-&lt;br&gt;
-    -v /sys/fs/bpf:/sys/fs/bpf linuxlock/bpflock
-&lt;/code&gt;
-&lt;br&gt;
-&lt;p&gt;Then run the &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking#loader&#34;&gt;loader&lt;/a&gt; program that loads payload into a memfd
-file:
-&lt;br&gt;
-$ ./loader /bin/sleep 10
-&lt;br&gt;
-&lt;b&gt;Failed to execute: operation not permitted&lt;/b&gt;&lt;/p&gt;
-&lt;p&gt;If we check the logs of the bpflock container, we see:
-&lt;br&gt;
-&lt;code&gt;
-time=&amp;quot;2022-02-07T06:19:43Z&amp;quot; level=info msg=&amp;quot;event=syscall_execve tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=./loader retval=0&amp;quot; bpfprog=execsnoop subsys=bpf
-&lt;br&gt;
-&lt;br&gt;
-&lt;b&gt;
-time=&amp;quot;2022-02-07T06:19:43Z&amp;quot; level=info msg=&amp;quot;event=lsm_bprm_creds_from_file tgid=52906 pid=52906 ppid=6594 uid=1000 cgroupid=7014 comm=loader pcomm=bash filename=memfd:memfd-test retval=-1 reason=denied (restricted)&amp;quot; bpfprog=filelesslock subsys=bpf
-&lt;/b&gt;
-&lt;br&gt;
-&lt;br&gt;
-time=&amp;quot;2022-02-07T06:19:43Z&amp;quot; level=info msg=&amp;quot;event=syscall_execve tgid=52906 pid=52906 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&amp;quot; bpfprog=execsnoop subsys=bpf
-&lt;/code&gt;
-&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;The execution failed at log entry 2, the event is an LSM hook
-&lt;a href=&#34;https://elixir.bootlin.com/linux/latest/source/include/linux/lsm_hook_defs.h#L53&#34;&gt;bprm_creds_from_file&lt;/a&gt;, the filename points to a &lt;code&gt;memfd:&lt;/code&gt;
-backed file, the return value is &lt;code&gt;-1&lt;/code&gt; which is &lt;code&gt;-EPERM&lt;/code&gt; and the reason is &lt;code&gt;denied (restricted)&lt;/code&gt; due to the profile
-&lt;code&gt;restricted&lt;/code&gt; that is being used when starting bpflock.&lt;/p&gt;
-&lt;p&gt;A note here: the exec() arguments and the interpreter are not currently handled by bpflock.&lt;/p&gt;
-&lt;p&gt;Now, let&#39;s try to block &lt;a href=&#34;https://github.com/pathtofile/commandline_cloaking/tree/main/injector&#34;&gt;injector&lt;/a&gt;, a program that uses a technique published back in 1998 by &lt;a href=&#34;https://twitter.com/silviocesare&#34;&gt;Silvio Cesare&lt;/a&gt; in a paper &amp;quot;Unix ELF parasites and viruses&amp;quot; about patching ELF binaries to inject code at the program’s entrypoint.&lt;/p&gt;
-&lt;p&gt;We run the injector:
-&lt;br&gt;
-./injector ./shellcode.bin /bin/echo aaaa&lt;/p&gt;
-&lt;p&gt;The logs of bpflock produce:
-&lt;br&gt;
-&lt;code&gt;
-time=&amp;quot;2022-02-07T06:34:50Z&amp;quot; level=info msg=&amp;quot;event=syscall_execve tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=./injector retval=0&amp;quot; bpfprog=execsnoop subsys=bpf
-&lt;br&gt;
-&lt;br&gt;
-&lt;b&gt;
-time=&amp;quot;2022-02-07T06:34:50Z&amp;quot; level=info msg=&amp;quot;event=lsm_bprm_creds_from_file tgid=53151 pid=53151 ppid=6594 uid=1000 cgroupid=7014 comm=injector pcomm=bash filename=memfd: retval=-1 reason=denied (restricted)&amp;quot; bpfprog=filelesslock subsys=bpf
-&lt;/b&gt;
-&lt;br&gt;
-&lt;br&gt;
-time=&amp;quot;2022-02-07T06:34:50Z&amp;quot; level=info msg=&amp;quot;event=syscall_execve tgid=53151 pid=53151 ppid=0 uid=1000 cgroupid=7014 comm= pcomm= filename=/proc/self/fd/3 retval=-1&amp;quot; bpfprog=execsnoop subsys=bpf
-&lt;/code&gt;
-&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;We see in the second line that again, bpflock detected and blocked it.&lt;/p&gt;
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;As demonstrated &lt;a href=&#34;https://github.com/linux-lock/bpflock&#34;&gt;bpflock&lt;/a&gt; tool which is still experimental allows to detect and
-block memfd backed files execution, this is achieved by taking advantage of &lt;a href=&#34;https://docs.kernel.org/bpf/prog_lsm.html&#34;&gt;BPF LSM&lt;/a&gt; programs.&lt;/p&gt;
-&lt;p&gt;Thanks to &lt;a href=&#34;https://ebpf.io/&#34;&gt;eBPF&lt;/a&gt; which is a great technology, we are able to develop new network and security usecases.
-Also thanks to the ebpf kernel maintainers that are doing an amazing work by listening and incorporating developers resquests.&lt;/p&gt;
-&lt;p&gt;There are other more complex modules in bpflock, like:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#1-kernel-image-lock-down&#34;&gt;kimglock&lt;/a&gt; to
-protect kernel image direct and indirect modifications.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#3-bpf-protection&#34;&gt;bpfrestrict&lt;/a&gt;
-to restrict access to the bpf() system call.&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/linux-lock/bpflock/tree/main/docs/memory-protections.md#2-kernel-modules-protection&#34;&gt;kmodlock&lt;/a&gt; to
-restrict loading kernel modules.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;We will give further details in the next posts.&lt;/p&gt;
-&lt;h2&gt;Reference:&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&#34;https://blog.tofile.dev/2022/01/04/sysmonlinux.html&#34;&gt;Commandline Cloaking and Sysmon for Linux&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;FilelessMalware picture from: &lt;a href=&#34;https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/&#34;&gt;https://ophtek.com/fileless-malware-the-rise-of-a-new-threat/&lt;/a&gt;&lt;/p&gt;
-
+          
+            Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, some attacks have been using what is known as &amp;quot;fileless binary execution&amp;quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.
+ From Wikipedia &amp;quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.
+          
+          
         
       </description>
     </item>
@@ -137,14 +50,12 @@ restrict loading kernel modules.&lt;/li&gt;
       <guid>https://djalal.opendz.org/post/ebpf-summit-2021-talk/</guid>
       <description>
         
-          &lt;p&gt;At the &lt;a href=&#34;https://ebpf.io/summit-2021/&#34;&gt;eBPF Summit 2021&lt;/a&gt;, I gave a talk about how to take advantage of eBPF to try to
-bridge some cloud and IoT security features.&lt;/p&gt;
-&lt;div style=&#34;text-align:center&#34;&gt;
-&lt;img src=&#34;https://djalal.opendz.org/img/ebpf-logo.png&#34;&gt;
-&lt;/div&gt;
-&lt;p&gt;My Talk can be found here: &lt;a href=&#34;https://www.youtube.com/watch?v=ab8gqVqw_sM&amp;amp;ab_channel=eBPF%26CiliumCommunity&#34;&gt;BPF to bridge Cloud and IoT Linux Security on youtube&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;All eBPF Summit 2021 here: &lt;a href=&#34;https://www.youtube.com/watch?v=5XdV4PYNcro&amp;amp;list=PLDg_GiBbAx-laA5GG_WnbojJ44AV2uvZn&amp;amp;ab_channel=eBPF%26CiliumCommunity&#34;&gt;eBPF Summit 2021 Youtube Channel&lt;/a&gt;&lt;/p&gt;
-
+          
+            At the eBPF Summit 2021, I gave a talk about how to take advantage of eBPF to try to bridge some cloud and IoT security features.
+ My Talk can be found here: BPF to bridge Cloud and IoT Linux Security on youtube
+All eBPF Summit 2021 here: eBPF Summit 2021 Youtube Channel
+          
+          
         
       </description>
     </item>
@@ -157,18 +68,10 @@ bridge some cloud and IoT security features.&lt;/p&gt;
       <guid>https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/</guid>
       <description>
         
-          &lt;p&gt;Some friends pinged me about a GitHub post that lists Open Source projects used into space, more precisely within the &lt;a href=&#34;https://www.jpl.nasa.gov/missions/ingenuity&#34;&gt;Mars ingenuity mission&lt;/a&gt;. The Github post is here: &lt;a href=&#34;https://github.blog/2021-04-19-open-source-goes-to-mars/&#34;&gt;Open source goes to Mars&lt;/a&gt;&lt;/p&gt;
-&lt;div style=&#34;text-align:center&#34;&gt;
-&lt;img src=&#34;https://djalal.opendz.org/img/mars-achievement.webp&#34;&gt;
-&lt;/div&gt;
-&lt;p&gt;Today GitHub started to provide a badge for &lt;strong&gt;&amp;quot;almost 12,000&amp;quot;&lt;/strong&gt; developers who have contributed to Open Source projects used in the mission.&lt;/p&gt;
-&lt;div style=&#34;text-align:center&#34;&gt;
-&lt;img src=&#34;https://djalal.opendz.org/img/tix-contribution-mission-mars-2020.jpeg&#34; width=&#34;350&#34;/&gt;
-&lt;/div&gt;
-&lt;p&gt;Being from Algeria, I know how hard it is to contribute and work on big Open Source projects. As I got my badge:
-&lt;em&gt;I dedicated to all my friends and Open Source developers / hackers in Algeria, and to &lt;a href=&#34;https://walid.dev/blog/djug/&#34;&gt;Djug Youghourta Benali&lt;/a&gt; who passed a way one year ago, Allah yerhmou inchaAllah.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;I hope we see more Open Source developers, contributions from Algeria, but also OSS projects being officially adopted as an alternative solution.&lt;/p&gt;
-&lt;p&gt;Finally, the &lt;strong&gt;flight software and embedded systems framework&lt;/strong&gt;  being used by NASA is Open Source and available here: &lt;a href=&#34;https://github.com/nasa/fprime&#34;&gt;https://github.com/nasa/fprime&lt;/a&gt;&lt;/p&gt;
+          
+            &lt;p&gt;Some friends pinged me about a GitHub post that lists Open Source projects used into space, more precisely within the &lt;a href=&#34;https://www.jpl.nasa.gov/missions/ingenuity&#34;&gt;Mars ingenuity mission&lt;/a&gt;. The Github post is here: &lt;a href=&#34;https://github.blog/2021-04-19-open-source-goes-to-mars/&#34;&gt;Open source goes to Mars&lt;/a&gt;&lt;/p&gt;
+          
+          
         
       </description>
     </item>
@@ -181,11 +84,13 @@ bridge some cloud and IoT security features.&lt;/p&gt;
       <guid>https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/</guid>
       <description>
         
-          &lt;p&gt;The Userspace Linux Conference &lt;a href=&#34;https://all-systems-go.io/&#34;&gt;All Systems Go&lt;/a&gt;! 2017 videos and talks are now available online.&lt;/p&gt;
-&lt;p&gt;My talk &amp;quot;Modern Deployment for Embedded Linux and IoT&amp;quot; is available here:&lt;/p&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.youtube.com/watch?v=ZokgqpbQVlE&#34;&gt;Video&lt;/a&gt; - &lt;a href=&#34;https://github.com/tixxdz/conferences/blob/master/Modern_Deployment_for_Embedded_Linux_and_IoT_October_2017.pdf&#34;&gt;Slides&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;All video talks are &lt;a href=&#34;https://media.ccc.de/b/conferences/all_systems_go/2017&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
-
+          
+            The Userspace Linux Conference All Systems Go! 2017 videos and talks are now available online.
+My talk &amp;quot;Modern Deployment for Embedded Linux and IoT&amp;quot; is available here:
+Video - Slides
+All video talks are here
+          
+          
         
       </description>
     </item>
@@ -198,31 +103,12 @@ bridge some cloud and IoT security features.&lt;/p&gt;
       <guid>https://djalal.opendz.org/post/linux-kernel-private-proc-instances-per-pidns/</guid>
       <description>
         
-          &lt;p&gt;TL;DR: The Linux kernel procfs suffers from a historical design that prevents having multiple separate procfs
-instances inside the same PID namespace. All the mounts are a mirror of the internal one. This blocks developement of
-Linux containers, sandboxes, and other security related features.&lt;/p&gt;
-&lt;p&gt;Patch solution: &lt;a href=&#34;https://kernel-hardening.openwall.narkive.com/tI859M9N/patch-rfc-v3-0-7-proc-modernize-proc-to-support-multiple-private-instances#post1&#34;&gt;PATCH RFC v3 proc: modernize proc to support multiple private instances&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;Problem&lt;/h2&gt;
-&lt;p&gt;Linux containers and other sandbox mechanisms want to hide processes, files and directories of procfs, other implementations want
-to restrict some procfs features. To achieve this, some solutions try to mount innaccassible files over important
-ones, but this process is limited by default, as procfs entries are generally dynamic, it is hard to track all files
-as new features and their access are being merged. The last blocker is how procfs is handled internally.&lt;/p&gt;
-&lt;p&gt;Historically, &lt;a href=&#34;https://www.kernel.org/doc/html/latest/filesystems/proc.html&#34;&gt;Linux procfs&lt;/a&gt; was always tied to pid namespaces, during pid
-namespace creation we internally create a procfs mount for it. However,
-this has the effect that all new procfs mounts are just a mirror of the
-internal one, any change, any mount option update, any new future
-introduction will propagate to all other procfs mounts that are in the
-same pid namespace, which may disable any security mount related option.&lt;/p&gt;
-&lt;p&gt;For a detailed description please see: &lt;a href=&#34;https://kernel-hardening.openwall.narkive.com/tI859M9N/patch-rfc-v3-0-7-proc-modernize-proc-to-support-multiple-private-instances#post1&#34;&gt;PATCH RFC v3 proc: modernize proc to support multiple private instances&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;Solution&lt;/h2&gt;
-&lt;p&gt;I have been working on a patchset to improve Linux procfs internal implementation, so we can have private procfs
-instances per the same PID namespace. This will improve Linux containers security in general, as it allows to clean proc
-internals, and allow to support better mount options like &lt;code&gt;hidepid&lt;/code&gt; and new ones.&lt;/p&gt;
-&lt;h2&gt;Update&lt;/h2&gt;
-&lt;p&gt;As of April 2020 Work has been merged and now procfs supports: &lt;a href=&#34;https://www.kernel.org/doc/html/latest/filesystems/proc.html#mount-options&#34;&gt;Per procfs instance mount options: hidepid and subset&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Thanks to Alexey Gladkov and other kernel developers for keeping up the work, it took +3 years to merge the patches and
-have a modern proc filesystem.&lt;/p&gt;
-
+          
+            TL;DR: The Linux kernel procfs suffers from a historical design that prevents having multiple separate procfs instances inside the same PID namespace. All the mounts are a mirror of the internal one. This blocks developement of Linux containers, sandboxes, and other security related features.
+Patch solution: PATCH RFC v3 proc: modernize proc to support multiple private instances
+Problem Linux containers and other sandbox mechanisms want to hide processes, files and directories of procfs, other implementations want to restrict some procfs features.
+          
+          
         
       </description>
     </item>
@@ -235,13 +121,10 @@ have a modern proc filesystem.&lt;/p&gt;
       <guid>https://djalal.opendz.org/post/linux-kernel-improve-module-autoloading-infrastructure/</guid>
       <description>
         
-          &lt;p&gt;TL;DR: Currently, an explicit call to load or unload kernel modules require CAP_SYS_MODULE capability. However unprivileged users have always been able to load some modules using the implicit auto-load operation. An automatic module loading happens when programs request a kernel feature from a module that is not loaded. In order to satisfy userspace, the kernel then automatically load all these required modules, however attackers have been abusing this functionality to load vulnerable modules.&lt;/p&gt;
-&lt;p&gt;Patch solution: &lt;a href=&#34;https://lkml.org/lkml/2017/11/27/754&#34;&gt;PATCH v5 Improve Module autoloading infrastructure&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;Solution&lt;/h2&gt;
-&lt;p&gt;I have been working on a solution that I am not sure if it will be merged or not. The idea was inspired from grsecurity &#39;GRKERNSEC_MODHARDEN&#39; config option.
-The upstream Linux implementation is more focused on the run-time behavior with a three mode switch, plus upstream version solves Linux usecases with a per process tree flag that can be used in containers, sandboxes, etc to block direct implicit auto-load operations. This implementation does not share anything with grsecurity.&lt;/p&gt;
-&lt;p&gt;The proposed solution is here: &lt;a href=&#34;https://lkml.org/lkml/2017/11/27/754&#34;&gt;PATCH v5 Improve Module autoloading infrastructure&lt;/a&gt;&lt;/p&gt;
-
+          
+            TL;DR: Currently, an explicit call to load or unload kernel modules require CAP_SYS_MODULE capability. However unprivileged users have always been able to load some modules using the implicit auto-load operation. An automatic module loading happens when programs request a kernel feature from a module that is not loaded. In order to satisfy userspace, the kernel then automatically load all these required modules, however attackers have been abusing this functionality to load vulnerable modules.
+          
+          
         
       </description>
     </item>
@@ -254,104 +137,10 @@ The upstream Linux implementation is more focused on the run-time behavior with 
       <guid>https://djalal.opendz.org/post/hardening-linux-based-iot-systems/</guid>
       <description>
         
-          &lt;p&gt;TL;DR: In Linux kernel and as part of the Kernel Self Protection Project we are pushing for new lightweight security mechanisms. On top of that, in systemd we are implementing new lightweight container mechanisms that target Embedded Linux and IoT. Our goal is to make it easy to deploy Secure Embedded Linux and IoT systems.&lt;/p&gt;
-&lt;p align=&#34;center&#34;&gt;
-&lt;img src=&#34;https://djalal.opendz.org/img/tux-hardened.png&#34;&gt;
-&lt;/p&gt;
-&lt;p&gt;Working with Embedded Linux systems, device drivers, system and kernel security, allows me to inspect what will be deployed in production. I noticed a common pattern for some devices, either they contain simple kernel vulnerabilities within third party drivers, or deployed applications run with higher privileges, they lack common sandbox and security features. In this blog post, I will present a brief introduction on some mechanisms that allow you to improve your Linux-based IoT security, before discussing new plans that are in development from systemd to Linux kernel hardening.&lt;/p&gt;
-&lt;h2&gt;Linux Kernel Hardening and security&lt;/h2&gt;
-&lt;p&gt;Linux is one of the most popular operating systems for Embedded and IoT systems. Linux is a beast, it solves most embedded world use cases, however, supporting lot of technologies has its own code complexity cost. Security hardening measures allow to hide this complexity, to reduce the attack surface, to contain apps, and to defeat some kernel or user space exploitation techniques. The &lt;a href=&#34;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project&#34;&gt;Linux kernel Self Protection project&lt;/a&gt; [1] tries to take this further by offering Kernel Self Protection features, the aim to protect against known and unknown Linux kernel bugs and vulnerabilities.&lt;/p&gt;
-&lt;p&gt;Some Embedded Kernel Hardening features:&lt;/p&gt;
-&lt;code&gt;
-    CONFIG_DEFAULT_MMAP_MIN_ADDR=32768
-&lt;/code&gt;
-Disallow allocating the first 32k of memory 
-to protect against kernel null pointer
-dereference and related exploits.
-&lt;br&gt;
-&lt;br&gt;
-&lt;code&gt;
-    CONFIG_STRICT_KERNEL_RWX=y
-&lt;/code&gt;
-Make kernel text and rodata read-only.
-Kernel version of W^X.
-&lt;br&gt;
-&lt;br&gt;
-&lt;code&gt;
-    CONFIG_STRICT_DEVMEM=y and CONFIG_IO_STRICT_DEVMEM=y
-&lt;/code&gt;
-Restrict physical memory access.
-&lt;br&gt;
-&lt;br&gt;
-&lt;code&gt;
-    CONFIG_SECCOMP=y and CONFIG_SECCOMP_FILTER=y
-&lt;/code&gt;
-Allows userspace to reduce the attack surface.
-&lt;br&gt;
-&lt;br&gt;
-&lt;code&gt;
-    STATIC_USERMODEHELPER=y
-&lt;/code&gt;
-Force all usermode helper calls through
-a single binary
-&lt;br&gt;
-&lt;br&gt;
-&lt;code&gt;
-    CONFIG_HARDENED_USERCOPY=y
-&lt;/code&gt;
-performs extra usercopy checks.
-&lt;p&gt;For more security features, please check the following &lt;a href=&#34;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings&#34;&gt;Kernel Self Protection Project guide&lt;/a&gt; [2]. There are lot of features that needs to be disabled on production systems. You should also consider trusted boot and TPM support from the beginning, they are not perfect but it is an extra layer to measure the boot process and allow TPM to act on that.&lt;/p&gt;
-&lt;h2&gt;Current/Future plans:&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;Modernization of proc file system&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;I have been working on modernizing &lt;a href=&#34;https://lkml.org/lkml/2017/4/25/282&#34;&gt;Linux proc API&lt;/a&gt; [3]. The procfs file system is an old virtual file system that exposes lot of kernel information, some of these files can be used as a source for information leaks to get kernel addresses and construct complex attacks. We have came to the conclusion that procfs needs to be updated and it is blocking lot of other Linux features. Together with Alexey Gladkov and based on Andy Lutomirski feedback, we have a branch here: &lt;a href=&#34;https://github.com/legionus/linux/commits/pidfs-v4&#34;&gt;https://github.com/legionus/linux/commits/pidfs-v4&lt;/a&gt; [4] that allows to improve Linux procfs and protect exposed kernel files, only /proc/&lt;pids&gt;/ files will be available.&lt;/p&gt;
-&lt;p&gt;It also allows to have separate procfs instances per App, this means you are not forced anymore to use PID namespaces to hide some processes, simply mounting a new separate procfs instance with “hidepid=” will allow to hide at some degree other processes that belong to other users, and without using PID namespaces. This is useful for Linux-based IoT, as we may not need to have multiple PID namespace managers. Another introduction RFC is planed soon to try to make the transition as smooth as possible.&lt;/p&gt;
-&lt;ol start=&#34;2&#34;&gt;
-&lt;li&gt;Automatic module loading protection&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;historically, Linux was always able to transparently load kernel modules to satisfy user functionality when needed, this is a crucial point for a better user experience. However, this feature can be abused to load vulnerable modules and exploit some kernel bugs. Several examples come to mind:&lt;/p&gt;
-&lt;p&gt;The 11 year old &lt;a href=&#34;http://seclists.org/oss-sec/2017/q1/471&#34;&gt;DCCP double free vulnerability CVE-2017–6074&lt;/a&gt; [5]&lt;/p&gt;
-&lt;p&gt;CVE-2017–2636: exploit the &lt;a href=&#34;https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html&#34;&gt;race condition in the n_hdlc Linux kernel driver bypassing SMEP&lt;/a&gt; [6]&lt;/p&gt;
-&lt;p&gt;kernel: &lt;a href=&#34;http://www.openwall.com/lists/oss-security/2017/03/29/2&#34;&gt;Local privilege escalation in XFRM framework CVE-2017–7184&lt;/a&gt; [7] it was advertised that maybe this vulnerability was used to break Ubuntu systems on security contests.&lt;/p&gt;
-&lt;p&gt;Most Embedded Linux systems should not allow module loading at all, or only a subset of signed modules, however there are products that need unrestricted module support. Inspired by &lt;a href=&#34;https://grsecurity.net/&#34;&gt;Grsecurity MODHARDEN&lt;/a&gt; [8] feature, we have tried to implement a new generic module autoloading restriction that can be used by sandbox tools. The result is here: &lt;a href=&#34;https://lkml.org/lkml/2017/5/22/312&#34;&gt;https://lkml.org/lkml/2017/5/22/312&lt;/a&gt; [9]. Thanks to Kees Cook, Solar Designer and Andy Lutomirski for the feedback, I am planning v5.&lt;/p&gt;
-&lt;ol start=&#34;3&#34;&gt;
-&lt;li&gt;Generalizing YAMA LSM&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.kernel.org/doc/Documentation/security/Yama.txt&#34;&gt;Yama LSM&lt;/a&gt; [10] is a Linux security module with a clear purpose of protecting processes from being controlled by other processes using ptrace functionality. Recently, I have been experimenting on how to generalize this behaviour to other kernel interfaces and system calls. The aim is to have a simple interface to restrict some operations from operating on arbitrary processes, or processes that run under a different User ID. This should be a default kernel hardening measure on Embedded Linux.&lt;/p&gt;
-&lt;h2&gt;References:&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project&#34;&gt;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings&#34;&gt;https://kernsec.org/wiki/index.php/Kernel_Self_Protection_Project/Recommended_Settings&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://lkml.org/lkml/2017/4/25/282&#34;&gt;https://lkml.org/lkml/2017/4/25/282&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://github.com/legionus/linux/commits/pidfs-v4&#34;&gt;https://github.com/legionus/linux/commits/pidfs-v4&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;http://seclists.org/oss-sec/2017/q1/471&#34;&gt;http://seclists.org/oss-sec/2017/q1/471&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html&#34;&gt;https://a13xp0p0v.github.io/2017/03/24/CVE-2017-2636.html&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;http://www.openwall.com/lists/oss-security/2017/03/29/2&#34;&gt;http://www.openwall.com/lists/oss-security/2017/03/29/2&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://grsecurity.net/&#34;&gt;https://grsecurity.net/&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://lkml.org/lkml/2017/5/22/312&#34;&gt;https://lkml.org/lkml/2017/5/22/312&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;a href=&#34;https://www.kernel.org/doc/Documentation/security/Yama.txt&#34;&gt;https://www.kernel.org/doc/Documentation/security/Yama.txt&lt;/a&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
+          
+            &lt;p&gt;TL;DR: In Linux kernel and as part of the Kernel Self Protection Project we are pushing for new lightweight security mechanisms. On top of that, in systemd we are implementing new lightweight container mechanisms that target Embedded Linux and IoT. Our goal is to make it easy to deploy Secure Embedded Linux and IoT systems.&lt;/p&gt;
+          
+          
         
       </description>
     </item>
@@ -364,56 +153,11 @@ performs extra usercopy checks.
       <guid>https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/</guid>
       <description>
         
-          &lt;p&gt;Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.&lt;/p&gt;
-&lt;div style=&#34;text-align:center&#34;&gt;
-&lt;img src=&#34;https://djalal.opendz.org/img/Security-lock-life-of-pix-4291.jpg&#34;&gt;
-&lt;/div&gt;
-&lt;p&gt;As a simple example the BrickerBot and similar worms did not use complex 0day exploits. They used simple attack vectors like unprotected remote shells accounts and according to internet resources, lot of IoT devices were affected. The straightforward solution in this case should be a firewall solution plus a powerful sandbox mechanism for apps.&lt;/p&gt;
-&lt;p&gt;While with every new &lt;a href=&#34;https://lists.freedesktop.org/archives/systemd-devel/2017-October/039589.html&#34;&gt;systemd release&lt;/a&gt; we continue to introduce new sandbox mechanisms, by default all these mechanisms are an opt-in operation, in the future we are planning to maybe add another run-time mode to make the sandbox an opt-out operation. Meanwhile, systemd manager now allows you to run your apps from an image like most other container runtimes. However, systemd does not use any standard format, since most of the container run-times that are using this schema are usually over-engineered, and some of them are abusing some Linux kernel features to hide some other misbehavior, etc. In systemd, right now we support Lightweight Containers, by using only file system Mount Namespaces to isolate and ship Apps with their dependencies, we avoid for now the container managers complexity. Network namespaces are used rarely to only block internet access for Apps by disconnecting network interfaces. We may improve network namespace usage, but only to make it easy to integrate within the &lt;strong&gt;“ip”&lt;/strong&gt; tool, that should handle all possible network cases for Embedded Linux setups.&lt;/p&gt;
-&lt;h2&gt;systemd Security Sandbox features&lt;/h2&gt;
-&lt;p&gt;The following lists some new systemd sandbox options:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;1. New File system sandbox option:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    RootImage=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Takes a path to a block device, loopback file, etc that can be mounted as the new root filesystem for your App.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;2. Some User privileges sandbox options:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    DynamicUser=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If set to yes, allows to run your App under different User (Unix UID/GID). The UID is allocated dynamically and released when the App stops, allowing IoT devices to follow Android model where each App is executed under a different user, separating Apps and their file access permissions.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    NoNewPrivileges=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If set, ensures that the App and all its children can never gain new privileges through execve().&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;3. Some Network sandbox options:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    PrivateNetwork=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If set to yes, will set up a new private network namespace with only loopback interface inside, disconnecting internet access.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    IPAddressDeny=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Takes an IP address prefix, all traffic from and to this address will be blocked for the App.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    IPAddressAllow=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;The whitelist or permitted IP address/network mask list.&lt;/p&gt;
-&lt;p&gt;To block raw packets AF_PACKET you should also use:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    RestrictAddressFamilies=~AF_PACKET (blacklisting mode).
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;We are working to make this more user friendly, maybe in the near feature we will add: “ACCESS_INTERNET=yes|no” alias for those options to effectively block all inet or internet operations, including constructing raw packets and binding privileged ports.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;4. Kernel attack surface reduction:&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    RestrictNamespaces=
-&lt;span class=&#34;ln&#34;&gt;2&lt;/span&gt;    “RestrictNamespaces=yes” or “RestrictNamespaces=~user”
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Restrict Access to Linux namespaces. Most IoT devices should reduce access to Linux User Namespaces since some vulnerabilities and exploits are still targeting this feature.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    ProtectKernelTunables=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Blocks tuning Kernel parameters by making /proc and related /sys files read-only.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    ProtectKernelModules=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;If set, removes the CAP_SYS_MODULE capability and blocks your App from explicitly loading or unloading modules.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    SystemCallFilter=
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Seccomp system call filtering feature. In systemd we have organized Linux system calls in groups inspired from Google Chromium browser. You can restrict your App by functionality by blacklisting the system calls using the &lt;strong&gt;“~”&lt;/strong&gt; before each group. As an example:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    “@reboot”
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;will block all related reboot system calls.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    “@module”
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;will block all kernel module system calls.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;&lt;span class=&#34;ln&#34;&gt;1&lt;/span&gt;    “@mount”
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;will block all file system mount and umount system calls.&lt;/p&gt;
-&lt;p&gt;For more system call filtering please refer to official systemd documentation &lt;a href=&#34;https://www.freedesktop.org/software/systemd/man/systemd.exec.html#SystemCallFilter=&#34;&gt;systemd.exec&lt;/a&gt; [1]. We have a pretty usable system call filtering feature, and we are actively working on improving it.&lt;/p&gt;
-&lt;h2&gt;Conclusion&lt;/h2&gt;
-&lt;p&gt;Future plans for systemd: as the systemd project continue to evolve to handle new use cases, we have to face reality: we need 1) reduce our functionality to better handle some IoT requirements, 2) integrate with software update mechanisms. On a more generic approach we have to support more user friendly features. In the past, systemd was intended to be used by experienced service developers and SysVinit experts, today the user base is more of Container and Android Apps model users. This does not mean that we have to copy those models, but we should start with a new smooth run-time model.&lt;/p&gt;
-&lt;h2&gt;References:&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.freedesktop.org/software/systemd/man/systemd.exec.html#SystemCallFilter=&#34;&gt;https://www.freedesktop.org/software/systemd/man/systemd.exec.html#SystemCallFilter=&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
+          
+            Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.
+ As a simple example the BrickerBot and similar worms did not use complex 0day exploits. They used simple attack vectors like unprotected remote shells accounts and according to internet resources, lot of IoT devices were affected. The straightforward solution in this case should be a firewall solution plus a powerful sandbox mechanism for apps.
+          
+          
         
       </description>
     </item>
@@ -426,14 +170,13 @@ performs extra usercopy checks.
       <guid>https://djalal.opendz.org/post/linux-kernel-proc-pid-envrion-fixes/</guid>
       <description>
         
-          &lt;p&gt;Just to share that Linux &lt;a href=&#34;https://www.kernel.org/doc/html/latest/filesystems/proc.html&#34;&gt;/proc/pid/environ&lt;/a&gt;  suffers from bugs referenced and fixed here: &lt;a href=&#34;https://lkml.org/lkml/2012/7/24/245&#34;&gt;proc: /proc/&lt;pid&gt;/environ offset fixes&lt;/a&gt;  that can be considered vulnerabilities.&lt;/p&gt;
-&lt;p&gt;The fixes are in the mainline now. The PoC to dump exec area can found here: &lt;a href=&#34;http://lkml.org/lkml/2012/7/22/163&#34;&gt;http://lkml.org/lkml/2012/7/22/163&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Linux Procfs suffers from other vulnerabilities, like the:&lt;/p&gt;
-&lt;code&gt;
-    -&gt;open() + -&gt;dup(stdin,stdout…) + execve(suid_program)…
-&lt;/code&gt;
-&lt;p&gt;These were discussed several times on lkml. If you want a quick nice fix, that only compares u64bit values, check the recent Grsecurity patches. The &lt;a href=&#34;https://www.openwall.com/Owl/&#34;&gt;Openwall&lt;/a&gt; kernel patches includes the same first protection. The &lt;a href=&#34;https://grsecurity.net/&#34;&gt;Grsecurity&lt;/a&gt; protection was updated to take advantage of per-cpu counters.&lt;/p&gt;
-
+          
+            Just to share that Linux /proc/pid/environ suffers from bugs referenced and fixed here: proc: /proc//environ offset fixes that can be considered vulnerabilities.
+The fixes are in the mainline now. The PoC to dump exec area can found here: http://lkml.org/lkml/2012/7/22/163
+Linux Procfs suffers from other vulnerabilities, like the:
+ -open() + -dup(stdin,stdout…) + execve(suid_program)…  These were discussed several times on lkml. If you want a quick nice fix, that only compares u64bit values, check the recent Grsecurity patches.
+          
+          
         
       </description>
     </item>
