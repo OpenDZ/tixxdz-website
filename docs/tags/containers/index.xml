@@ -22,6 +22,8 @@ Patch solution: PATCH RFC v3 proc: modernize proc to support multiple private in
 Problem Linux containers and other sandbox mechanisms want to hide processes, files and directories of procfs, other implementations want to restrict some procfs features.
           
           
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/linux-kernel-private-proc-instances-per-pidns/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
+          
         
       </description>
     </item>
@@ -38,6 +40,8 @@ Problem Linux containers and other sandbox mechanisms want to hide processes, fi
             Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.
  As a simple example the BrickerBot and similar worms did not use complex 0day exploits. They used simple attack vectors like unprotected remote shells accounts and according to internet resources, lot of IoT devices were affected. The straightforward solution in this case should be a firewall solution plus a powerful sandbox mechanism for apps.
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>

@@ -18,8 +18,10 @@
         
           
             The Kernel Lockdown feature that was merged in Linux 5.4 is designed to prevent both direct and indirect access to a running kernel image, attempting to protect against unauthorized modification of the kernel image and to prevent access to security and cryptographic data located in kernel memory, whilst still permitting driver modules to be loaded.
-  Introduction  In his post Linux kernel lockdown, integrity, and confidentiality Matthew Garrett first explains that it took around 7 years journey to get the lockdown patches merged!
+ Introduction  In his post Linux kernel lockdown, integrity, and confidentiality Matthew Garrett first explains that it took around 7 years journey to get the lockdown patches merged!
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>
@@ -35,8 +37,10 @@
         
           
             Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, some attacks have been using what is known as &amp;quot;fileless binary execution&amp;quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.
- From Wikipedia &amp;quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.
+From Wikipedia &amp;quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>
@@ -56,6 +60,8 @@
 All eBPF Summit 2021 here: eBPF Summit 2021 Youtube Channel
           
           
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/ebpf-summit-2021-talk/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
+          
         
       </description>
     </item>
@@ -71,6 +77,8 @@ All eBPF Summit 2021 here: eBPF Summit 2021 Youtube Channel
           
             &lt;p&gt;Some friends pinged me about a GitHub post that lists Open Source projects used into space, more precisely within the &lt;a href=&#34;https://www.jpl.nasa.gov/missions/ingenuity&#34;&gt;Mars ingenuity mission&lt;/a&gt;. The Github post is here: &lt;a href=&#34;https://github.blog/2021-04-19-open-source-goes-to-mars/&#34;&gt;Open source goes to Mars&lt;/a&gt;&lt;/p&gt;
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>
@@ -91,6 +99,8 @@ Video - Slides
 All video talks are here
           
           
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
+          
         
       </description>
     </item>
@@ -109,6 +119,8 @@ Patch solution: PATCH RFC v3 proc: modernize proc to support multiple private in
 Problem Linux containers and other sandbox mechanisms want to hide processes, files and directories of procfs, other implementations want to restrict some procfs features.
           
           
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/linux-kernel-private-proc-instances-per-pidns/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
+          
         
       </description>
     </item>
@@ -124,6 +136,8 @@ Problem Linux containers and other sandbox mechanisms want to hide processes, fi
           
             TL;DR: Currently, an explicit call to load or unload kernel modules require CAP_SYS_MODULE capability. However unprivileged users have always been able to load some modules using the implicit auto-load operation. An automatic module loading happens when programs request a kernel feature from a module that is not loaded. In order to satisfy userspace, the kernel then automatically load all these required modules, however attackers have been abusing this functionality to load vulnerable modules.
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/linux-kernel-improve-module-autoloading-infrastructure/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>
@@ -141,6 +155,8 @@ Problem Linux containers and other sandbox mechanisms want to hide processes, fi
             &lt;p&gt;TL;DR: In Linux kernel and as part of the Kernel Self Protection Project we are pushing for new lightweight security mechanisms. On top of that, in systemd we are implementing new lightweight container mechanisms that target Embedded Linux and IoT. Our goal is to make it easy to deploy Secure Embedded Linux and IoT systems.&lt;/p&gt;
           
           
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/hardening-linux-based-iot-systems/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
+          
         
       </description>
     </item>
@@ -157,6 +173,8 @@ Problem Linux containers and other sandbox mechanisms want to hide processes, fi
             Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.
  As a simple example the BrickerBot and similar worms did not use complex 0day exploits. They used simple attack vectors like unprotected remote shells accounts and according to internet resources, lot of IoT devices were affected. The straightforward solution in this case should be a firewall solution plus a powerful sandbox mechanism for apps.
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>

@@ -18,8 +18,10 @@
         
           
             The Kernel Lockdown feature that was merged in Linux 5.4 is designed to prevent both direct and indirect access to a running kernel image, attempting to protect against unauthorized modification of the kernel image and to prevent access to security and cryptographic data located in kernel memory, whilst still permitting driver modules to be loaded.
-  Introduction  In his post Linux kernel lockdown, integrity, and confidentiality Matthew Garrett first explains that it took around 7 years journey to get the lockdown patches merged!
+ Introduction  In his post Linux kernel lockdown, integrity, and confidentiality Matthew Garrett first explains that it took around 7 years journey to get the lockdown patches merged!
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>
@@ -35,8 +37,10 @@
         
           
             Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and containers, some attacks have been using what is known as &amp;quot;fileless binary execution&amp;quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.
- From Wikipedia &amp;quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.
+From Wikipedia &amp;quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>
@@ -55,6 +59,8 @@
  My Talk can be found here: BPF to bridge Cloud and IoT Linux Security on youtube
 All eBPF Summit 2021 here: eBPF Summit 2021 Youtube Channel
           
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/ebpf-summit-2021-talk/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
           
         
       </description>
