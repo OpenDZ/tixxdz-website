@@ -25,7 +25,7 @@
 <meta property="og:url" content="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" />
 <meta property="og:title" content="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM" />
 <meta property="og:description" content="Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems readonly at runtime for apps and …" />
-<meta property="og:image" content="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/images/filelessmalware.jpg" />
+<meta property="og:image" content="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/images/filelessmalware.png" />
 
 <link rel="apple-touch-icon" sizes="180x180" href="https://djalal.opendz.org/images/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="https://djalal.opendz.org/images/favicon-32x32.png">
@@ -168,7 +168,7 @@
     <div class="post_body"><p>Due to the security features that Linux offers, like booting directly into a readonly filesystem, making filesystems
 readonly at runtime for apps and containers, some attacks have been using what is known as &quot;fileless binary execution&quot; to avoid such protections, and gain the ability to execute binaries directly from the memory without touching or leaving traces on the disk.</p>
 <div style="text-align:center">
-<img src="https://djalal.opendz.org/img/filelessmalware.jpg">
+<img src="https://djalal.opendz.org/images/filelessmalware.png">
 </div>
 <p>From Wikipedia &quot;Fileless malware is a variant of computer related malicious software that exists exclusively as a computer memory-based artifact i.e. in RAM.&quot;</p>
 <p>In this post we focus on <a href="https://man7.org/linux/man-pages/man2/memfd_create.2.html">memfd_create()</a> and <a href="https://man7.org/linux/man-pages/man7/shm_overview.7.html">shared memory</a> anonymous files.</p>
