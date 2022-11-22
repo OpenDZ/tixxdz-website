@@ -1,6 +1,11 @@
 
 <!DOCTYPE html>
-<html lang="en" data-figures="">
+<html
+  lang="en"
+  data-figures=""
+  
+  
+  >
   <head>
 <title>systemd | Djalal Harouni</title>
 <meta charset="utf-8">
@@ -14,13 +19,16 @@
   gtag('config', 'G-WCJ5CW58PD');
 </script>
 
+
+
 <meta property="og:locale" content="en" />
 
 <meta property="og:type" content="article">
-<meta name="description" content="">
+<meta name="description" content="" />
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:creator" content="@tixxdz">
 <meta name="twitter:title" content="systemd" />
+<meta name="twitter:image" content="https://djalal.opendz.org/images/thumbnail.png"/>
 <meta property="og:url" content="https://djalal.opendz.org/tags/systemd/" />
 <meta property="og:title" content="systemd" />
 <meta property="og:description" content="" />
@@ -33,34 +41,40 @@
 <link rel="canonical" href="https://djalal.opendz.org/tags/systemd/">
 <link rel="alternate" type="application/rss+xml" href="https://djalal.opendz.org/tags/systemd/index.xml" title="Djalal Harouni" />
 
-    
 
-    
-    
-    <link rel="preload" href="https://djalal.opendz.org/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity = "sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" as="style" crossorigin="anonymous">
-    <link rel="preload" href="https://djalal.opendz.org/js/bundle.min.3a637d20f405b0e949682a15fee9fc28da47f1dd495a48e9a9d651e575491162328cbde60680a3c2868b3c98a27bd7c8473bc87938b069d782751e6bf4d101eb.js" as="script" integrity=
-    "sha512-OmN9IPQFsOlJaCoV/un8KNpH8d1JWkjpqdZR5XVJEWIyjL3mBoCjwoaLPJiie9fIRzvIeTiwadeCdR5r9NEB6w==" crossorigin="anonymous">
 
-    
-    <link rel="stylesheet" type="text/css" href="https://djalal.opendz.org/css/styles.01869c76e4757810d94ecbdccadba853d9d01d9416dfeb113df02e1479ff8b36e284e8bfeb3e8f353f2fdcdcbbdfcf27e558dbda96eb6341bfc304d55cd9e986.css" integrity="sha512-AYacduR1eBDZTsvcytuoU9nQHZQW3&#43;sRPfAuFHn/izbihOi/6z6PNT8v3Ny7388n5Vjb2pbrY0G/wwTVXNnphg==" crossorigin="anonymous">
-    
+<link rel="preload" href="https://djalal.opendz.org/css/styles.fb7da5123fdd151b472f39d91f054bc9716d2de6c4c6227892b5522ac5eaa0047e74134c41449513968105e6647ad218721e5a3b2b9ea33c93fee2cbc9a947f8.css" integrity = "sha512-&#43;32lEj/dFRtHLznZHwVLyXFtLebExiJ4krVSKsXqoAR&#43;dBNMQUSVE5aBBeZketIYch5aOyueozyT/uLLyalH&#43;A==" as="style" crossorigin="anonymous">
+
+
+
+<link rel="preload" href="https://djalal.opendz.org/en/js/bundle.3444df293c605fa0410bf8fc31b65a1ca545c31f0e8073422987b16c13e8981a37c17775a2e9e4be87919ffb5a9ac5d862067687c4eceb6f715b88bfb45ad0d0.js" as="script" integrity=
+"sha512-NETfKTxgX6BBC/j8MbZaHKVFwx8OgHNCKYexbBPomBo3wXd1ounkvoeRn/tamsXYYgZ2h8Ts629xW4i/tFrQ0A==" crossorigin="anonymous">
+
+
+<link rel="stylesheet" type="text/css" href="https://djalal.opendz.org/css/styles.fb7da5123fdd151b472f39d91f054bc9716d2de6c4c6227892b5522ac5eaa0047e74134c41449513968105e6647ad218721e5a3b2b9ea33c93fee2cbc9a947f8.css" integrity="sha512-&#43;32lEj/dFRtHLznZHwVLyXFtLebExiJ4krVSKsXqoAR&#43;dBNMQUSVE5aBBeZketIYch5aOyueozyT/uLLyalH&#43;A==" crossorigin="anonymous">
+
+
   </head>
-  
-  
-  
-    
-  
-  <body data-code="50" data-lines="true" id="documentTop">
+  <body
+    data-code="50"
+    data-lines="true"
+    id="documentTop"
+    data-lang="en"
+  >
 
 <header class="nav_header" >
   <nav class="nav"><a href='https://djalal.opendz.org/' class="nav_brand nav_item" title="Djalal Harouni">
-  <img src="https://djalal.opendz.org/logos/luffy.png" class="logo" alt="Djalal Harouni">
+  <img src="https://djalal.opendz.org/logos/ahaggar.png" class="logo" alt="Djalal Harouni">
   <div class="nav_close">
     <div><svg class="icon">
+  <title>open-menu</title>
   <use xlink:href="#open-menu"></use>
-</svg><svg class="icon">
+</svg>
+<svg class="icon">
+  <title>closeme</title>
   <use xlink:href="#closeme"></use>
-</svg></div>
+</svg>
+</div>
   </div>
 </a>
 
@@ -84,26 +98,41 @@
   </div>
       
 <div class='follow'>
+  <a href="https://www.linkedin.com/in/djalal-harouni">
+    <svg class="icon">
+  <title>linkedin</title>
+  <use xlink:href="#linkedin"></use>
+</svg>
+
+  </a>
   <a href="https://github.com/tixxdz">
     <svg class="icon">
+  <title>github</title>
   <use xlink:href="#github"></use>
 </svg>
+
   </a>
   <a href="https://twitter.com/tixxdz">
     <svg class="icon">
+  <title>twitter</title>
   <use xlink:href="#twitter"></use>
 </svg>
+
   </a>
-  <a href="https://www.linkedin.com/in/djalal-harouni">
+  <a href="https://fosstodon.org/@djalaltix">
     <svg class="icon">
-  <use xlink:href="#linkedin"></use>
+  <title>mastodon</title>
+  <use xlink:href="#mastodon"></use>
 </svg>
+
   </a>
     
   <a href="https://djalal.opendz.org/index.xml">
     <svg class="icon">
+  <title>rss</title>
   <use xlink:href="#rss"></use>
 </svg>
+
   </a>
 <div class="color_mode">
   <input type="checkbox" class="color_choice" id="mode">
@@ -117,9 +146,12 @@
 
     <main>
 
+
+
 <div class="grid-inverse wrap content">
-  <ul class="posts" id="posts">
-      <li class="post_item">
+  <div>
+    <ul class="posts" id="posts">
+        <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -128,17 +160,19 @@
       
   <div class="post_meta">
     <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg></span>
+</svg>
+</span>
     <span class="post_date">
       02 Dec 2017, 00:00</span>
-    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://djalal.opendz.org/tags/opensource' title="opensource" class="post_tag button button_translucent">opensource
-        </a><a href='https://djalal.opendz.org/tags/linux' title="linux" class="post_tag button button_translucent">linux
-        </a><a href='https://djalal.opendz.org/tags/kernel' title="kernel" class="post_tag button button_translucent">kernel
-        </a><a href='https://djalal.opendz.org/tags/iot' title="IoT" class="post_tag button button_translucent">IoT
-        </a><a href='https://djalal.opendz.org/tags/security' title="security" class="post_tag button button_translucent">security
-        </a><a href='https://djalal.opendz.org/tags/conference' title="conference" class="post_tag button button_translucent">conference
-        </a><a href='https://djalal.opendz.org/tags/systemd' title="systemd" class="post_tag button button_translucent">systemd
+    <span class="post_time"> · 1 min read</span><span>&nbsp;· <a href='https://djalal.opendz.org/tags/opensource/' title="opensource" class="post_tag button button_translucent">opensource
+        </a><a href='https://djalal.opendz.org/tags/linux/' title="linux" class="post_tag button button_translucent">linux
+        </a><a href='https://djalal.opendz.org/tags/kernel/' title="kernel" class="post_tag button button_translucent">kernel
+        </a><a href='https://djalal.opendz.org/tags/iot/' title="IoT" class="post_tag button button_translucent">IoT
+        </a><a href='https://djalal.opendz.org/tags/security/' title="security" class="post_tag button button_translucent">security
+        </a><a href='https://djalal.opendz.org/tags/conference/' title="conference" class="post_tag button button_translucent">conference
+        </a><a href='https://djalal.opendz.org/tags/systemd/' title="systemd" class="post_tag button button_translucent">systemd
         </a>
     </span>
     <span class="page_only">&nbsp;·
@@ -146,23 +180,31 @@
     Share on:
     <a href="https://twitter.com/intent/tweet?text=All%20systems%20go%20Conference%20-%20Modern%20deployment%20for%20Embedded%20Linux%20and%20IoT%20Talk&url=https%3a%2f%2fdjalal.opendz.org%2fpost%2fmodern-deployment-for-embedded-linux-and-iot%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
       <svg class="icon">
+  <title>twitter</title>
   <use xlink:href="#twitter"></use>
 </svg>
+
     </a>
     <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fdjalal.opendz.org%2fpost%2fmodern-deployment-for-embedded-linux-and-iot%2f&t=All%20systems%20go%20Conference%20-%20Modern%20deployment%20for%20Embedded%20Linux%20and%20IoT%20Talk" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
       <svg class="icon">
+  <title>facebook</title>
   <use xlink:href="#facebook"></use>
 </svg>
+
     </a>
     <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
       <svg class="icon">
+  <title>linkedin</title>
   <use xlink:href="#linkedin"></use>
 </svg>
+
     </a>
     <a href="https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/" title="Copy Link" class="link link_yank">
       <svg class="icon">
+  <title>copy</title>
   <use xlink:href="#copy"></use>
 </svg>
+
     </a>
   </div>
   </span>
@@ -170,28 +212,10 @@
 
     </div>
     <div class="excerpt_footer partition">
-
-      
-      
-      
-      
-      
-<div class="excerpt_thumbnail">
+      <div class="excerpt_thumbnail"><figure>
   <picture>
 
     
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       
         
         
@@ -199,47 +223,37 @@
         
         
         
-        
-        
-        
-        
-        
-        
+    <img
+      loading="lazy"
+      decoding="async"
+      alt="All systems go Conference - Modern deployment for Embedded Linux and IoT Talk"
       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        class="image_figure image_thumbnail image_internal image_unprocessed"
+        src="images/hero-image.png"
       
+      
+    />
 
-      <img class="image_thumbnail image_internal" src="https://djalal.opendz.org/images/hero-image.png" alt="All systems go Conference - Modern deployment for Embedded Linux and IoT Talk" loading="lazy" decoding="async" width="500" height="500" /></picture>
-</div>
+    </picture>
+</figure>
 
+      </div>
       
-        <div>
-          <p class="pale">
-            
-              The Userspace Linux Conference All Systems Go! 2017 videos and talks are now available online.
+        <div class="pale">
+          
+            <p>The Userspace Linux Conference All Systems Go! 2017 videos and talks are now available online.
 My talk &quot;Modern Deployment for Embedded Linux and IoT&quot; is available here:
 Video - Slides
-All video talks are here
-            
-          </p>
+All video talks are here</p>
+          
+          <br>
           <a href="https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/" title="Read More" class="excerpt_more button">Read More</a>
         </div>
       </div>
     </div>
   </li>
 
-      <li class="post_item">
+        <li class="post_item">
   <div class="excerpt">
     <div class="excerpt_header">
       <h3 class="post_link">
@@ -248,15 +262,17 @@ All video talks are here
       
   <div class="post_meta">
     <span><svg class="icon">
+  <title>calendar</title>
   <use xlink:href="#calendar"></use>
-</svg></span>
+</svg>
+</span>
     <span class="post_date">
       15 Oct 2017, 00:00</span>
-    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://djalal.opendz.org/tags/opensource' title="opensource" class="post_tag button button_translucent">opensource
-        </a><a href='https://djalal.opendz.org/tags/linux' title="linux" class="post_tag button button_translucent">linux
-        </a><a href='https://djalal.opendz.org/tags/systemd' title="systemd" class="post_tag button button_translucent">systemd
-        </a><a href='https://djalal.opendz.org/tags/containers' title="containers" class="post_tag button button_translucent">containers
-        </a><a href='https://djalal.opendz.org/tags/security' title="security" class="post_tag button button_translucent">security
+    <span class="post_time"> · 4 min read</span><span>&nbsp;· <a href='https://djalal.opendz.org/tags/opensource/' title="opensource" class="post_tag button button_translucent">opensource
+        </a><a href='https://djalal.opendz.org/tags/linux/' title="linux" class="post_tag button button_translucent">linux
+        </a><a href='https://djalal.opendz.org/tags/systemd/' title="systemd" class="post_tag button button_translucent">systemd
+        </a><a href='https://djalal.opendz.org/tags/containers/' title="containers" class="post_tag button button_translucent">containers
+        </a><a href='https://djalal.opendz.org/tags/security/' title="security" class="post_tag button button_translucent">security
         </a>
     </span>
     <span class="page_only">&nbsp;·
@@ -264,23 +280,31 @@ All video talks are here
     Share on:
     <a href="https://twitter.com/intent/tweet?text=systemd%20Sandbox%20or%20systemd%20Lightweight%20Containers&url=https%3a%2f%2fdjalal.opendz.org%2fpost%2fsystemd-sandbox-or-systemd-lightweight-containers%2f&tw_p=tweetbutton" class="twitter" title="Share on Twitter" target="_blank" rel="nofollow">
       <svg class="icon">
+  <title>twitter</title>
   <use xlink:href="#twitter"></use>
 </svg>
+
     </a>
     <a href="https://www.facebook.com/sharer.php?u=https%3a%2f%2fdjalal.opendz.org%2fpost%2fsystemd-sandbox-or-systemd-lightweight-containers%2f&t=systemd%20Sandbox%20or%20systemd%20Lightweight%20Containers" class="facebook" title="Share on Facebook" target="_blank" rel="nofollow">
       <svg class="icon">
+  <title>facebook</title>
   <use xlink:href="#facebook"></use>
 </svg>
+
     </a>
     <a href="#linkedinshare" id = "linkedinshare" class="linkedin" title="Share on LinkedIn" rel="nofollow">
       <svg class="icon">
+  <title>linkedin</title>
   <use xlink:href="#linkedin"></use>
 </svg>
+
     </a>
     <a href="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/" title="Copy Link" class="link link_yank">
       <svg class="icon">
+  <title>copy</title>
   <use xlink:href="#copy"></use>
 </svg>
+
     </a>
   </div>
   </span>
@@ -288,28 +312,10 @@ All video talks are here
 
     </div>
     <div class="excerpt_footer partition">
-
-      
-      
-      
-      
-      
-<div class="excerpt_thumbnail">
+      <div class="excerpt_thumbnail"><figure>
   <picture>
 
     
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       
         
         
@@ -317,54 +323,50 @@ All video talks are here
         
         
         
-        
-        
-        
-        
-        
-        
+    <img
+      loading="lazy"
+      decoding="async"
+      alt="systemd Sandbox or systemd Lightweight Containers"
       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        class="image_figure image_thumbnail image_internal image_unprocessed"
+        src="images/Security-lock-life-of-pix-4291.jpg"
       
+      
+    />
 
-      <img class="image_thumbnail image_internal" src="https://djalal.opendz.org/images/Security-lock-life-of-pix-4291.jpg" alt="systemd Sandbox or systemd Lightweight Containers" loading="lazy" decoding="async" width="640" height="426" /></picture>
-</div>
+    </picture>
+</figure>
 
+      </div>
       
-        <div>
-          <p class="pale">
-            
-              Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.
- As a simple example the BrickerBot and similar worms did not use complex 0day exploits. They used simple attack vectors like …
-            
-          </p>
+        <div class="pale">
+          
+            <p>Sandboxing IoT Apps using lightweight containers is an important step for Linux-IoT based devices, it allows to reduce the exposure from mis-configuration, bugs, or vulnerability exploitation.
+As a simple example the BrickerBot and similar worms did not use complex 0day exploits. They used simple attack vectors like …</p>
+          
+          <br>
           <a href="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/" title="Read More" class="excerpt_more button">Read More</a>
         </div>
       </div>
     </div>
   </li>
 
-    <li>
-    </li>
-  </ul>
+      <li>
+      </li>
+    </ul>
+  </div>
 <aside class="sidebar">
   <section class="sidebar_inner">
+    <br>
+    
+
         <h2>Djalal Harouni</h2>
       <div class="author_bio">
-        Open Source Software hacker / Cloud / Linux kernel / BPF / systemd from Constantine dz.
+        Open Source Software Hacker / Cloud / Linux kernel / BPF / systemd from DZ.
       </div>
       <a href='https://djalal.opendz.org/about/' class="button mt-1" role="button" title='Read More'>Read More</a>
+
+    
     
     <h2 class="mt-4">Featured Posts</h2>
     <ul>
@@ -372,10 +374,13 @@ All video talks are here
         <a href="https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/" class="nav-link" title="Kernel Image Lockdown and eBPF Flexibility!">Kernel Image Lockdown and eBPF Flexibility!</a>
       </li>
       <li>
-        <a href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" class="nav-link" title="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM">eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</a>
+        <a href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" class="nav-link" title="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM">eBPF: Block Linux Fileless Payload &quot;Malware&quot; Execution with BPF LSM</a>
       </li>
       <li>
         <a href="https://djalal.opendz.org/post/ebpf-summit-2021-talk/" class="nav-link" title="eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security">eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security</a>
+      </li>
+      <li>
+        <a href="https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/" class="nav-link" title="DZ Open Source contributions into space Mars 2020 Helicopter, Ingenuity">DZ Open Source contributions into space Mars 2020 Helicopter, Ingenuity</a>
       </li>
       <li>
         <a href="https://djalal.opendz.org/post/linux-kernel-private-proc-instances-per-pidns/" class="nav-link" title="Modernization of Linux proc filesystem and containers security">Modernization of Linux proc filesystem and containers security</a>
@@ -393,28 +398,10 @@ All video talks are here
     <h2 class="mt-4">Recent Posts</h2>
     <ul class="flex-column">
       <li>
-        <a href="https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/" class="nav-link" title="Kernel Image Lockdown and eBPF Flexibility!">Kernel Image Lockdown and eBPF Flexibility!</a>
-      </li>
-      <li>
-        <a href="https://djalal.opendz.org/post/ebpf-block-linux-fileless-payload-execution-with-bpf-lsm/" class="nav-link" title="eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM">eBPF: Block Linux Fileless Payload &#34;Malware&#34; Execution with BPF LSM</a>
-      </li>
-      <li>
-        <a href="https://djalal.opendz.org/post/ebpf-summit-2021-talk/" class="nav-link" title="eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security">eBPF Summit 2021 - Talk: BPF to bridge Cloud and IoT Linux Security</a>
-      </li>
-      <li>
-        <a href="https://djalal.opendz.org/post/dz-code-mars-2020-helicopter-contributor/" class="nav-link" title="DZ Open Source contributions into space Mars 2020 Helicopter, Ingenuity">DZ Open Source contributions into space Mars 2020 Helicopter, Ingenuity</a>
-      </li>
-      <li>
         <a href="https://djalal.opendz.org/post/modern-deployment-for-embedded-linux-and-iot/" class="nav-link" title="All systems go Conference - Modern deployment for Embedded Linux and IoT Talk">All systems go Conference - Modern deployment for Embedded Linux and IoT Talk</a>
       </li>
       <li>
-        <a href="https://djalal.opendz.org/post/linux-kernel-private-proc-instances-per-pidns/" class="nav-link" title="Modernization of Linux proc filesystem and containers security">Modernization of Linux proc filesystem and containers security</a>
-      </li>
-      <li>
-        <a href="https://djalal.opendz.org/post/linux-kernel-improve-module-autoloading-infrastructure/" class="nav-link" title="Linux kernel improve Module autoloading infrastructure">Linux kernel improve Module autoloading infrastructure</a>
-      </li>
-      <li>
-        <a href="https://djalal.opendz.org/post/hardening-linux-based-iot-systems/" class="nav-link" title="Hardening Linux-based IoT systems">Hardening Linux-based IoT systems</a>
+        <a href="https://djalal.opendz.org/post/systemd-sandbox-or-systemd-lightweight-containers/" class="nav-link" title="systemd Sandbox or systemd Lightweight Containers">systemd Sandbox or systemd Lightweight Containers</a>
       </li>
     </ul>
     <div>
@@ -555,7 +542,7 @@ All video talks are here
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="linkedin">
     <path d="M437 0H75C33.648 0 0 33.648 0 75v362c0 41.352 33.648 75 75 75h362c41.352 0 75-33.648 75-75V75c0-41.352-33.648-75-75-75zM181 406h-60V196h60zm0-240h-60v-60h60zm210 240h-60V286c0-16.54-13.46-30-30-30s-30 13.46-30 30v120h-60V196h60v11.309C286.719 202.422 296.93 196 316 196c40.691.043 75 36.547 75 79.688zm0 0"></path>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="arrow">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" id="to-top">
     <path d="M604.501 440.509L325.398 134.956c-5.331-5.357-12.423-7.627-19.386-7.27-6.989-.357-14.056 1.913-19.387 7.27L7.499 440.509c-9.999 10.024-9.999 26.298 0 36.323s26.223 10.024 36.222 0l262.293-287.164L568.28 476.832c9.999 10.024 26.222 10.024 36.221 0 9.999-10.023 9.999-26.298 0-36.323z"></path>
   </symbol>
   <symbol viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" id="carly">
@@ -583,7 +570,14 @@ All video talks are here
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="xing">
     <path d="M18.188 0c-.517 0-.741.325-.927.66 0 0-7.455 13.224-7.702 13.657.015.024 4.919 9.023 4.919 9.023.17.308.436.66.967.66h3.454c.211 0 .375-.078.463-.22.089-.151.089-.346-.009-.536l-4.879-8.916c-.004-.006-.004-.016 0-.022L22.139.756c.095-.191.097-.387.006-.535C22.056.078 21.894 0 21.686 0h-3.498zM3.648 4.74c-.211 0-.385.074-.473.216-.09.149-.078.339.02.531l2.34 4.05c.004.01.004.016 0 .021L1.86 16.051c-.099.188-.093.381 0 .529.085.142.239.234.45.234h3.461c.518 0 .766-.348.945-.667l3.734-6.609-2.378-4.155c-.172-.315-.434-.659-.962-.659H3.648v.016z"/>
   </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 71 55" id="discord">
+    <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mastodon" viewBox="0 0 16 16" id="mastodon">
+    <path d="M11.19 12.195c2.016-.24 3.77-1.475 3.99-2.603.348-1.778.32-4.339.32-4.339 0-3.47-2.286-4.488-2.286-4.488C12.062.238 10.083.017 8.027 0h-.05C5.92.017 3.942.238 2.79.765c0 0-2.285 1.017-2.285 4.488l-.002.662c-.004.64-.007 1.35.011 2.091.083 3.394.626 6.74 3.78 7.57 1.454.383 2.703.463 3.709.408 1.823-.1 2.847-.647 2.847-.647l-.06-1.317s-1.303.41-2.767.36c-1.45-.05-2.98-.156-3.215-1.928a3.614 3.614 0 0 1-.033-.496s1.424.346 3.228.428c1.103.05 2.137-.064 3.188-.189zm1.613-2.47H11.13v-4.08c0-.859-.364-1.295-1.091-1.295-.804 0-1.207.517-1.207 1.541v2.233H7.168V5.89c0-1.024-.403-1.541-1.207-1.541-.727 0-1.091.436-1.091 1.296v4.079H3.197V5.522c0-.859.22-1.541.66-2.046.456-.505 1.052-.764 1.793-.764.856 0 1.504.328 1.933.983L8 4.39l.417-.695c.429-.655 1.077-.983 1.934-.983.74 0 1.336.259 1.791.764.442.505.661 1.187.661 2.046v4.203z"/>
+  </symbole>
 </svg>
+
 
 
 <footer class="footer">
@@ -591,14 +585,15 @@ All video talks are here
     <img src='https://djalal.opendz.org/images/apple-touch-icon.png' class="icon icon_2 transparent" alt="Djalal Harouni">
     <p>Copyright&nbsp;<span class="year"></span>&nbsp;DJALAL HAROUNI. All Rights Reserved</p><a class="to_top" href="#documentTop">
   <svg class="icon">
-  <use xlink:href="#arrow"></use>
+  <title>to-top</title>
+  <use xlink:href="#to-top"></use>
 </svg>
+
 </a>
 
   </div>
 </footer>
 
-    <script type="text/javascript" src="https://djalal.opendz.org/js/bundle.min.3a637d20f405b0e949682a15fee9fc28da47f1dd495a48e9a9d651e575491162328cbde60680a3c2868b3c98a27bd7c8473bc87938b069d782751e6bf4d101eb.js" integrity="sha512-OmN9IPQFsOlJaCoV/un8KNpH8d1JWkjpqdZR5XVJEWIyjL3mBoCjwoaLPJiie9fIRzvIeTiwadeCdR5r9NEB6w==" crossorigin="anonymous"></script>
-    
+<script type="text/javascript" src="https://djalal.opendz.org/en/js/bundle.3444df293c605fa0410bf8fc31b65a1ca545c31f0e8073422987b16c13e8981a37c17775a2e9e4be87919ffb5a9ac5d862067687c4eceb6f715b88bfb45ad0d0.js" integrity="sha512-NETfKTxgX6BBC/j8MbZaHKVFwx8OgHNCKYexbBPomBo3wXd1ounkvoeRn/tamsXYYgZ2h8Ts629xW4i/tFrQ0A==" crossorigin="anonymous"></script>
   </body>
 </html>
