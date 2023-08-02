@@ -7,7 +7,27 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>Copyright © 2021, Djalal Harouni; all rights reserved.</copyright>
-    <lastBuildDate>Fri, 11 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 02 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Prevent Overlayfs Privilege Escalation on Ubuntu Kernels with Yaml (bpf)!</title>
+      <link>https://djalal.opendz.org/post/prevent-kernel-overlayfs-ubuntu-cves-with-yaml/</link>
+      <pubDate>Wed, 02 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://djalal.opendz.org/post/prevent-kernel-overlayfs-ubuntu-cves-with-yaml/</guid>
+      <description>
+        
+          
+            Past week Wiz blogged about Overlayfs bugs that can be abused on Ubuntu Kernels to perform privilege escalation, named GameOver(lay) read more here.
+Those are CVE-2023-2640 and CVE-2023-32629, also Datadog has another writeup about a previous Overlayfs upstream vulnerability CVE-2023-0386.
+ Background  All these are mostly the same: Overlayfs can be mounted inside a user namespace, but the security checks and value validation when copying up files and their metadata from the lower to the upper layer inside the user namespace were not sufficient.
+          
+          
+            &lt;p&gt;&lt;a href=&#34;https://djalal.opendz.org/post/prevent-kernel-overlayfs-ubuntu-cves-with-yaml/&#34;&gt;Read More&lt;/a&gt;&lt;/p&gt;
+          
+        
+      </description>
+    </item>
+    
     <item>
       <title>Kernel Image Lockdown and eBPF Flexibility!</title>
       <link>https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/</link>

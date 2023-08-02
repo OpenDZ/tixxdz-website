@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://djalal.opendz.org/post/prevent-kernel-overlayfs-ubuntu-cves-with-yaml/</loc>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>https://djalal.opendz.org/post/ebpf-kernel-image-lockdown-and-ebpf-flexibility/</loc>
     <lastmod>2022-02-11T00:00:00+00:00</lastmod>
   </url><url>
@@ -33,43 +36,49 @@
     <lastmod>2012-08-17T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/bpf/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/categories/bpf/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/categories/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/kernel/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/linux/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/categories/linux/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/opensource/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/categories/opensource/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/post/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/security/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/categories/security/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/</loc>
-    <lastmod>2022-02-11T00:00:00+00:00</lastmod>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/tags/tetragon/</loc>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://djalal.opendz.org/categories/tetragon/</loc>
+    <lastmod>2023-08-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://djalal.opendz.org/tags/iot/</loc>
     <lastmod>2022-02-06T00:00:00+00:00</lastmod>
