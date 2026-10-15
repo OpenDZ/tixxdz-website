@@ -201,32 +201,7 @@
   </div>
   </span>
   </div>
-<div class="post_featured"><figure>
-  <picture>
 
-    
-      
-        
-        
-        
-        
-        
-        
-    <img
-      loading="lazy"
-      decoding="async"
-      alt=""
-      
-        class="image_figure image_featured image_internal image_unprocessed"
-        src="images/jedi-bee-small.png"
-      
-      
-    />
-
-    </picture>
-</figure>
-
-      </div>
     <div class="post_body"><div style="text-align:center">
 <img src="http://djalal.opendz.org/images/jedi-bee-small.png" alt="https://github.com/isovalent/ebeedex/">
 </div>
@@ -244,9 +219,9 @@ inside the user namespace were not sufficient. As software evolves, such things 
 overlayfs file system, change file attributes of binaries, initiate the copy up, and finaly execute
 from the initial user namespace to gain full privileges.</p>
 <p>Unprivileged users are able to create binaries with file capabilities, like this:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>$ getcap upper/binary
-<span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2">2</a></span>upper/binary cap_setuid,cap_sys_admin=eip
-</code></pre></div><p>Executing this turns into full privilege escalation. Only some Ubuntu kernels are affected by those.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln" id="hl-0-1"><a class="lnlinks" href="#hl-0-1">1</a></span><span class="cl">$ getcap upper/binary
+</span></span><span class="line"><span class="ln" id="hl-0-2"><a class="lnlinks" href="#hl-0-2">2</a></span><span class="cl">upper/binary cap_setuid,cap_sys_admin=eip
+</span></span></code></pre></div><p>Executing this turns into full privilege escalation. Only some Ubuntu kernels are affected by those.</p>
 <h2>
   Tetragon Patch your kernel with Yaml
 </h2>
@@ -268,57 +243,57 @@ the host <code>/etc/tetragon</code> directory into container <code>/etc/tetragon
 </li>
 <li>
 <p>Observe Tetragon events on another terminal with tetra cli:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>docker <span class="nb">exec</span> -it tetragon tetra getevents <span class="p">|</span> tee events.json
-</code></pre></div></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="ln" id="hl-1-1"><a class="lnlinks" href="#hl-1-1">1</a></span><span class="cl">docker <span class="nb">exec</span> -it tetragon tetra getevents <span class="p">|</span> tee events.json
+</span></span></code></pre></div></li>
 </ol>
 <p>Then if we run the Overlayfs exploit, Tetragon will prevent Overlayfs from copying up the capabilities xattr section of the file. The binary will be copied up successfully but copying
 up capabilities will be turned to a nop.</p>
 <p>Result:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1">1</a></span>$ getcap upper/binary
-</code></pre></div><p>No file capabilities on the binary.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="ln" id="hl-2-1"><a class="lnlinks" href="#hl-2-1">1</a></span><span class="cl">$ getcap upper/binary
+</span></span></code></pre></div><p>No file capabilities on the binary.</p>
 <p>Tetra cli will produce the following event:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="ln" id="1"><a style="outline: none; text-decoration:none; color:inherit" href="#1"> 1</a></span><span class="p">{</span>
-<span class="ln" id="2"><a style="outline: none; text-decoration:none; color:inherit" href="#2"> 2</a></span>  <span class="nt">&#34;process_kprobe&#34;</span><span class="p">:</span> <span class="p">{</span>
-<span class="ln" id="3"><a style="outline: none; text-decoration:none; color:inherit" href="#3"> 3</a></span>    <span class="nt">&#34;process&#34;</span><span class="p">:</span> <span class="p">{</span>
-<span class="ln" id="4"><a style="outline: none; text-decoration:none; color:inherit" href="#4"> 4</a></span>      <span class="nt">&#34;exec_id&#34;</span><span class="p">:</span> <span class="s2">&#34;OjQ1ODUxODM5NTUxMzY5Ojk4MjMw&#34;</span><span class="p">,</span>
-<span class="ln" id="5"><a style="outline: none; text-decoration:none; color:inherit" href="#5"> 5</a></span>      <span class="nt">&#34;pid&#34;</span><span class="p">:</span> <span class="mi">98230</span><span class="p">,</span>
-<span class="ln" id="6"><a style="outline: none; text-decoration:none; color:inherit" href="#6"> 6</a></span>      <span class="nt">&#34;uid&#34;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-<span class="ln" id="7"><a style="outline: none; text-decoration:none; color:inherit" href="#7"> 7</a></span>      <span class="nt">&#34;cwd&#34;</span><span class="p">:</span> <span class="s2">&#34;/home/tixxdz/overlayfs&#34;</span><span class="p">,</span>
-<span class="ln" id="8"><a style="outline: none; text-decoration:none; color:inherit" href="#8"> 8</a></span>      <span class="nt">&#34;binary&#34;</span><span class="p">:</span> <span class="s2">&#34;/usr/bin/touch&#34;</span><span class="p">,</span>
-<span class="ln" id="9"><a style="outline: none; text-decoration:none; color:inherit" href="#9"> 9</a></span>      <span class="nt">&#34;arguments&#34;</span><span class="p">:</span> <span class="s2">&#34;mount/binary&#34;</span><span class="p">,</span>
-<span class="ln" id="10"><a style="outline: none; text-decoration:none; color:inherit" href="#10">10</a></span>      <span class="nt">&#34;flags&#34;</span><span class="p">:</span> <span class="s2">&#34;execve clone&#34;</span><span class="p">,</span>
-<span class="ln" id="11"><a style="outline: none; text-decoration:none; color:inherit" href="#11">11</a></span>      <span class="nt">&#34;start_time&#34;</span><span class="p">:</span> <span class="s2">&#34;2023-08-02T20:05:21.429903780Z&#34;</span><span class="p">,</span>
-<span class="ln" id="12"><a style="outline: none; text-decoration:none; color:inherit" href="#12">12</a></span>      <span class="nt">&#34;auid&#34;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-<span class="ln" id="13"><a style="outline: none; text-decoration:none; color:inherit" href="#13">13</a></span>      <span class="nt">&#34;parent_exec_id&#34;</span><span class="p">:</span> <span class="s2">&#34;OjQ1ODUxODMyMzk4NDc0Ojk4MjI1&#34;</span><span class="p">,</span>
-<span class="ln" id="14"><a style="outline: none; text-decoration:none; color:inherit" href="#14">14</a></span>      <span class="nt">&#34;refcnt&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-<span class="ln" id="15"><a style="outline: none; text-decoration:none; color:inherit" href="#15">15</a></span>      <span class="nt">&#34;tid&#34;</span><span class="p">:</span> <span class="mi">98230</span>
-<span class="ln" id="16"><a style="outline: none; text-decoration:none; color:inherit" href="#16">16</a></span>    <span class="p">},</span>
-<span class="ln" id="17"><a style="outline: none; text-decoration:none; color:inherit" href="#17">17</a></span>    <span class="nt">&#34;parent&#34;</span><span class="p">:</span> <span class="p">{</span>
-<span class="ln" id="18"><a style="outline: none; text-decoration:none; color:inherit" href="#18">18</a></span>      <span class="nt">&#34;exec_id&#34;</span><span class="p">:</span> <span class="s2">&#34;OjQ1ODUxODMyMzk4NDc0Ojk4MjI1&#34;</span><span class="p">,</span>
-<span class="ln" id="19"><a style="outline: none; text-decoration:none; color:inherit" href="#19">19</a></span>      <span class="nt">&#34;pid&#34;</span><span class="p">:</span> <span class="mi">98225</span><span class="p">,</span>
-<span class="ln" id="20"><a style="outline: none; text-decoration:none; color:inherit" href="#20">20</a></span>      <span class="nt">&#34;uid&#34;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-<span class="ln" id="21"><a style="outline: none; text-decoration:none; color:inherit" href="#21">21</a></span>      <span class="nt">&#34;cwd&#34;</span><span class="p">:</span> <span class="s2">&#34;/home/tixxdz/overlayfs&#34;</span><span class="p">,</span>
-<span class="ln" id="22"><a style="outline: none; text-decoration:none; color:inherit" href="#22">22</a></span>      <span class="nt">&#34;binary&#34;</span><span class="p">:</span> <span class="s2">&#34;/usr/bin/sh&#34;</span><span class="p">,</span>
-<span class="ln" id="23"><a style="outline: none; text-decoration:none; color:inherit" href="#23">23</a></span>      <span class="nt">&#34;flags&#34;</span><span class="p">:</span> <span class="s2">&#34;execve&#34;</span><span class="p">,</span>
-<span class="ln" id="24"><a style="outline: none; text-decoration:none; color:inherit" href="#24">24</a></span>      <span class="nt">&#34;start_time&#34;</span><span class="p">:</span> <span class="s2">&#34;2023-08-02T20:05:21.422752839Z&#34;</span><span class="p">,</span>
-<span class="ln" id="25"><a style="outline: none; text-decoration:none; color:inherit" href="#25">25</a></span>      <span class="nt">&#34;auid&#34;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-<span class="ln" id="26"><a style="outline: none; text-decoration:none; color:inherit" href="#26">26</a></span>      <span class="nt">&#34;parent_exec_id&#34;</span><span class="p">:</span> <span class="s2">&#34;OjQ1ODUxODMwMTExNTgzOjk4MjI1&#34;</span><span class="p">,</span>
-<span class="ln" id="27"><a style="outline: none; text-decoration:none; color:inherit" href="#27">27</a></span>      <span class="nt">&#34;tid&#34;</span><span class="p">:</span> <span class="mi">98225</span>
-<span class="ln" id="28"><a style="outline: none; text-decoration:none; color:inherit" href="#28">28</a></span>    <span class="p">},</span>
-<span class="ln" id="29"><a style="outline: none; text-decoration:none; color:inherit" href="#29">29</a></span>    <span class="nt">&#34;function_name&#34;</span><span class="p">:</span> <span class="s2">&#34;security_inode_copy_up_xattr&#34;</span><span class="p">,</span>
-<span class="ln" id="30"><a style="outline: none; text-decoration:none; color:inherit" href="#30">30</a></span>    <span class="nt">&#34;args&#34;</span><span class="p">:</span> <span class="p">[</span>
-<span class="ln" id="31"><a style="outline: none; text-decoration:none; color:inherit" href="#31">31</a></span>      <span class="p">{</span>
-<span class="ln" id="32"><a style="outline: none; text-decoration:none; color:inherit" href="#32">32</a></span>        <span class="nt">&#34;string_arg&#34;</span><span class="p">:</span> <span class="s2">&#34;security.capability&#34;</span>
-<span class="ln" id="33"><a style="outline: none; text-decoration:none; color:inherit" href="#33">33</a></span>      <span class="p">}</span>
-<span class="ln" id="34"><a style="outline: none; text-decoration:none; color:inherit" href="#34">34</a></span>    <span class="p">],</span>
-<span class="ln" id="35"><a style="outline: none; text-decoration:none; color:inherit" href="#35">35</a></span>    <span class="nt">&#34;return&#34;</span><span class="p">:</span> <span class="p">{</span>
-<span class="ln" id="36"><a style="outline: none; text-decoration:none; color:inherit" href="#36">36</a></span>      <span class="nt">&#34;int_arg&#34;</span><span class="p">:</span> <span class="mi">1</span>
-<span class="ln" id="37"><a style="outline: none; text-decoration:none; color:inherit" href="#37">37</a></span>    <span class="p">},</span>
-<span class="ln" id="38"><a style="outline: none; text-decoration:none; color:inherit" href="#38">38</a></span>    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;KPROBE_ACTION_OVERRIDE&#34;</span>
-<span class="ln" id="39"><a style="outline: none; text-decoration:none; color:inherit" href="#39">39</a></span>  <span class="p">},</span>
-<span class="ln" id="40"><a style="outline: none; text-decoration:none; color:inherit" href="#40">40</a></span>  <span class="nt">&#34;time&#34;</span><span class="p">:</span> <span class="s2">&#34;2023-08-02T20:05:21.446089792Z&#34;</span>
-<span class="ln" id="41"><a style="outline: none; text-decoration:none; color:inherit" href="#41">41</a></span><span class="p">}</span>
-</code></pre></div><p>Copying up the <code>security.capability</code> xattr is ignored inside <a href="https://elixir.bootlin.com/linux/v6.4.6/source/fs/overlayfs/copy_up.c#L76">ovl_copy_xattr</a> as we override the security hook. This requires the kernel config <code>CONFIG_BPF_KPROBE_OVERRIDE=y</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="ln" id="hl-3-1"><a class="lnlinks" href="#hl-3-1"> 1</a></span><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="ln" id="hl-3-2"><a class="lnlinks" href="#hl-3-2"> 2</a></span><span class="cl">  <span class="nt">&#34;process_kprobe&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln" id="hl-3-3"><a class="lnlinks" href="#hl-3-3"> 3</a></span><span class="cl">    <span class="nt">&#34;process&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln" id="hl-3-4"><a class="lnlinks" href="#hl-3-4"> 4</a></span><span class="cl">      <span class="nt">&#34;exec_id&#34;</span><span class="p">:</span> <span class="s2">&#34;OjQ1ODUxODM5NTUxMzY5Ojk4MjMw&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-5"><a class="lnlinks" href="#hl-3-5"> 5</a></span><span class="cl">      <span class="nt">&#34;pid&#34;</span><span class="p">:</span> <span class="mi">98230</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-6"><a class="lnlinks" href="#hl-3-6"> 6</a></span><span class="cl">      <span class="nt">&#34;uid&#34;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-7"><a class="lnlinks" href="#hl-3-7"> 7</a></span><span class="cl">      <span class="nt">&#34;cwd&#34;</span><span class="p">:</span> <span class="s2">&#34;/home/tixxdz/overlayfs&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-8"><a class="lnlinks" href="#hl-3-8"> 8</a></span><span class="cl">      <span class="nt">&#34;binary&#34;</span><span class="p">:</span> <span class="s2">&#34;/usr/bin/touch&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-9"><a class="lnlinks" href="#hl-3-9"> 9</a></span><span class="cl">      <span class="nt">&#34;arguments&#34;</span><span class="p">:</span> <span class="s2">&#34;mount/binary&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-10"><a class="lnlinks" href="#hl-3-10">10</a></span><span class="cl">      <span class="nt">&#34;flags&#34;</span><span class="p">:</span> <span class="s2">&#34;execve clone&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-11"><a class="lnlinks" href="#hl-3-11">11</a></span><span class="cl">      <span class="nt">&#34;start_time&#34;</span><span class="p">:</span> <span class="s2">&#34;2023-08-02T20:05:21.429903780Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-12"><a class="lnlinks" href="#hl-3-12">12</a></span><span class="cl">      <span class="nt">&#34;auid&#34;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-13"><a class="lnlinks" href="#hl-3-13">13</a></span><span class="cl">      <span class="nt">&#34;parent_exec_id&#34;</span><span class="p">:</span> <span class="s2">&#34;OjQ1ODUxODMyMzk4NDc0Ojk4MjI1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-14"><a class="lnlinks" href="#hl-3-14">14</a></span><span class="cl">      <span class="nt">&#34;refcnt&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-15"><a class="lnlinks" href="#hl-3-15">15</a></span><span class="cl">      <span class="nt">&#34;tid&#34;</span><span class="p">:</span> <span class="mi">98230</span>
+</span></span><span class="line"><span class="ln" id="hl-3-16"><a class="lnlinks" href="#hl-3-16">16</a></span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln" id="hl-3-17"><a class="lnlinks" href="#hl-3-17">17</a></span><span class="cl">    <span class="nt">&#34;parent&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln" id="hl-3-18"><a class="lnlinks" href="#hl-3-18">18</a></span><span class="cl">      <span class="nt">&#34;exec_id&#34;</span><span class="p">:</span> <span class="s2">&#34;OjQ1ODUxODMyMzk4NDc0Ojk4MjI1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-19"><a class="lnlinks" href="#hl-3-19">19</a></span><span class="cl">      <span class="nt">&#34;pid&#34;</span><span class="p">:</span> <span class="mi">98225</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-20"><a class="lnlinks" href="#hl-3-20">20</a></span><span class="cl">      <span class="nt">&#34;uid&#34;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-21"><a class="lnlinks" href="#hl-3-21">21</a></span><span class="cl">      <span class="nt">&#34;cwd&#34;</span><span class="p">:</span> <span class="s2">&#34;/home/tixxdz/overlayfs&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-22"><a class="lnlinks" href="#hl-3-22">22</a></span><span class="cl">      <span class="nt">&#34;binary&#34;</span><span class="p">:</span> <span class="s2">&#34;/usr/bin/sh&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-23"><a class="lnlinks" href="#hl-3-23">23</a></span><span class="cl">      <span class="nt">&#34;flags&#34;</span><span class="p">:</span> <span class="s2">&#34;execve&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-24"><a class="lnlinks" href="#hl-3-24">24</a></span><span class="cl">      <span class="nt">&#34;start_time&#34;</span><span class="p">:</span> <span class="s2">&#34;2023-08-02T20:05:21.422752839Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-25"><a class="lnlinks" href="#hl-3-25">25</a></span><span class="cl">      <span class="nt">&#34;auid&#34;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-26"><a class="lnlinks" href="#hl-3-26">26</a></span><span class="cl">      <span class="nt">&#34;parent_exec_id&#34;</span><span class="p">:</span> <span class="s2">&#34;OjQ1ODUxODMwMTExNTgzOjk4MjI1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-27"><a class="lnlinks" href="#hl-3-27">27</a></span><span class="cl">      <span class="nt">&#34;tid&#34;</span><span class="p">:</span> <span class="mi">98225</span>
+</span></span><span class="line"><span class="ln" id="hl-3-28"><a class="lnlinks" href="#hl-3-28">28</a></span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln" id="hl-3-29"><a class="lnlinks" href="#hl-3-29">29</a></span><span class="cl">    <span class="nt">&#34;function_name&#34;</span><span class="p">:</span> <span class="s2">&#34;security_inode_copy_up_xattr&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="ln" id="hl-3-30"><a class="lnlinks" href="#hl-3-30">30</a></span><span class="cl">    <span class="nt">&#34;args&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="ln" id="hl-3-31"><a class="lnlinks" href="#hl-3-31">31</a></span><span class="cl">      <span class="p">{</span>
+</span></span><span class="line"><span class="ln" id="hl-3-32"><a class="lnlinks" href="#hl-3-32">32</a></span><span class="cl">        <span class="nt">&#34;string_arg&#34;</span><span class="p">:</span> <span class="s2">&#34;security.capability&#34;</span>
+</span></span><span class="line"><span class="ln" id="hl-3-33"><a class="lnlinks" href="#hl-3-33">33</a></span><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="ln" id="hl-3-34"><a class="lnlinks" href="#hl-3-34">34</a></span><span class="cl">    <span class="p">],</span>
+</span></span><span class="line"><span class="ln" id="hl-3-35"><a class="lnlinks" href="#hl-3-35">35</a></span><span class="cl">    <span class="nt">&#34;return&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="ln" id="hl-3-36"><a class="lnlinks" href="#hl-3-36">36</a></span><span class="cl">      <span class="nt">&#34;int_arg&#34;</span><span class="p">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="ln" id="hl-3-37"><a class="lnlinks" href="#hl-3-37">37</a></span><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="ln" id="hl-3-38"><a class="lnlinks" href="#hl-3-38">38</a></span><span class="cl">    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;KPROBE_ACTION_OVERRIDE&#34;</span>
+</span></span><span class="line"><span class="ln" id="hl-3-39"><a class="lnlinks" href="#hl-3-39">39</a></span><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="ln" id="hl-3-40"><a class="lnlinks" href="#hl-3-40">40</a></span><span class="cl">  <span class="nt">&#34;time&#34;</span><span class="p">:</span> <span class="s2">&#34;2023-08-02T20:05:21.446089792Z&#34;</span>
+</span></span><span class="line"><span class="ln" id="hl-3-41"><a class="lnlinks" href="#hl-3-41">41</a></span><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Copying up the <code>security.capability</code> xattr is ignored inside <a href="https://elixir.bootlin.com/linux/v6.4.6/source/fs/overlayfs/copy_up.c#L76">ovl_copy_xattr</a> as we override the security hook. This requires the kernel config <code>CONFIG_BPF_KPROBE_OVERRIDE=y</code>.</p>
 <p>It is also possible to prevent this class of exploits by using the <a href="https://github.com/cilium/tetragon/blob/main/examples/sandbox/linux-namespaces/kill_unprivileged_user_namespace_in_pid_namespace.yaml">kill unprivileged user namespace</a> tracing policy, and even apply it to some <a href="https://tetragon.cilium.io/docs/concepts/k8s-filtering/">specific pods and containers</a>.</p>
 <h3>
    Conclusion
@@ -568,11 +543,7 @@ without affecting the rest of the system.</p>
   <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 71 55" id="discord">
     <path d="M60.1045 4.8978C55.5792 2.8214 50.7265 1.2916 45.6527 0.41542C45.5603 0.39851 45.468 0.440769 45.4204 0.525289C44.7963 1.6353 44.105 3.0834 43.6209 4.2216C38.1637 3.4046 32.7345 3.4046 27.3892 4.2216C26.905 3.0581 26.1886 1.6353 25.5617 0.525289C25.5141 0.443589 25.4218 0.40133 25.3294 0.41542C20.2584 1.2888 15.4057 2.8186 10.8776 4.8978C10.8384 4.9147 10.8048 4.9429 10.7825 4.9795C1.57795 18.7309 -0.943561 32.1443 0.293408 45.3914C0.299005 45.4562 0.335386 45.5182 0.385761 45.5576C6.45866 50.0174 12.3413 52.7249 18.1147 54.5195C18.2071 54.5477 18.305 54.5139 18.3638 54.4378C19.7295 52.5728 20.9469 50.6063 21.9907 48.5383C22.0523 48.4172 21.9935 48.2735 21.8676 48.2256C19.9366 47.4931 18.0979 46.6 16.3292 45.5858C16.1893 45.5041 16.1781 45.304 16.3068 45.2082C16.679 44.9293 17.0513 44.6391 17.4067 44.3461C17.471 44.2926 17.5606 44.2813 17.6362 44.3151C29.2558 49.6202 41.8354 49.6202 53.3179 44.3151C53.3935 44.2785 53.4831 44.2898 53.5502 44.3433C53.9057 44.6363 54.2779 44.9293 54.6529 45.2082C54.7816 45.304 54.7732 45.5041 54.6333 45.5858C52.8646 46.6197 51.0259 47.4931 49.0921 48.2228C48.9662 48.2707 48.9102 48.4172 48.9718 48.5383C50.038 50.6034 51.2554 52.5699 52.5959 54.435C52.6519 54.5139 52.7526 54.5477 52.845 54.5195C58.6464 52.7249 64.529 50.0174 70.6019 45.5576C70.6551 45.5182 70.6887 45.459 70.6943 45.3942C72.1747 30.0791 68.2147 16.7757 60.1968 4.9823C60.1772 4.9429 60.1437 4.9147 60.1045 4.8978ZM23.7259 37.3253C20.2276 37.3253 17.3451 34.1136 17.3451 30.1693C17.3451 26.225 20.1717 23.0133 23.7259 23.0133C27.308 23.0133 30.1626 26.2532 30.1066 30.1693C30.1066 34.1136 27.28 37.3253 23.7259 37.3253ZM47.3178 37.3253C43.8196 37.3253 40.9371 34.1136 40.9371 30.1693C40.9371 26.225 43.7636 23.0133 47.3178 23.0133C50.9 23.0133 53.7545 26.2532 53.6986 30.1693C53.6986 34.1136 50.9 37.3253 47.3178 37.3253Z"/>
   </symbol>
-  <symbol xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mastodon" viewBox="0 0 16 16" id="mastodon">
-    <path d="M11.19 12.195c2.016-.24 3.77-1.475 3.99-2.603.348-1.778.32-4.339.32-4.339 0-3.47-2.286-4.488-2.286-4.488C12.062.238 10.083.017 8.027 0h-.05C5.92.017 3.942.238 2.79.765c0 0-2.285 1.017-2.285 4.488l-.002.662c-.004.64-.007 1.35.011 2.091.083 3.394.626 6.74 3.78 7.57 1.454.383 2.703.463 3.709.408 1.823-.1 2.847-.647 2.847-.647l-.06-1.317s-1.303.41-2.767.36c-1.45-.05-2.98-.156-3.215-1.928a3.614 3.614 0 0 1-.033-.496s1.424.346 3.228.428c1.103.05 2.137-.064 3.188-.189zm1.613-2.47H11.13v-4.08c0-.859-.364-1.295-1.091-1.295-.804 0-1.207.517-1.207 1.541v2.233H7.168V5.89c0-1.024-.403-1.541-1.207-1.541-.727 0-1.091.436-1.091 1.296v4.079H3.197V5.522c0-.859.22-1.541.66-2.046.456-.505 1.052-.764 1.793-.764.856 0 1.504.328 1.933.983L8 4.39l.417-.695c.429-.655 1.077-.983 1.934-.983.74 0 1.336.259 1.791.764.442.505.661 1.187.661 2.046v4.203z"/>
-  </symbole>
 </svg>
-
 
 
 <footer class="footer">

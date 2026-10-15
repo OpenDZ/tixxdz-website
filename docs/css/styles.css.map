@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "styles.css",
-	"sourceRoot": "/home/tixxdz/work/station/code/src/github.com/opendz/tixxdz-website.dev",
+	"sourceRoot": "/home/tixxdz/work/roronoa/code/src/github.com/opendz/tixxdz-website.dev",
 	"sources": [
 		"themes/hugo-clarity/assets/sass/main.sass",
 		"themes/hugo-clarity/assets/sass/_variables.sass",

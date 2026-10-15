@@ -5,7 +5,7 @@
     <link>https://djalal.opendz.org/tags/iot/</link>
     <description>Recent content in IoT on Djalal Harouni</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>en</language>
     <copyright>Copyright © 2021, Djalal Harouni; all rights reserved.</copyright>
     <lastBuildDate>Sun, 06 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://djalal.opendz.org/tags/iot/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -37,7 +37,7 @@ From Wikipedia &amp;quot;Fileless malware is a variant of computer related malic
         
           
             At the eBPF Summit 2021, I gave a talk about how to take advantage of eBPF to try to bridge some cloud and IoT security features.
- My Talk can be found here: BPF to bridge Cloud and IoT Linux Security on youtube
+My Talk can be found here: BPF to bridge Cloud and IoT Linux Security on youtube
 All eBPF Summit 2021 here: eBPF Summit 2021 Youtube Channel
           
           
